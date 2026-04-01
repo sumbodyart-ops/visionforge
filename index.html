@@ -2,270 +2,172 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Visyonix</title>
-  <link rel="icon" type="image/png" href="logo.png" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      padding: 40px 20px;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(99, 102, 241, 0.14), transparent 30%),
-        linear-gradient(180deg, #07070a 0%, #111827 100%);
-      color: #ffffff;
+      font-family: Inter, sans-serif;
+      background: radial-gradient(circle at top, #0b1020, #05070f);
+      color: #fff;
     }
 
-    .wrap {
-      max-width: 920px;
-      margin: 0 auto;
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
     }
 
+    /* HERO */
     .hero {
-      margin-bottom: 28px;
-      padding: 30px 24px 16px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.14), rgba(255, 255, 255, 0.03));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
+      padding: 30px 25px 30px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
       text-align: center;
     }
 
-    .hero-badge {
+    .badge {
       display: inline-block;
-      margin-bottom: 20px;
-      padding: 7px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
+      background: rgba(99,102,241,0.2);
       font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #c7d2fe;
-      background: rgba(99, 102, 241, 0.16);
-      border: 1px solid rgba(99, 102, 241, 0.25);
+      letter-spacing: 1px;
+      margin-bottom: 18px;
     }
 
-    /* 🔥 LOGO FIXED HERE */
+    /* LOGO + TEXT BIG */
     .brand-row {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
-      margin-bottom: 20px;
-    }
-
-    .brand-logo {
-      height: 130px;
-      width: auto;
-      display: block;
-      filter: drop-shadow(0 0 35px rgba(120, 80, 255, 0.7));
-    }
-
-    .subtext {
-      color: #d1d5db;
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .hero-caption {
-      color: #9ca3af;
-      font-size: 14px;
-      line-height: 1.5;
-      max-width: 720px;
-      margin: 0 auto;
-      padding-left: 14px;
-      border-left: 3px solid rgba(99, 102, 241, 0.45);
-      text-align: left;
-    }
-
-    .panel {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
-    }
-
-    .section-label {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #bdbdbd;
-      margin-bottom: 12px;
-      font-weight: bold;
-    }
-
-    .modes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 18px;
       margin-bottom: 22px;
     }
 
-    .mode-btn {
-      background: #1f2937;
-      color: #e5e7eb;
-      border: 1px solid #374151;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      cursor: pointer;
+    .brand-logo {
+      height: 140px;
+      filter: drop-shadow(0 0 35px rgba(120,80,255,0.9));
     }
 
-    .mode-btn.active {
-      background: #4f46e5;
-      border-color: #6366f1;
-      color: #ffffff;
+    .brand-text {
+      font-size: 56px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 170px;
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid #374151;
-      background: #0f172a;
-      color: #ffffff;
-      font-size: 16px;
-      margin-bottom: 16px;
-    }
-
-    .action-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .primary-btn {
-      background: #4f46e5;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 15px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .secondary-btn {
-      background: #1f2937;
-      color: #ffffff;
-      border: 1px solid #374151;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 16px;
-      padding: 18px;
-      background: #0b1220;
-      border: 1px solid #243041;
-      border-radius: 14px;
-      min-height: 180px;
+    /* TEXT */
+    .subtext {
+      font-size: 18px;
+      color: #d1d5db;
       line-height: 1.6;
+      max-width: 1100px;
+      margin: 0 auto 20px;
     }
 
-    .footer-note {
-      margin-top: 18px;
+    .hero-caption {
+      font-size: 14px;
       color: #9ca3af;
-      font-size: 13px;
+      max-width: 1100px;
+      margin: auto;
+      text-align: left;
+      padding-left: 14px;
+      border-left: 3px solid rgba(99,102,241,0.5);
+    }
+
+    /* MODES */
+    .modes {
+      margin-top: 30px;
+    }
+
+    .mode-title {
+      color: #9ca3af;
+      margin-bottom: 12px;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: rgba(99,102,241,0.4);
+    }
+
+    .btn.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .brand-row {
+        flex-direction: column;
+      }
+
+      .brand-logo {
+        height: 110px;
+      }
+
+      .brand-text {
+        font-size: 40px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
 
-    <div class="hero">
-      <div class="hero-badge">Creative Engine</div>
+<div class="container">
 
-      <!-- 🔥 LOGO ONLY (FULL VERSION) -->
-      <div class="brand-row">
-        <img src="logo.png" alt="Visyonix logo" class="brand-logo">
-      </div>
+  <div class="hero">
+    <div class="badge">CREATIVE ENGINE</div>
 
-      <div class="subtext">
-        Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
-      </div>
-
-      <div class="hero-caption">
-        Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
-      </div>
+    <div class="brand-row">
+      <img src="logo.png" class="brand-logo">
+      <div class="brand-text">Visyonix</div>
     </div>
 
-    <div class="panel">
-      <div class="section-label">Choose a mode</div>
-
-      <div class="modes">
-        <button class="mode-btn active" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
-        <button class="mode-btn" onclick="setMode('music-video', this)">🎵 Music Video</button>
-        <button class="mode-btn" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
-        <button class="mode-btn" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
-        <button class="mode-btn" onclick="setMode('viral-short', this)">📱 Viral Short</button>
-      </div>
-
-      <textarea id="prompt" placeholder="Enter your idea..."></textarea>
-
-      <div class="action-row">
-        <button class="primary-btn" onclick="generate()">Generate</button>
-        <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
-      </div>
-
-      <div id="result">Your result will appear here.</div>
-
-      <div class="footer-note">
-        Built for creators who want premium output, not generic AI filler.
-      </div>
+    <div class="subtext">
+      Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
     </div>
 
+    <div class="hero-caption">
+      Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
+    </div>
   </div>
 
-  <script>
-    let selectedMode = "cinematic-ad";
+  <div class="modes">
+    <div class="mode-title">CHOOSE A MODE</div>
 
-    function setMode(mode, btn) {
-      selectedMode = mode;
-      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    }
+    <div class="buttons">
+      <button class="btn active">🎬 Cinematic Ad</button>
+      <button class="btn">🎵 Music Video</button>
+      <button class="btn">🎞 Film Trailer</button>
+      <button class="btn">✝ Gospel Visual</button>
+      <button class="btn">📱 Viral Short</button>
+    </div>
+  </div>
 
-    async function generate() {
-      const prompt = document.getElementById("prompt").value;
-      const result = document.getElementById("result");
+</div>
 
-      if (!prompt) {
-        result.textContent = "Enter something first.";
-        return;
-      }
-
-      result.textContent = "Generating...";
-
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, mode: selectedMode })
-        });
-
-        const data = await res.json();
-        result.textContent = data.result;
-      } catch {
-        result.textContent = "Error generating output.";
-      }
-    }
-
-    function clearPrompt() {
-      document.getElementById("prompt").value = "";
-      document.getElementById("result").textContent = "Your result will appear here.";
-    }
-  </script>
 </body>
 </html>
