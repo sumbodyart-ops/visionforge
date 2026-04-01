@@ -13,41 +13,80 @@ body {
   color: #fff;
 }
 
-/* CONTAINER */
 .container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* HERO CARD */
-.hero {
-  width: 100%;
   max-width: 1100px;
-  padding: 40px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: auto;
+  padding: 20px;
 }
 
-/* LOGO ONLY */
+/* HERO LOGO */
+.hero {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 .logo {
   width: 100%;
-  max-width: 650px;
-  height: auto;
+  max-width: 500px;
   filter: drop-shadow(0 0 50px rgba(120,80,255,1));
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .logo {
-    max-width: 90%;
-  }
+/* INPUT */
+.input-box {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+}
+
+/* GENERATE BUTTON */
+.generate {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* OUTPUT */
+.output {
+  white-space: pre-wrap;
+  background: rgba(255,255,255,0.05);
+  padding: 16px;
+  border-radius: 12px;
+  min-height: 120px;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -55,10 +94,63 @@ body {
 <body>
 
 <div class="container">
+
+  <!-- LOGO -->
   <div class="hero">
     <img src="logo.png" class="logo">
   </div>
+
+  <!-- INPUT -->
+  <textarea class="input-box" id="idea" placeholder="Describe your idea..."></textarea>
+
+  <!-- MODES -->
+  <div class="buttons">
+    <button class="btn active" onclick="setMode(this, 'cinematic')">🎬 Cinematic</button>
+    <button class="btn" onclick="setMode(this, 'music')">🎵 Music</button>
+    <button class="btn" onclick="setMode(this, 'trailer')">🎞 Trailer</button>
+    <button class="btn" onclick="setMode(this, 'gospel')">✝ Gospel</button>
+    <button class="btn" onclick="setMode(this, 'viral')">📱 Viral</button>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="generate" onclick="generate()">Generate</button>
+
+  <!-- OUTPUT -->
+  <div class="output" id="output">Your result will appear here...</div>
+
 </div>
+
+<script>
+let mode = "cinematic";
+
+function setMode(btn, selected) {
+  mode = selected;
+  document.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+async function generate() {
+  const idea = document.getElementById("idea").value;
+  const output = document.getElementById("output");
+
+  output.innerText = "Generating...";
+
+  try {
+    const res = await fetch("/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ idea, mode })
+    });
+
+    const data = await res.json();
+    output.innerText = data.result || "No response";
+  } catch (err) {
+    output.innerText = "Error generating output.";
+  }
+}
+</script>
 
 </body>
 </html>
