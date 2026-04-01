@@ -1,137 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Visyonix</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visyonix</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      background: radial-gradient(circle at top, #0b1020, #05070f);
-      color: #fff;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: radial-gradient(circle at top, #0b1020, #05070f);
+  color: #fff;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-    }
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
 
-    /* HERO */
-    .hero {
-      padding: 30px 25px 30px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-      text-align: center;
-    }
+/* HERO */
+.hero {
+  padding: 30px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  text-align: center;
+}
 
-    .badge {
-      display: inline-block;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.2);
-      font-size: 12px;
-      letter-spacing: 1px;
-      margin-bottom: 18px;
-    }
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(99,102,241,0.2);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
 
-    /* LOGO + TEXT BIG */
-    .brand-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 22px;
-    }
+/* LOGO + TEXT */
+.brand-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 
-    .brand-logo {
-      height: 140px;
-      filter: drop-shadow(0 0 35px rgba(120,80,255,0.9));
-    }
+.brand-logo {
+  height: 130px;
+  filter: drop-shadow(0 0 40px rgba(120,80,255,1));
+}
 
-    .brand-text {
-      font-size: 56px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+.brand-text {
+  font-size: 72px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    /* TEXT */
-    .subtext {
-      font-size: 18px;
-      color: #d1d5db;
-      line-height: 1.6;
-      max-width: 1100px;
-      margin: 0 auto 20px;
-    }
+/* TEXT */
+.subtext {
+  font-size: 18px;
+  color: #d1d5db;
+  line-height: 1.6;
+  max-width: 1100px;
+  margin: auto;
+}
 
-    .hero-caption {
-      font-size: 14px;
-      color: #9ca3af;
-      max-width: 1100px;
-      margin: auto;
-      text-align: left;
-      padding-left: 14px;
-      border-left: 3px solid rgba(99,102,241,0.5);
-    }
+.hero-caption {
+  font-size: 14px;
+  color: #9ca3af;
+  max-width: 1100px;
+  margin: 18px auto 0;
+  text-align: left;
+  padding-left: 14px;
+  border-left: 3px solid rgba(99,102,241,0.5);
+}
 
-    /* MODES */
-    .modes {
-      margin-top: 30px;
-    }
+/* MOBILE */
+@media (max-width: 768px) {
+  .brand-row {
+    flex-direction: column;
+  }
 
-    .mode-title {
-      color: #9ca3af;
-      margin-bottom: 12px;
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
+  .brand-logo {
+    height: 100px;
+  }
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn {
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: rgba(99,102,241,0.4);
-    }
-
-    .btn.active {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      border: none;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-      .brand-row {
-        flex-direction: column;
-      }
-
-      .brand-logo {
-        height: 110px;
-      }
-
-      .brand-text {
-        font-size: 40px;
-      }
-    }
-  </style>
+  .brand-text {
+    font-size: 44px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -139,6 +102,7 @@
 <div class="container">
 
   <div class="hero">
+
     <div class="badge">CREATIVE ENGINE</div>
 
     <div class="brand-row">
@@ -153,18 +117,7 @@
     <div class="hero-caption">
       Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
     </div>
-  </div>
 
-  <div class="modes">
-    <div class="mode-title">CHOOSE A MODE</div>
-
-    <div class="buttons">
-      <button class="btn active">🎬 Cinematic Ad</button>
-      <button class="btn">🎵 Music Video</button>
-      <button class="btn">🎞 Film Trailer</button>
-      <button class="btn">✝ Gospel Visual</button>
-      <button class="btn">📱 Viral Short</button>
-    </div>
   </div>
 
 </div>
