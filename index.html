@@ -13,85 +13,40 @@ body {
   color: #fff;
 }
 
+/* CONTAINER */
 .container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-/* HERO */
-.hero {
-  padding: 30px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  text-align: center;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(99,102,241,0.2);
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-}
-
-/* LOGO + TEXT */
-.brand-row {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
 }
 
-.brand-logo {
-  height: 130px;
-  filter: drop-shadow(0 0 40px rgba(120,80,255,1));
-}
-
-.brand-text {
-  font-size: 72px;
-  font-weight: 700;
-  background: linear-gradient(90deg, #60a5fa, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* TEXT */
-.subtext {
-  font-size: 18px;
-  color: #d1d5db;
-  line-height: 1.6;
+/* HERO CARD */
+.hero {
+  width: 100%;
   max-width: 1100px;
-  margin: auto;
+  padding: 40px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.hero-caption {
-  font-size: 14px;
-  color: #9ca3af;
-  max-width: 1100px;
-  margin: 18px auto 0;
-  text-align: left;
-  padding-left: 14px;
-  border-left: 3px solid rgba(99,102,241,0.5);
+/* LOGO ONLY */
+.logo {
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  filter: drop-shadow(0 0 50px rgba(120,80,255,1));
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .brand-row {
-    flex-direction: column;
-  }
-
-  .brand-logo {
-    height: 100px;
-  }
-
-  .brand-text {
-    font-size: 44px;
+  .logo {
+    max-width: 90%;
   }
 }
 </style>
@@ -100,26 +55,9 @@ body {
 <body>
 
 <div class="container">
-
   <div class="hero">
-
-    <div class="badge">CREATIVE ENGINE</div>
-
-    <div class="brand-row">
-      <img src="logo.png" class="brand-logo">
-      <div class="brand-text">Visyonix</div>
-    </div>
-
-    <div class="subtext">
-      Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
-    </div>
-
-    <div class="hero-caption">
-      Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
-    </div>
-
+    <img src="logo.png" class="logo">
   </div>
-
 </div>
 
 </body>
