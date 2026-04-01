@@ -35,6 +35,7 @@
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
       text-align: center;
       overflow: visible;
+      position: relative;
     }
 
     .hero-badge {
@@ -55,17 +56,39 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 6px 0 18px;
-      min-height: 180px;
+      margin: 8px 0 24px;
+      min-height: 240px;
     }
 
     .brand-logo {
-      width: min(100%, 620px);
+      width: min(100%, 860px);
       height: auto;
-      max-height: 220px;
+      max-height: 320px;
       object-fit: contain;
       display: block;
-      filter: drop-shadow(0 0 35px rgba(120, 80, 255, 0.75));
+      animation: floatLogo 4.5s ease-in-out infinite, pulseGlow 3.2s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes floatLogo {
+      0% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-10px) scale(1.015); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        filter: drop-shadow(0 0 18px rgba(120, 80, 255, 0.45))
+                drop-shadow(0 0 34px rgba(59, 130, 246, 0.18));
+      }
+      50% {
+        filter: drop-shadow(0 0 34px rgba(168, 85, 247, 0.82))
+                drop-shadow(0 0 56px rgba(59, 130, 246, 0.32));
+      }
+      100% {
+        filter: drop-shadow(0 0 18px rgba(120, 80, 255, 0.45))
+                drop-shadow(0 0 34px rgba(59, 130, 246, 0.18));
+      }
     }
 
     .subtext {
@@ -172,10 +195,12 @@
       cursor: pointer;
       color: #ffffff;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
 
     .generate-btn:hover {
       transform: translateY(-1px);
+      filter: brightness(1.08);
     }
 
     .secondary-btn {
@@ -186,6 +211,7 @@
       cursor: pointer;
       color: #ffffff;
       background: #111827;
+      transition: background 0.2s ease;
     }
 
     .secondary-btn:hover {
@@ -222,12 +248,13 @@
       }
 
       .brand-row {
-        min-height: 120px;
+        min-height: 150px;
+        margin-bottom: 18px;
       }
 
       .brand-logo {
-        width: min(100%, 420px);
-        max-height: 150px;
+        width: min(100%, 520px);
+        max-height: 190px;
       }
 
       .subtext {
