@@ -154,8 +154,17 @@
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
     }
 
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
     .generate-btn {
-      width: 100%;
+      flex: 1;
+      min-width: 220px;
       border: none;
       border-radius: 14px;
       padding: 16px 18px;
@@ -163,11 +172,32 @@
       cursor: pointer;
       color: #ffffff;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      margin-bottom: 20px;
     }
 
     .generate-btn:hover {
       transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #ffffff;
+      background: #111827;
+    }
+
+    .secondary-btn:hover {
+      background: #1f2937;
+    }
+
+    .result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .output {
@@ -212,6 +242,17 @@
         font-size: 13px;
         padding: 11px 14px;
       }
+
+      .action-row,
+      .result-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .generate-btn,
+      .secondary-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -246,7 +287,15 @@
 
       <textarea id="prompt" placeholder="Describe your idea..."></textarea>
 
-      <button class="generate-btn" onclick="generate()">Generate</button>
+      <div class="action-row">
+        <button class="generate-btn" onclick="generate()">Generate</button>
+        <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
+      </div>
+
+      <div class="result-top">
+        <div class="section-label" style="margin-bottom:0;">Result</div>
+        <button class="secondary-btn" onclick="copyAll()">Copy All</button>
+      </div>
 
       <div class="output" id="output">Your result will appear here...</div>
     </div>
@@ -259,6 +308,20 @@
       mode = selected;
       document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+    }
+
+    function clearPrompt() {
+      document.getElementById("prompt").value = "";
+      document.getElementById("output").innerText = "Your result will appear here...";
+    }
+
+    async function copyAll() {
+      const text = document.getElementById("output").innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
     }
 
     async function generate() {
