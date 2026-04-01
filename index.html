@@ -1,277 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Visyonix</title>
-<link rel="icon" type="image/png" href="logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visyonix</title>
+  <link rel="icon" type="image/png" href="logo.png" />
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(99,102,241,0.14), transparent 30%),
-    linear-gradient(180deg, #07070a 0%, #111827 100%);
-  color: white;
-}
+    body {
+      margin: 0;
+      padding: 24px 20px 36px;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(99, 102, 241, 0.14), transparent 30%),
+        linear-gradient(180deg, #07070a 0%, #111827 100%);
+      color: #ffffff;
+    }
 
-.wrap {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-}
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
 
-/* HERO */
-.hero {
-  text-align: center;
-  margin-bottom: 30px;
-}
+    .hero {
+      margin-bottom: 24px;
+      padding: 26px 24px 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.14), rgba(255, 255, 255, 0.03));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
+      text-align: center;
+      overflow: hidden;
+    }
 
-.hero-badge {
-  margin-bottom: 15px;
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(99,102,241,0.2);
-  font-size: 12px;
-}
+    .hero-badge {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c7d2fe;
+      background: rgba(99, 102, 241, 0.16);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
 
-/* 🔥 BIG LOGO AREA */
-.brand-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 55vh;
-  min-height: 320px;
-}
+    .brand-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      margin: 0 0 12px;
+    }
 
-.brand-logo {
-  height: 100%;
-  max-height: 520px;
-  width: auto;
-  object-fit: contain;
+    .brand-logo {
+      width: min(100%, 920px);
+      max-height: 420px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      animation: logoFloat 4.2s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
+      transform-origin: center;
+    }
 
-  animation: floatLogo 4.5s ease-in-out infinite,
-             pulseGlow 3s ease-in-out infinite;
-}
+    @keyframes logoFloat {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
 
-/* FLOAT */
-@keyframes floatLogo {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0); }
-}
+    @keyframes logoGlow {
+      0% {
+        filter: drop-shadow(0 0 18px rgba(120, 80, 255, 0.45))
+                drop-shadow(0 0 36px rgba(59, 130, 246, 0.16));
+      }
+      50% {
+        filter: drop-shadow(0 0 36px rgba(168, 85, 247, 0.95))
+                drop-shadow(0 0 72px rgba(59, 130, 246, 0.34));
+      }
+      100% {
+        filter: drop-shadow(0 0 18px rgba(120, 80, 255, 0.45))
+                drop-shadow(0 0 36px rgba(59, 130, 246, 0.16));
+      }
+    }
 
-/* GLOW */
-@keyframes pulseGlow {
-  0% {
-    filter: drop-shadow(0 0 20px rgba(120,80,255,0.5));
-  }
-  50% {
-    filter: drop-shadow(0 0 60px rgba(168,85,247,1));
-  }
-  100% {
-    filter: drop-shadow(0 0 20px rgba(120,80,255,0.5));
-  }
-}
+    .subtext {
+      color: #e5e7eb;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0 auto 14px;
+      max-width: 1000px;
+    }
 
-/* TEXT */
-.subtext {
-  font-size: 18px;
-  color: #d1d5db;
-  margin-bottom: 10px;
-}
+    .hero-caption {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 960px;
+      margin: 0 auto;
+      padding-left: 14px;
+      border-left: 3px solid rgba(99, 102, 241, 0.45);
+      text-align: left;
+    }
 
-.hero-caption {
-  font-size: 14px;
-  color: #9ca3af;
-  border-left: 3px solid rgba(99,102,241,0.4);
-  padding-left: 10px;
-  max-width: 700px;
-  margin: auto;
-  text-align: left;
-}
+    .panel {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+    }
 
-/* PANEL */
-.panel {
-  background: rgba(255,255,255,0.04);
-  padding: 20px;
-  border-radius: 16px;
-}
+    .section-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #bdbdbd;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
 
-/* MODES */
-.modes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-}
+    .modes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-.mode-btn {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid #374151;
-  background: #111827;
-  cursor: pointer;
-}
+    .mode-btn {
+      background: #111827;
+      color: #f3f4f6;
+      border: 1px solid #374151;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-.mode-btn.active {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-}
+    .mode-btn:hover {
+      background: #1f2937;
+      transform: translateY(-1px);
+    }
 
-/* INPUT */
-textarea {
-  width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
-  background: #0f172a;
-  color: white;
-  margin-bottom: 12px;
-}
+    .mode-btn.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+    }
 
-/* ACTION ROW */
-.action-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid #374151;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 16px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 16px;
+    }
 
-.generate-btn {
-  flex: 1;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-  cursor: pointer;
-}
+    textarea:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+    }
 
-.secondary-btn {
-  padding: 14px;
-  border-radius: 12px;
-  background: #111827;
-  border: 1px solid #374151;
-  color: white;
-  cursor: pointer;
-}
+    .action-row {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
 
-/* RESULT */
-.result-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
+    .generate-btn {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #ffffff;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
 
-.output {
-  white-space: pre-wrap;
-  background: rgba(255,255,255,0.04);
-  padding: 16px;
-  border-radius: 12px;
-  min-height: 120px;
-}
+    .generate-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .brand-row {
-    height: 40vh;
-  }
+    .secondary-btn {
+      min-width: 130px;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #ffffff;
+      background: #111827;
+      transition: background 0.2s ease;
+    }
 
-  .brand-logo {
-    max-height: 280px;
-  }
+    .secondary-btn:hover {
+      background: #1f2937;
+    }
 
-  .action-row {
-    flex-direction: column;
-  }
-}
-</style>
+    .result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .output {
+      white-space: pre-wrap;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 18px;
+      border-radius: 14px;
+      min-height: 180px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #eef2ff;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 18px 14px 28px;
+      }
+
+      .hero {
+        padding: 20px 14px 16px;
+      }
+
+      .brand-row {
+        min-height: 180px;
+      }
+
+      .brand-logo {
+        width: min(100%, 620px);
+        max-height: 240px;
+      }
+
+      .subtext {
+        font-size: 16px;
+      }
+
+      .modes {
+        gap: 10px;
+      }
+
+      .mode-btn {
+        font-size: 13px;
+        padding: 11px 14px;
+      }
+
+      .action-row,
+      .result-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .generate-btn,
+      .secondary-btn {
+        width: 100%;
+      }
+
+      .secondary-btn {
+        min-width: 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-badge">CREATIVE ENGINE</div>
 
-<div class="wrap">
+      <div class="brand-row">
+        <img src="logo.png" alt="Visyonix logo" class="brand-logo" />
+      </div>
 
-  <div class="hero">
-    <div class="hero-badge">CREATIVE ENGINE</div>
+      <div class="subtext">
+        Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
+      </div>
 
-    <div class="brand-row">
-      <img src="logo.png" class="brand-logo">
+      <div class="hero-caption">
+        Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
+      </div>
     </div>
 
-    <div class="subtext">
-      Turn simple ideas into premium creative concepts.
-    </div>
+    <div class="panel">
+      <div class="section-label">Choose a mode</div>
 
-    <div class="hero-caption">
-      Built to create ads, music videos, trailers, and more.
+      <div class="modes">
+        <button class="mode-btn active" onclick="setMode(this, 'cinematic-ad')">🎬 Cinematic Ad</button>
+        <button class="mode-btn" onclick="setMode(this, 'music-video')">🎵 Music Video</button>
+        <button class="mode-btn" onclick="setMode(this, 'film-trailer')">🎞 Film Trailer</button>
+        <button class="mode-btn" onclick="setMode(this, 'gospel-visual')">✝️ Gospel Visual</button>
+        <button class="mode-btn" onclick="setMode(this, 'viral-short')">📱 Viral Short</button>
+      </div>
+
+      <textarea id="prompt" placeholder="Describe your idea..."></textarea>
+
+      <div class="action-row">
+        <button class="generate-btn" onclick="generate()">Generate</button>
+        <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
+      </div>
+
+      <div class="result-top">
+        <div class="section-label" style="margin-bottom:0;">Result</div>
+        <button class="secondary-btn" onclick="copyAll()">Copy All</button>
+      </div>
+
+      <div class="output" id="output">Your result will appear here...</div>
     </div>
   </div>
 
-  <div class="panel">
+  <script>
+    let mode = "cinematic-ad";
 
-    <div class="modes">
-      <button class="mode-btn active" onclick="setMode(this,'cinematic-ad')">🎬 Cinematic Ad</button>
-      <button class="mode-btn" onclick="setMode(this,'music-video')">🎵 Music Video</button>
-      <button class="mode-btn" onclick="setMode(this,'film-trailer')">🎞 Film Trailer</button>
-      <button class="mode-btn" onclick="setMode(this,'gospel-visual')">✝️ Gospel Visual</button>
-      <button class="mode-btn" onclick="setMode(this,'viral-short')">📱 Viral Short</button>
-    </div>
+    function setMode(btn, selected) {
+      mode = selected;
+      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
 
-    <textarea id="prompt" placeholder="Describe your idea..."></textarea>
+    function clearPrompt() {
+      document.getElementById("prompt").value = "";
+      document.getElementById("output").innerText = "Your result will appear here...";
+    }
 
-    <div class="action-row">
-      <button class="generate-btn" onclick="generate()">Generate</button>
-      <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
-    </div>
+    async function copyAll() {
+      const text = document.getElementById("output").innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+    }
 
-    <div class="result-top">
-      <span>Result</span>
-      <button class="secondary-btn" onclick="copyAll()">Copy All</button>
-    </div>
+    async function generate() {
+      const prompt = document.getElementById("prompt").value.trim();
+      const output = document.getElementById("output");
 
-    <div class="output" id="output">Your result will appear here...</div>
+      if (!prompt) {
+        output.innerText = "Please enter an idea first.";
+        return;
+      }
 
-  </div>
+      output.innerText = "Generating...";
 
-</div>
+      try {
+        const res = await fetch("/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt, mode })
+        });
 
-<script>
-let mode = "cinematic-ad";
-
-function setMode(btn, m) {
-  mode = m;
-  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-}
-
-function clearPrompt() {
-  document.getElementById("prompt").value = "";
-}
-
-async function copyAll() {
-  navigator.clipboard.writeText(document.getElementById("output").innerText);
-}
-
-async function generate() {
-  const prompt = document.getElementById("prompt").value;
-  const output = document.getElementById("output");
-
-  output.innerText = "Generating...";
-
-  const res = await fetch("/generate", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({ prompt, mode })
-  });
-
-  const data = await res.json();
-  output.innerText = data.result;
-}
-</script>
-
+        const data = await res.json();
+        output.innerText = data.result || "No response";
+      } catch (err) {
+        output.innerText = "Error generating output.";
+      }
+    }
+  </script>
 </body>
 </html>
