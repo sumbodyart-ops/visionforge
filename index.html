@@ -367,6 +367,34 @@
       font-size: 22px;
     }
 
+    .usage-help {
+      margin-top: 20px;
+      padding: 20px 22px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #d7dbe7;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    .usage-help-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .usage-help-body p {
+      margin: 0 0 12px 0;
+      line-height: 1.65;
+      color: #c7cedd;
+      font-size: 15px;
+    }
+
+    .usage-help-body p:last-child {
+      margin-bottom: 0;
+    }
+
     .footer-note {
       margin-top: 18px;
       color: #9ca3af;
@@ -458,6 +486,19 @@
       .result-card-body {
         font-size: 18px;
       }
+
+      .usage-help {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .usage-help-title {
+        font-size: 16px;
+      }
+
+      .usage-help-body p {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -502,6 +543,19 @@
       <div class="result-wrap">
         <div class="section-label">Result</div>
         <div id="result">Your result will appear here.</div>
+      </div>
+
+      <div class="usage-help">
+        <div class="usage-help-title">How to use this output</div>
+        <div class="usage-help-body">
+          <p><strong>For AI video tools:</strong> Copy the <strong>CORE PROMPT</strong>, <strong>MASTER VIDEO PROMPT</strong>, <strong>MASTER TRAILER PROMPT</strong>, <strong>MASTER VISUAL PROMPT</strong>, or <strong>MASTER SHORT PROMPT</strong> into tools like Runway, Kling, Pika, Veo, or similar generators.</p>
+
+          <p><strong>For filming or editing:</strong> Use the <strong>SCENE BREAKDOWN</strong>, <strong>CAMERA NOTES</strong>, <strong>LIGHTING NOTES</strong>, and <strong>STYLE KEYWORDS</strong> as your shot plan and creative direction.</p>
+
+          <p><strong>For image generation:</strong> Copy the visual prompt sections into image tools and use the style, lighting, and mood notes to refine your results.</p>
+
+          <p><strong>Best workflow:</strong> Generate → copy the prompt section you need → paste it into your creative tool → refine if needed.</p>
+        </div>
       </div>
 
       <div class="footer-note">
