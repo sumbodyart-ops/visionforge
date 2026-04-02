@@ -8,25 +8,46 @@
 <style>
 body {
   margin:0;
+  padding:40px;
   font-family:Arial;
-  background:#0b1220;
+  background:#07070a;
   color:#fff;
-  padding:30px;
 }
+
 textarea {
   width:100%;
-  height:120px;
-  margin-bottom:10px;
+  min-height:150px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0f172a;
+  color:#fff;
 }
+
 button {
-  padding:10px;
+  padding:10px 16px;
+  border:none;
+  border-radius:8px;
   margin-right:10px;
+  cursor:pointer;
 }
+
+.primary-btn {
+  background:#4f46e5;
+  color:#fff;
+}
+
+.secondary-btn {
+  background:#1f2937;
+  color:#fff;
+}
+
 .result-card {
   background:#111827;
-  padding:15px;
-  margin-bottom:10px;
+  padding:14px;
   border-radius:10px;
+  margin-bottom:10px;
+  border:1px solid #374151;
 }
 </style>
 </head>
@@ -37,11 +58,13 @@ button {
 
 <textarea id="prompt" placeholder="Enter your idea..."></textarea>
 
-<br>
+<br><br>
 
-<button onclick="generate()">Generate</button>
-<button onclick="clearPrompt()">Clear</button>
-<button onclick="copyResult()">Copy</button>
+<button class="primary-btn" onclick="generate()">Generate</button>
+<button class="secondary-btn" onclick="clearPrompt()">Clear</button>
+<button class="secondary-btn" onclick="copyResult()">Copy Result</button>
+
+<br><br>
 
 <div id="result">Your result will appear here.</div>
 
@@ -49,7 +72,24 @@ button {
 
 function clearPrompt(){
   document.getElementById("prompt").value="";
-  document.getElementById("result").innerText="Your result will appear here.";
+  document.getElementById("result").innerHTML="Your result will appear here.";
+}
+
+function prettifyResult(text){
+  return text
+    .replace(/CONCEPT TITLE:/g,"🔥 CONCEPT TITLE:")
+    .replace(/CORE PROMPT:/g,"🎯 CORE PROMPT:")
+    .replace(/SCENE BREAKDOWN:/g,"🎬 SCENE BREAKDOWN:")
+    .replace(/CAMERA NOTES:/g,"📸 CAMERA NOTES:")
+    .replace(/LIGHTING NOTES:/g,"💡 LIGHTING NOTES:")
+    .replace(/STYLE KEYWORDS:/g,"🎨 STYLE KEYWORDS:")
+    .replace(/OPTIONAL VOICEOVER:/g,"🎙 OPTIONAL VOICEOVER:");
+}
+
+function formatToHTML(text){
+  return text.split("\n\n").map(section=>{
+    return `<div class="result-card">${section.replace(/\n/g,"<br>")}</div>`;
+  }).join("");
 }
 
 async function generate(){
@@ -58,7 +98,7 @@ async function generate(){
   const resultBox = document.getElementById("result");
 
   if(!prompt){
-    resultBox.innerText="Enter something first";
+    resultBox.innerText="Please enter an idea first.";
     return;
   }
 
@@ -76,23 +116,18 @@ async function generate(){
 
     const data = await res.json();
 
-    // ✅ FIXED HERE
+    // ✅ FIXED MATCH TO YOUR SERVER
     if(!data.result){
       resultBox.innerText="No response";
       return;
     }
 
-    resultBox.innerHTML = formatToHTML(data.result);
+    const formatted = prettifyResult(data.result);
+    resultBox.innerHTML = formatToHTML(formatted);
 
   }catch(err){
-    resultBox.innerText="Error generating";
+    resultBox.innerText="Something went wrong.";
   }
-}
-
-function formatToHTML(text){
-  return text.split("\n\n").map(section=>{
-    return `<div class="result-card">${section.replace(/\n/g,"<br>")}</div>`;
-  }).join("");
 }
 
 function copyResult(){
