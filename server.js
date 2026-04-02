@@ -13,8 +13,10 @@ const client = new OpenAI({
 console.log("API KEY LOADED:", process.env.OPENAI_API_KEY ? "YES ✅" : "NO ❌");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname)); // <- this is the fix
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
@@ -68,7 +70,6 @@ IMPORTANT:
 - Make the CORE PROMPT ready to use
 - Keep the writing sharp, not bloated
 `,
-
       "music-video": `
 You are an elite music video director, visual treatment writer, and performance concept designer.
 
@@ -119,7 +120,6 @@ IMPORTANT:
 - Avoid generic filler language
 - Make the output bold, stylish, and usable
 `,
-
       "film-trailer": `
 You are an elite film trailer director and cinematic concept strategist.
 
@@ -159,7 +159,6 @@ IMPORTANT:
 - Avoid bland language
 - Make it vivid and usable
 `,
-
       "gospel-visual": `
 You are an elite gospel visual director and faith-based creative strategist.
 
@@ -202,7 +201,6 @@ IMPORTANT:
 - Make it emotionally honest and usable
 - Let the visuals carry reverence, hope, and conviction
 `,
-
       "viral-short": `
 You are an elite short-form content strategist and viral video concept creator.
 
