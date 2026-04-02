@@ -5,19 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visionforge</title>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3WVYET0V7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-M3WVYET0V7');
-  </script>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -29,10 +18,7 @@
       color: #ffffff;
     }
 
-    .wrap {
-      max-width: 920px;
-      margin: 0 auto;
-    }
+    .wrap { max-width: 920px; margin: 0 auto; }
 
     .hero {
       margin-bottom: 28px;
@@ -45,12 +31,11 @@
     }
 
     .hero-logo {
+      width: 80%;
+      max-width: 600px;
+      margin: 0 auto 20px;
       display: block;
-      width: min(100%, 560px);
-      max-height: 220px;
-      margin: 0 auto 18px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 18px rgba(250, 204, 21, 0.16));
+      filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.25));
     }
 
     .hero-badge {
@@ -65,19 +50,6 @@
       color: #c7d2fe;
       background: rgba(99, 102, 241, 0.16);
       border: 1px solid rgba(99, 102, 241, 0.25);
-    }
-
-    h1 {
-      margin: 0 0 10px 0;
-      font-size: 46px;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      font-weight: 800;
-      background: linear-gradient(90deg, #fff7d6 0%, #facc15 45%, #eab308 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 14px rgba(250, 204, 21, 0.18);
     }
 
     .subtext {
@@ -97,8 +69,7 @@
       max-width: 720px;
       padding-left: 14px;
       border-left: 3px solid rgba(99, 102, 241, 0.45);
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
       text-align: left;
     }
 
@@ -133,27 +104,12 @@
       border: 1px solid #374151;
       padding: 10px 14px;
       border-radius: 999px;
-      font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .mode-btn:hover {
-      background: #273449;
-      transform: translateY(-1px);
     }
 
     .mode-btn.active {
       background: #4f46e5;
-      border-color: #6366f1;
       color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
-    }
-
-    .mode-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
     }
 
     textarea {
@@ -164,116 +120,40 @@
       border: 1px solid #374151;
       background: #0f172a;
       color: #ffffff;
-      font-size: 16px;
-      line-height: 1.5;
-      resize: vertical;
-      outline: none;
       margin-bottom: 16px;
-    }
-
-    textarea:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
-    }
-
-    textarea:disabled {
-      opacity: 0.8;
-      cursor: wait;
     }
 
     .action-row {
       display: flex;
-      flex-wrap: wrap;
       gap: 12px;
+      flex-wrap: wrap;
       align-items: center;
-    }
-
-    .primary-btn,
-    .secondary-btn {
-      border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
-    }
-
-    .primary-btn:hover,
-    .secondary-btn:hover {
-      transform: translateY(-1px);
     }
 
     .primary-btn {
       background: #4f46e5;
       color: #ffffff;
-      font-weight: bold;
-    }
-
-    .primary-btn:disabled,
-    .secondary-btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
     }
 
     .secondary-btn {
       background: #1f2937;
       color: #ffffff;
-      border: 1px solid #374151;
-    }
-
-    .status {
-      color: #bdbdbd;
-      font-size: 14px;
-      min-height: 20px;
-    }
-
-    .status.loading {
-      color: #c7d2fe;
-    }
-
-    .result-wrap {
-      margin-top: 24px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
     }
 
     #result {
       margin-top: 10px;
       padding: 18px;
       background: #0b1220;
-      border: 1px solid #243041;
       border-radius: 14px;
       min-height: 180px;
-      line-height: 1.6;
-      color: #eef2ff;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    #result.loading {
-      border-color: rgba(99, 102, 241, 0.5);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
-    }
-
-    .loading-shell {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #c7d2fe;
-      min-height: 120px;
-    }
-
-    .loading-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: #6366f1;
-      animation: pulse 1.1s infinite ease-in-out;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.8); opacity: 0.55; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(0.8); opacity: 0.55; }
     }
 
     .result-card {
@@ -281,392 +161,108 @@
       padding: 14px;
       border-radius: 12px;
       background: rgba(79, 70, 229, 0.08);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-    }
-
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .result-card-title {
-      font-weight: bold;
-      color: #a5b4fc;
-      letter-spacing: 0.02em;
-    }
-
-    .copy-btn {
-      font-size: 12px;
-      padding: 6px 10px;
-      background: #1f2937;
-      border: 1px solid #374151;
-      border-radius: 8px;
-      cursor: pointer;
-      color: #ffffff;
-      flex-shrink: 0;
-    }
-
-    .copy-btn:hover {
-      background: #374151;
-    }
-
-    .copy-btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .result-card-body {
-      line-height: 1.65;
-      color: #eef2ff;
-      white-space: normal;
-    }
-
-    .footer-note {
-      margin-top: 18px;
-      color: #9ca3af;
-      font-size: 13px;
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 24px 14px;
-      }
-
-      .hero {
-        padding: 20px 18px 6px;
-      }
-
-      .hero-logo {
-        width: min(100%, 360px);
-        max-height: 150px;
-      }
-
-      .subtext {
-        font-size: 16px;
-      }
-
-      .panel {
-        padding: 18px;
-      }
-
-      .action-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-      }
-
-      .result-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .copy-btn {
-        width: 100%;
-      }
     }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="hero">
-      <div class="hero-badge">Creative Engine</div>
-      <img src="logo.png" alt="Visionforge Logo" class="hero-logo" onerror="this.style.display='none'; document.getElementById('fallbackTitle').style.display='block';" />
-      <h1 id="fallbackTitle" style="display:none;">Visionforge</h1>
-      <div class="subtext">
-        Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
-      </div>
-      <div class="hero-caption">
-        Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content with more clarity, speed, and creative power.
-      </div>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">Creative Engine</div>
+
+    <!-- ✅ LOGO HERE -->
+    <img src="logo.png" alt="Logo" class="hero-logo">
+
+    <div class="subtext">
+      Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction creators can use immediately.
     </div>
 
-    <div class="panel">
-      <div class="section-label">Choose a mode</div>
-      <div class="modes">
-        <button class="mode-btn active" data-mode="cinematic-ad" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
-        <button class="mode-btn" data-mode="music-video" onclick="setMode('music-video', this)">🎵 Music Video</button>
-        <button class="mode-btn" data-mode="film-trailer" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
-        <button class="mode-btn" data-mode="gospel-visual" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
-        <button class="mode-btn" data-mode="viral-short" onclick="setMode('viral-short', this)">📱 Viral Short</button>
-      </div>
-
-      <div class="section-label">Enter your idea</div>
-      <textarea id="prompt" placeholder="Example: luxury car commercial at night in the rain"></textarea>
-
-      <div class="action-row">
-        <button id="generateBtn" class="primary-btn" onclick="generate()">Generate</button>
-        <button id="clearBtn" class="secondary-btn" onclick="clearPrompt()">Clear</button>
-        <button id="copyResultBtn" class="secondary-btn" onclick="copyResult()">Copy Result</button>
-        <div id="status" class="status">Mode: Cinematic Ad</div>
-      </div>
-
-      <div class="result-wrap">
-        <div class="section-label">Result</div>
-        <div id="result">Your result will appear here.</div>
-      </div>
-
-      <div class="footer-note">
-        Built for creators who want premium output, not generic AI filler.
-      </div>
+    <div class="hero-caption">
+      Built to help you shape ads, music videos, trailers, gospel visuals, and short-form content.
     </div>
   </div>
 
-  <script>
-    let selectedMode = "cinematic-ad";
-    let loadingInterval = null;
+  <div class="panel">
 
-    const modeLabels = {
-      "cinematic-ad": "Cinematic Ad",
-      "music-video": "Music Video",
-      "film-trailer": "Film Trailer",
-      "gospel-visual": "Gospel Visual",
-      "viral-short": "Viral Short"
-    };
+    <div class="section-label">Choose a mode</div>
 
-    const loadingMessages = [
-      "Generating premium output...",
-      "Building your concept...",
-      "Sharpening creative direction...",
-      "Structuring a usable result...",
-      "Polishing the final output..."
-    ];
+    <div class="modes">
+      <button class="mode-btn active" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
+      <button class="mode-btn" onclick="setMode('music-video', this)">🎵 Music Video</button>
+      <button class="mode-btn" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
+      <button class="mode-btn" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
+      <button class="mode-btn" onclick="setMode('viral-short', this)">📱 Viral Short</button>
+    </div>
 
-    function setMode(mode, button) {
-      selectedMode = mode;
+    <textarea id="prompt"></textarea>
 
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.classList.remove("active");
-      });
+    <div class="action-row">
+      <button class="primary-btn" onclick="generate()">Generate</button>
+      <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
+      <button class="secondary-btn" onclick="copyResult()">Copy</button>
+    </div>
 
-      button.classList.add("active");
-      setStatus("Mode: " + modeLabels[mode]);
+    <div id="result">Your result will appear here.</div>
+
+  </div>
+
+</div>
+
+<script>
+let selectedMode = "cinematic-ad";
+
+function setMode(mode, btn){
+  selectedMode = mode;
+  document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function clearPrompt(){
+  document.getElementById("prompt").value="";
+}
+
+function formatToHTML(text){
+  return text.split("\n\n").map(s=>`<div class="result-card">${s.replace(/\n/g,"<br>")}</div>`).join("");
+}
+
+async function generate(){
+
+  const prompt = document.getElementById("prompt").value.trim();
+  const resultBox = document.getElementById("result");
+
+  if(!prompt){
+    resultBox.innerText="Enter something first";
+    return;
+  }
+
+  resultBox.innerText="Generating...";
+
+  try{
+    const res = await fetch("/generate",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({prompt, mode:selectedMode})
+    });
+
+    const data = await res.json();
+
+    if(!data.result){
+      resultBox.innerText="No response";
+      return;
     }
 
-    function setStatus(text, isLoading = false) {
-      const status = document.getElementById("status");
-      status.textContent = text;
-      status.classList.toggle("loading", isLoading);
-    }
+    resultBox.innerHTML = formatToHTML(data.result);
 
-    function prettifyResult(text) {
-      return (text || "No response generated.")
-        .replace(/CONCEPT TITLE:/g, "🔥 CONCEPT TITLE:")
-        .replace(/CORE PROMPT:/g, "🎯 CORE PROMPT:")
-        .replace(/SCENE BREAKDOWN:/g, "🎬 SCENE BREAKDOWN:")
-        .replace(/Scene 1:/g, "Scene 1:")
-        .replace(/Scene 2:/g, "Scene 2:")
-        .replace(/Scene 3:/g, "Scene 3:")
-        .replace(/CAMERA NOTES:/g, "📸 CAMERA NOTES:")
-        .replace(/LIGHTING NOTES:/g, "💡 LIGHTING NOTES:")
-        .replace(/STYLE KEYWORDS:/g, "🎨 STYLE KEYWORDS:")
-        .replace(/OPTIONAL VOICEOVER:/g, "🎙 OPTIONAL VOICEOVER:")
-        .replace(/VIDEO TITLE:/g, "🎵 VIDEO TITLE:")
-        .replace(/VISUAL CONCEPT:/g, "🌌 VISUAL CONCEPT:")
-        .replace(/MASTER VIDEO PROMPT:/g, "🎯 MASTER VIDEO PROMPT:")
-        .replace(/PERFORMANCE NOTES:/g, "🎤 PERFORMANCE NOTES:")
-        .replace(/LIGHTING \+ COLOR:/g, "💡 LIGHTING + COLOR:")
-        .replace(/TRAILER TITLE:/g, "🎞 TRAILER TITLE:")
-        .replace(/TRAILER HOOK:/g, "⚡ TRAILER HOOK:")
-        .replace(/MASTER TRAILER PROMPT:/g, "🎯 MASTER TRAILER PROMPT:")
-        .replace(/TRAILER BEATS:/g, "🎬 TRAILER BEATS:")
-        .replace(/Beat 1:/g, "Beat 1:")
-        .replace(/Beat 2:/g, "Beat 2:")
-        .replace(/Beat 3:/g, "Beat 3:")
-        .replace(/LIGHTING \\+ ATMOSPHERE:/g, "💡 LIGHTING + ATMOSPHERE:")
-        .replace(/OPTIONAL TAGLINE:/g, "🏷 OPTIONAL TAGLINE:")
-        .replace(/VISION TITLE:/g, "✝️ VISION TITLE:")
-        .replace(/SPIRITUAL CONCEPT:/g, "🙏 SPIRITUAL CONCEPT:")
-        .replace(/MASTER VISUAL PROMPT:/g, "🎯 MASTER VISUAL PROMPT:")
-        .replace(/SYMBOLIC ELEMENTS:/g, "✨ SYMBOLIC ELEMENTS:")
-        .replace(/LIGHTING \\+ MOOD:/g, "💡 LIGHTING + MOOD:")
-        .replace(/SHORT TITLE:/g, "📱 SHORT TITLE:")
-        .replace(/VIRAL ANGLE:/g, "🚀 VIRAL ANGLE:")
-        .replace(/MASTER SHORT PROMPT:/g, "🎯 MASTER SHORT PROMPT:")
-        .replace(/HOOK SHOT:/g, "🎣 HOOK SHOT:")
-        .replace(/MIDDLE BEAT:/g, "⚡ MIDDLE BEAT:")
-        .replace(/ENDING BEAT:/g, "🏁 ENDING BEAT:")
-        .replace(/ON-SCREEN TEXT IDEA:/g, "📝 ON-SCREEN TEXT IDEA:");
-    }
+  }catch(e){
+    resultBox.innerText="Error generating";
+  }
+}
 
-    function escapeHtml(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
+function copyResult(){
+  navigator.clipboard.writeText(document.getElementById("result").innerText);
+}
+</script>
 
-    function copySection(text, btn) {
-      navigator.clipboard.writeText(text);
-      const oldText = btn.textContent;
-      btn.textContent = "Copied!";
-      btn.disabled = true;
-      setTimeout(() => {
-        btn.textContent = oldText;
-        btn.disabled = false;
-      }, 1000);
-    }
-
-    function formatToHTML(text) {
-      return text
-        .split("\n\n")
-        .map((section) => {
-          const cleaned = section.trim();
-          if (!cleaned) return "";
-
-          const parts = cleaned.split("\n");
-          const title = parts[0];
-          const bodyText = parts.slice(1).join("\n").trim();
-          const safeTitle = escapeHtml(title);
-          const safeBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
-          const bodyForCopy = JSON.stringify(bodyText);
-
-          return `
-            <div class="result-card">
-              <div class="result-header">
-                <div class="result-card-title">${safeTitle}</div>
-                <button class="copy-btn" onclick='copySection(${bodyForCopy}, this)'>Copy</button>
-              </div>
-              <div class="result-card-body">${safeBody}</div>
-            </div>
-          `;
-        })
-        .join("");
-    }
-
-    function clearPrompt() {
-      document.getElementById("prompt").value = "";
-      document.getElementById("prompt").focus();
-      document.getElementById("result").innerHTML = "Your result will appear here.";
-      setStatus("Mode: " + modeLabels[selectedMode]);
-    }
-
-    function trackGenerateClick() {
-      if (typeof gtag === "function") {
-        gtag("event", "generate_click", {
-          mode: selectedMode
-        });
-      }
-    }
-
-    function setLoadingUI() {
-      const resultBox = document.getElementById("result");
-      const generateBtn = document.getElementById("generateBtn");
-      const copyResultBtn = document.getElementById("copyResultBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const promptBox = document.getElementById("prompt");
-
-      resultBox.classList.add("loading");
-      resultBox.innerHTML = `
-        <div class="loading-shell">
-          <div class="loading-dot"></div>
-          <div id="loadingMessage">Generating premium output...</div>
-        </div>
-      `;
-
-      generateBtn.disabled = true;
-      generateBtn.textContent = "Generating...";
-      copyResultBtn.disabled = true;
-      clearBtn.disabled = true;
-      promptBox.disabled = true;
-
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.disabled = true;
-      });
-
-      let i = 0;
-      setStatus(loadingMessages[i], true);
-
-      clearInterval(loadingInterval);
-      loadingInterval = setInterval(() => {
-        i = (i + 1) % loadingMessages.length;
-        const msg = document.getElementById("loadingMessage");
-        if (msg) msg.textContent = loadingMessages[i];
-        setStatus(loadingMessages[i], true);
-      }, 1200);
-    }
-
-    function clearLoadingUI() {
-      const resultBox = document.getElementById("result");
-      const generateBtn = document.getElementById("generateBtn");
-      const copyResultBtn = document.getElementById("copyResultBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const promptBox = document.getElementById("prompt");
-
-      clearInterval(loadingInterval);
-      resultBox.classList.remove("loading");
-      generateBtn.disabled = false;
-      generateBtn.textContent = "Generate";
-      copyResultBtn.disabled = false;
-      clearBtn.disabled = false;
-      promptBox.disabled = false;
-
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.disabled = false;
-      });
-
-      setStatus("Mode: " + modeLabels[selectedMode]);
-    }
-
-    async function generate() {
-      const prompt = document.getElementById("prompt").value.trim();
-      const resultBox = document.getElementById("result");
-
-      if (!prompt) {
-        resultBox.textContent = "Please enter an idea first.";
-        return;
-      }
-
-      trackGenerateClick();
-      setLoadingUI();
-
-      try {
-        const response = await fetch("/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            prompt,
-            mode: selectedMode
-          })
-        });
-
-        const data = await response.json();
-
-        if (!data.result) {
-          resultBox.textContent = "No response";
-          return;
-        }
-
-        const formatted = prettifyResult(data.result);
-        resultBox.innerHTML = formatToHTML(formatted);
-      } catch (error) {
-        resultBox.textContent = "Something went wrong while generating.";
-      } finally {
-        clearLoadingUI();
-      }
-    }
-
-    async function copyResult() {
-      const text = document.getElementById("result").innerText;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        setStatus("Copied result to clipboard");
-        setTimeout(() => {
-          setStatus("Mode: " + modeLabels[selectedMode]);
-        }, 1500);
-      } catch (error) {
-        setStatus("Copy failed");
-      }
-    }
-  </script>
 </body>
 </html>
