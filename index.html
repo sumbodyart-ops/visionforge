@@ -1,243 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Visionforge</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visyonix</title>
 
-<style>
-* { box-sizing: border-box; }
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3WVYET0V7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M3WVYET0V7');
+  </script>
 
-body {
-  margin: 0;
-  padding: 30px 20px;
-  font-family: Arial, sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(99, 102, 241, 0.14), transparent 30%),
-    linear-gradient(180deg, #07070a 0%, #111827 100%);
-  color: #ffffff;
-}
-
-.wrap {
-  max-width: 920px;
-  margin: 0 auto;
-}
-
-/* 🔥 HERO FIXED (smaller + tighter) */
-.hero {
-  margin-bottom: 18px;
-  padding: 12px 18px 10px; /* reduced */
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.06);
-  text-align: center;
-}
-
-.hero-badge {
-  display: inline-block;
-  margin-bottom: 8px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: bold;
-  color: #c7d2fe;
-  background: rgba(99, 102, 241, 0.14);
-}
-
-/* 🔥 LOGO SIZE FIX */
-.hero-logo {
-  width: 160px;       /* smaller */
-  max-width: 60%;
-  margin: 6px auto;
-  display: block;
-}
-
-/* tighter text spacing */
-.subtext {
-  font-size: 15px;
-  color: #d1d5db;
-  margin: 8px 0 10px;
-}
-
-.hero-caption {
-  font-size: 13px;
-  color: #9ca3af;
-  border-left: 2px solid rgba(99,102,241,0.4);
-  padding-left: 10px;
-  margin-top: 8px;
-  text-align: left;
-}
-
-.panel {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.section-label {
-  font-size: 12px;
-  color: #bbb;
-  margin-bottom: 10px;
-}
-
-textarea {
-  width: 100%;
-  min-height: 150px;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #374151;
-  background: #0f172a;
-  color: white;
-  margin-bottom: 12px;
-}
-
-.action-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.primary-btn {
-  background: #4f46e5;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-}
-
-.secondary-btn {
-  background: #1f2937;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: none;
-}
-
-#result {
-  margin-top: 12px;
-  padding: 16px;
-  background: #0b1220;
-  border-radius: 12px;
-  min-height: 150px;
-}
-
-/* result cards */
-.result-card {
-  margin-bottom: 12px;
-  padding: 12px;
-  border-radius: 10px;
-  background: rgba(79,70,229,0.08);
-}
-
-.result-card-title {
-  font-weight: bold;
-  color: #a5b4fc;
-  margin-bottom: 6px;
-}
-</style>
-</head>
-
-<body>
-<div class="wrap">
-
-<div class="hero">
-  <div class="hero-badge">Creative Engine</div>
-
-  <!-- 🔥 LOGO -->
-  <img src="logo.png" class="hero-logo">
-
-  <div class="subtext">
-    Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction.
-  </div>
-
-  <div class="hero-caption">
-    Built for creators who want speed, clarity, and strong output.
-  </div>
-</div>
-
-<div class="panel">
-
-<div class="section-label">Enter your idea</div>
-
-<textarea id="prompt" placeholder="Example: luxury car commercial at night"></textarea>
-
-<div class="action-row">
-  <button class="primary-btn" onclick="generate()">Generate</button>
-  <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
-  <button class="secondary-btn" onclick="copyResult()">Copy</button>
-</div>
-
-<div id="result">Your result will appear here.</div>
-
-</div>
-</div>
-
-<script>
-
-function clearPrompt(){
-  document.getElementById("prompt").value="";
-  document.getElementById("result").innerHTML="Your result will appear here.";
-}
-
-function prettifyResult(text){
-  return text
-    .replace(/CONCEPT TITLE:/g,"🔥 CONCEPT TITLE:")
-    .replace(/CORE PROMPT:/g,"🎯 CORE PROMPT:")
-    .replace(/SCENE BREAKDOWN:/g,"🎬 SCENE BREAKDOWN:");
-}
-
-function formatToHTML(text){
-  return text.split("\n\n").map(section=>{
-    const parts = section.split("\n");
-    return `
-      <div class="result-card">
-        <div class="result-card-title">${parts[0]}</div>
-        <div>${parts.slice(1).join("<br>")}</div>
-      </div>
-    `;
-  }).join("");
-}
-
-async function generate(){
-  const prompt = document.getElementById("prompt").value.trim();
-  const resultBox = document.getElementById("result");
-
-  if(!prompt){
-    resultBox.innerText="Enter an idea first";
-    return;
-  }
-
-  resultBox.innerText="Generating...";
-
-  try{
-    const res = await fetch("/generate",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({prompt})
-    });
-
-    const data = await res.json();
-
-    if(!data.result){
-      resultBox.innerText="No response";
-      return;
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    const formatted = prettifyResult(data.result);
-    resultBox.innerHTML = formatToHTML(formatted);
+    :root {
+      --bg-1: #05070d;
+      --bg-2: #0b1220;
+      --panel: rgba(255, 255, 255, 0.04);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --card: rgba(16, 26, 56, 0.88);
+      --text: #ffffff;
+      --muted: #c7cedd;
+      --muted-2: #9ca3af;
+      --accent: #5b4ff7;
+      --accent-2: #6ea9ff;
+      --accent-3: #b26bff;
+    }
 
-  }catch(err){
-    resultBox.innerText="Error generating";
-  }
-}
+    body {
+      margin: 0;
+      padding: 22px 18px 30px;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(91, 79, 247, 0.16), transparent 28%),
+        linear-gradient(180deg, #05070d 0%, #0b1220 100%);
+      color: var(--text);
+    }
 
-function copyResult(){
-  const text = document.getElementById("result").innerText;
-  navigator.clipboard.writeText(text);
-}
+    .wrap {
+      width: 100%;
+      max-width: 1700px;
+      margin: 0 auto;
+    }
 
-</script>
+    .hero {
+      margin-bottom: 22px;
+      padding: 20px 28px 18px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at center, rgba(91, 79, 247, 0.12), transparent 42%),
+        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(91,79,247,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+      text-align: center;
+      overflow: hidden;
+    }
 
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 8px;
+      min-height: 120px;
+    }
+
+    .hero-logo {
+      width: 360px;
+      max-width: 90%;
+      height: auto;
+      display: block;
+      filter:
+        drop-shadow(0 0 10px rgba(110, 169, 255, 0.45))
+        drop-shadow(0 0 22px rgba(178, 107, 255, 0.28));
+      animation: logoPulse 2.8s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes logoPulse {
+      0% {
+        transform: scale(1);
+        filter:
+          drop-shadow(0 0 8px rgba(110, 169, 255, 0.36))
+          drop-shadow(0 0 16px rgba(178, 107, 255, 0.2));
+      }
+      50% {
+        transform: scale(1.035);
+        filter:
+          drop-shadow(0 0 14px rgba(110, 169, 255, 0.6))
+          drop-shadow(0 0 28px rgba(178, 107, 255, 0.34));
+      }
+      100% {
+        transform: scale(1);
+        filter:
+          drop-shadow(0 0 8px rgba(110, 169, 255, 0.36))
+          drop-shadow(0 0 16px rgba(178, 107, 255, 0.2));
+      }
+    }
+
+    .subtext {
+      color: #d6dcef;
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 0 auto 10px;
+      max-width: 980px;
+    }
+
+    .hero-caption {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 980px;
+      margin: 0 auto;
+      padding-left: 16px;
+      border-left: 3px solid rgba(91, 79, 247, 0.5);
+      text-align: left;
+    }
+
+    .panel {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(91,79,247,0.03), rgba(255,255,255,0.02)),
+        var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 26px;
+      padding: 28px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(6px);
+    }
+
+    .section-label {
+      font-size: 13px;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #d7dbe7;
+      margin-bottom: 16px;
+    }
+
+    .modes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .mode-btn {
+      background: #1a2436;
+      color: #e5e7eb;
+      border: 1px solid #2b3952;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn:hover {
+      background: #22304a;
+      transform: translateY(-1px);
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #5b4ff7, #6d63ff);
+      border-color: #7a73ff;
+      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.18);
+    }
+
+    .mode-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 270px;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid #344563;
+      background: #08173d;
+      color: #ffffff;
+      font-size: 24px;
+      line-height: 1.45;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+
+    textarea:focus {
+      border-color: #6a78ff;
+      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.18);
+    }
+
+    textarea:disabled {
+      opacity: 0.82;
+      cursor: wait;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: none;
+      border-radius: 18px;
+      padding: 16px 28px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #5b4ff7, #6d63ff);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(91, 79, 247, 0.26);
+    }
+
+    .primary-btn:disabled,
+    .secondary-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-btn {
+      background: #1e2b42;
+      color: #ffffff;
+      border: 1px solid #2d3d59;
+    }
+
+    .status {
+      color: #bfc7d8;
+      font-size: 15px;
+      min-height: 20px;
+      margin-left: 4px;
+    }
+
+    .status.loading {
+      color: #d9ddff;
+    }
+
+    .result-wrap {
+      margin-top: 26px;
+    }
+
+    #result {
+      margin-top: 10px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      min-height: 180px;
+      line-height: 1.6;
+      color: #eef2ff;
+    }
+
+    #result.loading {
+      padding: 20px;
+      background: #0b1220;
+      border: 1px solid #243041;
+      border-radius: 18px;
+      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.08);
+    }
+
+    .loading-shell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #dbe1ff;
+      min-height: 100px;
+    }
+
+    .loading-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #6a78ff;
+      animation: pulse 1.1s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.55; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.55; }
+    }
+
+    .result-card {
+      margin-bottom: 18px;
+      padding: 22px 24px;
+      border-radius: 22px;
+      background: rgba(10, 21, 56, 0.94);
+      border: 1px solid rgba(61, 81, 130, 0.45);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .result-card-title {
+      font-weight: 800;
+      color: #98a6ff;
+      letter-spacing: 0.01em;
+      font-size: 22px;
+    }
+
+    .copy-btn {
+      font-size: 13px;
+      padding: 8px 14px;
+      background: #1f2c43;
+      border: 1px solid #33425c;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      background: #283753;
+    }
+
+    .copy-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .result-card-body {
+      line-height: 1.34;
+      color: #f3f6ff;
+      white-space: normal;
+      font-size: 22px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-logo {
+        width: 280px;
+      }
+
+      textarea {
+        min-height: 220px;
+        font-size: 21px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        font-size: 18px;
+      }
+
+      .result-card-title,
+      .result-card-body {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px 12px 24px;
+      }
+
+      .hero {
+        padding: 16px 16px 14px;
+        border-radius: 20px;
+      }
+
+      .hero-logo {
+        width: 220px;
+        max-width: 84%;
+      }
+
+      .subtext {
+        font-size: 15px;
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .modes {
+        gap: 8px;
+      }
+
+      .action-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+        font-size: 18px;
+      }
+
+      textarea {
+        min-height: 180px;
+        font-size: 18px;
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .result-card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .copy-btn {
+        width: 100%;
+      }
+
+      .result-card-title,
+      .result-card-body {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Visyonix Logo" class="hero-logo" />
+      </div>
+
+      <div class="subtext">
+        Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction.
+      </div>
+
+      <div class="hero-caption">
+        Built for creators who want speed, clarity, and strong output.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-label">Choose a mode</div>
+      <div class="modes">
+        <button class="mode-btn active" data-mode="cinematic-ad" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
+        <button class="mode-btn" data-mode="music-video" onclick="setMode('music-video', this)">🎵 Music Video</button>
+        <button class="mode-btn" data-mode="film-trailer" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
+        <button class="mode-btn" data-mode="gospel-visual" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
+        <button class="mode-btn" data-mode="viral-short" onclick="setMode('viral-short', this)">📱 Viral Short</button>
+      </div>
+
+      <div class="section-label">Enter your idea</div>
+      <textarea id="prompt" placeholder="Example: luxury car commercial at night in the rain"></textarea>
+
+      <div class="action-row">
+        <button id="generateBtn" class="primary-btn" onclick="generate()">Generate</button>
+        <button id="clearBtn" class="secondary-btn" onclick="clearPrompt()">Clear</button>
+        <button id="copyResultBtn" class="secondary-btn" onclick="copyResult()">Copy Result</button>
+        <div id="status" class="status">Mode: Cinematic Ad</div>
+      </div>
+
+      <div class="result-wrap">
+        <div class="section-label">Result</div>
+        <div id="result">Your result will appear here.</div>
+      </div>
+
+      <div class="footer-note">
+        Built for creators who want premium output, not generic AI filler.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedMode = "cinematic-ad";
+    let loadingInterval = null;
+
+    const modeLabels = {
+      "cinematic-ad": "Cinematic Ad",
+      "music-video": "Music Video",
+      "film-trailer": "Film Trailer",
+      "gospel-visual": "Gospel Visual",
+      "viral-short": "Viral Short"
+    };
+
+    const loadingMessages = [
+      "Generating premium output...",
+      "Building your concept...",
+      "Sharpening creative direction...",
+      "Structuring a usable result...",
+      "Polishing the final output..."
+    ];
+
+    function setMode(mode, button) {
+      selectedMode = mode;
+
+      document.querySelectorAll(".mode-btn").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+      setStatus("Mode: " + modeLabels[mode]);
+    }
+
+    function setStatus(text, isLoading = false) {
+      const status = document.getElementById("status");
+      status.textContent = text;
+      status.classList.toggle("loading", isLoading);
+    }
+
+    function prettifyResult(text) {
+      return (text || "No response generated.")
+        .replace(/CONCEPT TITLE:/g, "🔥 CONCEPT TITLE:")
+        .replace(/CORE PROMPT:/g, "🎯 CORE PROMPT:")
+        .replace(/SCENE BREAKDOWN:/g, "🎬 SCENE BREAKDOWN:")
+        .replace(/Scene 1:/g, "Scene 1:")
+        .replace(/Scene 2:/g, "Scene 2:")
+        .replace(/Scene 3:/g, "Scene 3:")
+        .replace(/CAMERA NOTES:/g, "📸 CAMERA NOTES:")
+        .replace(/LIGHTING NOTES:/g, "💡 LIGHTING NOTES:")
+        .replace(/STYLE KEYWORDS:/g, "🎨 STYLE KEYWORDS:")
+        .replace(/OPTIONAL VOICEOVER:/g, "🎙 OPTIONAL VOICEOVER:")
+        .replace(/VIDEO TITLE:/g, "🎵 VIDEO TITLE:")
+        .replace(/VISUAL CONCEPT:/g, "🌌 VISUAL CONCEPT:")
+        .replace(/MASTER VIDEO PROMPT:/g, "🎯 MASTER VIDEO PROMPT:")
+        .replace(/PERFORMANCE NOTES:/g, "🎤 PERFORMANCE NOTES:")
+        .replace(/LIGHTING \+ COLOR:/g, "💡 LIGHTING + COLOR:")
+        .replace(/EDITING RHYTHM:/g, "✂️ EDITING RHYTHM:")
+        .replace(/TRAILER TITLE:/g, "🎞 TRAILER TITLE:")
+        .replace(/TRAILER HOOK:/g, "⚡ TRAILER HOOK:")
+        .replace(/MASTER TRAILER PROMPT:/g, "🎯 MASTER TRAILER PROMPT:")
+        .replace(/TRAILER BEATS:/g, "🎬 TRAILER BEATS:")
+        .replace(/Beat 1:/g, "Beat 1:")
+        .replace(/Beat 2:/g, "Beat 2:")
+        .replace(/Beat 3:/g, "Beat 3:")
+        .replace(/LIGHTING \+ ATMOSPHERE:/g, "💡 LIGHTING + ATMOSPHERE:")
+        .replace(/OPTIONAL TAGLINE:/g, "🏷 OPTIONAL TAGLINE:")
+        .replace(/VISION TITLE:/g, "✝️ VISION TITLE:")
+        .replace(/SPIRITUAL CONCEPT:/g, "🙏 SPIRITUAL CONCEPT:")
+        .replace(/MASTER VISUAL PROMPT:/g, "🎯 MASTER VISUAL PROMPT:")
+        .replace(/SYMBOLIC ELEMENTS:/g, "✨ SYMBOLIC ELEMENTS:")
+        .replace(/LIGHTING \+ MOOD:/g, "💡 LIGHTING + MOOD:")
+        .replace(/SHORT TITLE:/g, "📱 SHORT TITLE:")
+        .replace(/VIRAL ANGLE:/g, "🚀 VIRAL ANGLE:")
+        .replace(/MASTER SHORT PROMPT:/g, "🎯 MASTER SHORT PROMPT:")
+        .replace(/HOOK SHOT:/g, "🎣 HOOK SHOT:")
+        .replace(/MIDDLE BEAT:/g, "⚡ MIDDLE BEAT:")
+        .replace(/ENDING BEAT:/g, "🏁 ENDING BEAT:")
+        .replace(/ON-SCREEN TEXT IDEA:/g, "📝 ON-SCREEN TEXT IDEA:");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function copySection(text, btn) {
+      navigator.clipboard.writeText(text);
+      const oldText = btn.textContent;
+      btn.textContent = "Copied!";
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = oldText;
+        btn.disabled = false;
+      }, 1000);
+    }
+
+    function formatToHTML(text) {
+      return text
+        .split("\n\n")
+        .map((section) => {
+          const cleaned = section.trim();
+          if (!cleaned) return "";
+
+          const parts = cleaned.split("\n");
+          const title = parts[0];
+          const bodyText = parts.slice(1).join("\n").trim();
+          const safeTitle = escapeHtml(title);
+          const safeBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
+          const bodyForCopy = JSON.stringify(bodyText);
+
+          return `
+            <div class="result-card">
+              <div class="result-header">
+                <div class="result-card-title">${safeTitle}</div>
+                <button class="copy-btn" onclick='copySection(${bodyForCopy}, this)'>Copy</button>
+              </div>
+              <div class="result-card-body">${safeBody}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function clearPrompt() {
+      document.getElementById("prompt").value = "";
+      document.getElementById("prompt").focus();
+      document.getElementById("result").innerHTML = "Your result will appear here.";
+      setStatus("Mode: " + modeLabels[selectedMode]);
+    }
+
+    function trackGenerateClick() {
+      if (typeof gtag === "function") {
+        gtag("event", "generate_click", {
+          mode: selectedMode
+        });
+      }
+    }
+
+    function setLoadingUI() {
+      const resultBox = document.getElementById("result");
+      const generateBtn = document.getElementById("generateBtn");
+      const copyResultBtn = document.getElementById("copyResultBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const promptBox = document.getElementById("prompt");
+
+      resultBox.classList.add("loading");
+      resultBox.innerHTML = `
+        <div class="loading-shell">
+          <div class="loading-dot"></div>
+          <div id="loadingMessage">Generating premium output...</div>
+        </div>
+      `;
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = "Generating...";
+      copyResultBtn.disabled = true;
+      clearBtn.disabled = true;
+      promptBox.disabled = true;
+
+      document.querySelectorAll(".mode-btn").forEach((btn) => {
+        btn.disabled = true;
+      });
+
+      let i = 0;
+      setStatus(loadingMessages[i], true);
+
+      clearInterval(loadingInterval);
+      loadingInterval = setInterval(() => {
+        i = (i + 1) % loadingMessages.length;
+        const msg = document.getElementById("loadingMessage");
+        if (msg) msg.textContent = loadingMessages[i];
+        setStatus(loadingMessages[i], true);
+      }, 1200);
+    }
+
+    function clearLoadingUI() {
+      const resultBox = document.getElementById("result");
+      const generateBtn = document.getElementById("generateBtn");
+      const copyResultBtn = document.getElementById("copyResultBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const promptBox = document.getElementById("prompt");
+
+      clearInterval(loadingInterval);
+      resultBox.classList.remove("loading");
+      generateBtn.disabled = false;
+      generateBtn.textContent = "Generate";
+      copyResultBtn.disabled = false;
+      clearBtn.disabled = false;
+      promptBox.disabled = false;
+
+      document.querySelectorAll(".mode-btn").forEach((btn) => {
+        btn.disabled = false;
+      });
+
+      setStatus("Mode: " + modeLabels[selectedMode]);
+    }
+
+    async function generate() {
+      const prompt = document.getElementById("prompt").value.trim();
+      const resultBox = document.getElementById("result");
+
+      if (!prompt) {
+        resultBox.textContent = "Please enter an idea first.";
+        return;
+      }
+
+      trackGenerateClick();
+      setLoadingUI();
+
+      try {
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt,
+            mode: selectedMode
+          })
+        });
+
+        const data = await response.json();
+
+        if (!data.result) {
+          resultBox.innerHTML = "No response";
+          return;
+        }
+
+        const formatted = prettifyResult(data.result);
+        resultBox.innerHTML = formatToHTML(formatted);
+      } catch (error) {
+        resultBox.innerHTML = "Something went wrong while generating.";
+      } finally {
+        clearLoadingUI();
+      }
+    }
+
+    async function copyResult() {
+      const text = document.getElementById("result").innerText;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Copied result to clipboard");
+        setTimeout(() => {
+          setStatus("Mode: " + modeLabels[selectedMode]);
+        }, 1500);
+      } catch (error) {
+        setStatus("Copy failed");
+      }
+    }
+  </script>
 </body>
 </html>
