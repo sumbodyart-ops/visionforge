@@ -176,15 +176,12 @@
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
     }
 
-    .action-row {
-      display: flex;
-      gap: 12px;
-      align-items: stretch;
-      margin-bottom: 18px;
+    .generate-row {
+      margin-bottom: 12px;
     }
 
     .generate-btn {
-      flex: 1;
+      width: 100%;
       border: none;
       border-radius: 14px;
       padding: 16px 18px;
@@ -200,8 +197,16 @@
       filter: brightness(1.08);
     }
 
+    .utility-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
     .secondary-btn {
-      min-width: 130px;
+      min-width: 140px;
       border: 1px solid #374151;
       border-radius: 12px;
       padding: 12px 16px;
@@ -225,7 +230,7 @@
     }
 
     .output {
-      white-space: pre-wrap;
+      white-space: normal;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 18px;
@@ -234,6 +239,55 @@
       font-size: 15px;
       line-height: 1.65;
       color: #eef2ff;
+    }
+
+    .result-card {
+      margin-bottom: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(79, 70, 229, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .result-card-title {
+      font-weight: bold;
+      color: #a5b4fc;
+      letter-spacing: 0.02em;
+      font-size: 16px;
+    }
+
+    .copy-btn {
+      font-size: 12px;
+      padding: 6px 10px;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      background: #1f2937;
+    }
+
+    .copy-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .result-card-body {
+      line-height: 1.7;
+      color: #eef2ff;
+      white-space: normal;
     }
 
     @media (max-width: 768px) {
@@ -267,18 +321,16 @@
         padding: 11px 14px;
       }
 
-      .action-row,
-      .result-top {
+      .utility-row,
+      .result-top,
+      .result-header {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .generate-btn,
-      .secondary-btn {
+      .secondary-btn,
+      .copy-btn {
         width: 100%;
-      }
-
-      .secondary-btn {
         min-width: 0;
       }
     }
@@ -315,14 +367,17 @@
 
       <textarea id="prompt" placeholder="Describe your idea..."></textarea>
 
-      <div class="action-row">
+      <div class="generate-row">
         <button class="generate-btn" onclick="generate()">Generate</button>
+      </div>
+
+      <div class="utility-row">
         <button class="secondary-btn" onclick="clearPrompt()">Clear</button>
+        <button class="secondary-btn" onclick="copyAll()">Copy All</button>
       </div>
 
       <div class="result-top">
         <div class="section-label" style="margin-bottom:0;">Result</div>
-        <button class="secondary-btn" onclick="copyAll()">Copy All</button>
       </div>
 
       <div class="output" id="output">Your result will appear here...</div>
@@ -340,7 +395,7 @@
 
     function clearPrompt() {
       document.getElementById("prompt").value = "";
-      document.getElementById("output").innerText = "Your result will appear here...";
+      document.getElementById("output").innerHTML = "Your result will appear here...";
     }
 
     async function copyAll() {
@@ -352,16 +407,61 @@
       }
     }
 
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function copySection(text, btn) {
+      navigator.clipboard.writeText(text);
+      const oldText = btn.textContent;
+      btn.textContent = "Copied!";
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = oldText;
+        btn.disabled = false;
+      }, 1000);
+    }
+
+    function formatToHTML(text) {
+      return text
+        .split("\\n\\n")
+        .map((section) => {
+          const cleaned = section.trim();
+          if (!cleaned) return "";
+
+          const parts = cleaned.split("\\n");
+          const title = parts[0];
+          const bodyText = parts.slice(1).join("\\n").trim();
+          const safeTitle = escapeHtml(title);
+          const safeBody = escapeHtml(bodyText).replace(/\\n/g, "<br>");
+          const bodyForCopy = JSON.stringify(bodyText);
+
+          return `
+            <div class="result-card">
+              <div class="result-header">
+                <div class="result-card-title">${safeTitle}</div>
+                <button class="copy-btn" onclick='copySection(${bodyForCopy}, this)'>Copy</button>
+              </div>
+              <div class="result-card-body">${safeBody}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
     async function generate() {
       const prompt = document.getElementById("prompt").value.trim();
       const output = document.getElementById("output");
 
       if (!prompt) {
-        output.innerText = "Please enter an idea first.";
+        output.innerHTML = "Please enter an idea first.";
         return;
       }
 
-      output.innerText = "Generating...";
+      output.innerHTML = "Generating...";
 
       try {
         const res = await fetch("/generate", {
@@ -373,9 +473,10 @@
         });
 
         const data = await res.json();
-        output.innerText = data.result || "No response";
+        const result = data.result || "No response";
+        output.innerHTML = formatToHTML(result);
       } catch (err) {
-        output.innerText = "Error generating output.";
+        output.innerHTML = "Error generating output.";
       }
     }
   </script>
