@@ -8,134 +8,78 @@ const OpenAI = require("openai");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const openai = new OpenAI({
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname));
+
+const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.use(cors());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-
-// Serve frontend files
-app.use(express.static(__dirname));
-
-// Health check
-app.get("/health", (req, res) => {
-  res.json({ ok: true, message: "VisionForge server is running" });
-});
-
-// Main page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Prompt generation route
 app.post("/generate", async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const prompt = req.body.prompt;
 
-    if (!prompt || !prompt.trim()) {
-      return res.status(400).json({
+    if (!prompt) {
+      return res.json({
         success: false,
-        error: "Prompt is required.",
+        error: "No prompt provided"
       });
     }
 
-    const completion = await openai.chat.completions.create({
+    const response = await client.responses.create({
       model: "gpt-4.1-mini",
-      messages: [
-        {
-          role: "system",
-          content: `
-You are VisionForge, an expert AI prompt engineer.
-Turn the user's simple idea into multiple clean, high-quality creative prompt outputs.
+      input: `Create 3 high-quality prompt outputs for this idea:
 
-Return JSON only in this exact format:
+${prompt}
+
+Return ONLY JSON:
 {
   "results": [
-    {
-      "title": "Prompt 1",
-      "content": "Full prompt text here"
-    },
-    {
-      "title": "Prompt 2",
-      "content": "Full prompt text here"
-    },
-    {
-      "title": "Prompt 3",
-      "content": "Full prompt text here"
-    }
+    { "title": "Option 1", "content": "..." },
+    { "title": "Option 2", "content": "..." },
+    { "title": "Option 3", "content": "..." }
   ]
-}
-
-Rules:
-- Create exactly 3 results
-- Make each result distinct and useful
-- Keep titles short
-- Do not include markdown
-- Do not include commentary outside JSON
-          `.trim(),
-        },
-        {
-          role: "user",
-          content: prompt.trim(),
-        },
-      ],
-      temperature: 0.9,
-      response_format: { type: "json_object" },
+}`
     });
 
-    const raw = completion.choices?.[0]?.message?.content;
+    const text = response.output_text;
 
-    if (!raw) {
-      return res.status(500).json({
+    if (!text) {
+      return res.json({
         success: false,
-        error: "No response received from OpenAI.",
+        error: "No response from AI"
       });
     }
 
-    let parsed;
+    let data;
     try {
-      parsed = JSON.parse(raw);
-    } catch (parseError) {
-      return res.status(500).json({
+      data = JSON.parse(text);
+    } catch {
+      return res.json({
         success: false,
-        error: "OpenAI returned invalid JSON.",
-        raw,
-      });
-    }
-
-    if (!parsed.results || !Array.isArray(parsed.results)) {
-      return res.status(500).json({
-        success: false,
-        error: "OpenAI response format was incorrect.",
-        raw: parsed,
+        error: "Bad JSON from AI",
+        raw: text
       });
     }
 
     res.json({
       success: true,
-      results: parsed.results,
+      results: data.results
     });
-  } catch (error) {
-    console.error("Generate error:", error);
 
-    res.status(500).json({
+  } catch (err) {
+    res.json({
       success: false,
-      error:
-        error?.message || "Something went wrong while generating prompts.",
+      error: err.message
     });
   }
 });
 
-// Fallback
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: "Route not found.",
-  });
-});
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
