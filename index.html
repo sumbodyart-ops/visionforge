@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visyonix</title>
+  <title>Visyonix — Director Mode</title>
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3WVYET0V7"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,758 +14,1071 @@
   </script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
-      --bg-1: #05070d;
-      --bg-2: #0b1220;
-      --panel: rgba(255, 255, 255, 0.04);
-      --panel-border: rgba(255, 255, 255, 0.08);
-      --card: rgba(16, 26, 56, 0.88);
+      --bg-0: #04060b;
+      --bg-1: #08101f;
+      --bg-2: #0c1630;
+      --panel: rgba(255,255,255,0.05);
+      --panel-2: rgba(10,18,40,0.86);
+      --line: rgba(255,255,255,0.1);
+      --line-strong: rgba(122, 115, 255, 0.32);
       --text: #ffffff;
-      --muted: #c7cedd;
-      --muted-2: #9ca3af;
-      --accent: #5b4ff7;
-      --accent-2: #6ea9ff;
-      --accent-3: #b26bff;
+      --muted: #cfd6e8;
+      --muted-2: #97a2bd;
+      --accent: #675dff;
+      --accent-2: #64b6ff;
+      --accent-3: #c07dff;
+      --success: #9fe5bf;
+      --shadow: 0 24px 60px rgba(0,0,0,0.34);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 18px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      padding: 22px 18px 30px;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(91, 79, 247, 0.16), transparent 28%),
-        linear-gradient(180deg, #05070d 0%, #0b1220 100%);
+      font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(103, 93, 255, 0.18), transparent 24%),
+        radial-gradient(circle at 80% 20%, rgba(100, 182, 255, 0.08), transparent 18%),
+        linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, #091224 100%);
+      min-height: 100vh;
+      padding: 22px 18px 34px;
     }
 
     .wrap {
       width: 100%;
-      max-width: 1700px;
+      max-width: 1720px;
       margin: 0 auto;
     }
 
-    .hero {
-      margin-bottom: 22px;
-      padding: 20px 28px 18px;
-      border-radius: 26px;
+    .glass {
       background:
-        radial-gradient(circle at center, rgba(91, 79, 247, 0.12), transparent 42%),
-        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(91,79,247,0.06), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
-      text-align: center;
+        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(103,93,255,0.06), rgba(255,255,255,0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      position: relative;
+      border-radius: var(--radius-xl);
+      padding: 34px 34px 28px;
       overflow: hidden;
     }
 
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(103,93,255,0.16), transparent 34%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      justify-items: center;
+    }
+
     .hero-badge {
-      display: inline-block;
-      margin-bottom: 12px;
-      padding: 7px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 0.08em;
+      border: 1px solid rgba(160, 153, 255, 0.35);
+      background: rgba(103,93,255,0.15);
+      color: #dbe0ff;
       text-transform: uppercase;
-      color: #c7d2fe;
-      background: rgba(99, 102, 241, 0.16);
-      border: 1px solid rgba(99, 102, 241, 0.25);
+      letter-spacing: 0.1em;
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .logo-wrap {
       display: flex;
-      justify-content: center;
       align-items: center;
-      margin: 0 auto 8px;
-      min-height: 120px;
+      justify-content: center;
+      min-height: 330px;
+      width: 100%;
     }
 
     .hero-logo {
-      width: 360px;
-      max-width: 90%;
+      width: min(760px, 80vw);
+      max-width: 100%;
       height: auto;
       display: block;
       filter:
-        drop-shadow(0 0 10px rgba(110, 169, 255, 0.45))
-        drop-shadow(0 0 22px rgba(178, 107, 255, 0.28));
-      animation: logoPulse 2.8s ease-in-out infinite;
+        drop-shadow(0 0 14px rgba(100,182,255,0.5))
+        drop-shadow(0 0 34px rgba(192,125,255,0.25));
+      animation: logoFloat 4.2s ease-in-out infinite;
       transform-origin: center;
     }
 
-    @keyframes logoPulse {
-      0% {
-        transform: scale(1);
+    @keyframes logoFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
         filter:
-          drop-shadow(0 0 8px rgba(110, 169, 255, 0.36))
-          drop-shadow(0 0 16px rgba(178, 107, 255, 0.2));
+          drop-shadow(0 0 12px rgba(100,182,255,0.45))
+          drop-shadow(0 0 28px rgba(192,125,255,0.22));
       }
       50% {
-        transform: scale(1.035);
+        transform: translateY(-6px) scale(1.025);
         filter:
-          drop-shadow(0 0 14px rgba(110, 169, 255, 0.6))
-          drop-shadow(0 0 28px rgba(178, 107, 255, 0.34));
+          drop-shadow(0 0 18px rgba(100,182,255,0.62))
+          drop-shadow(0 0 38px rgba(192,125,255,0.34));
       }
-      100% {
-        transform: scale(1);
-        filter:
-          drop-shadow(0 0 8px rgba(110, 169, 255, 0.36))
-          drop-shadow(0 0 16px rgba(178, 107, 255, 0.2));
-      }
+    }
+
+    .headline {
+      text-align: center;
+      font-size: clamp(26px, 3vw, 52px);
+      line-height: 1.18;
+      font-weight: 800;
+      max-width: 1200px;
+      margin: 0;
     }
 
     .subtext {
-      color: #d6dcef;
-      font-size: 17px;
-      line-height: 1.6;
-      margin: 0 auto 10px;
-      max-width: 980px;
-    }
-
-    .hero-caption {
+      margin: 0;
+      max-width: 1120px;
+      text-align: center;
       color: var(--muted);
+      font-size: clamp(16px, 1.3vw, 22px);
+      line-height: 1.55;
+    }
+
+    .director-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      color: #f5f7ff;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
       font-size: 14px;
-      line-height: 1.5;
-      max-width: 980px;
-      margin: 0 auto;
-      padding-left: 16px;
-      border-left: 3px solid rgba(91, 79, 247, 0.5);
-      text-align: left;
+      font-weight: 700;
     }
 
-    .panel {
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(91,79,247,0.03), rgba(255,255,255,0.02)),
-        var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: 26px;
-      padding: 28px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
-      backdrop-filter: blur(6px);
+    .studio {
+      margin-top: 22px;
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
     }
 
-    .section-label {
-      font-size: 13px;
-      text-transform: none;
-      letter-spacing: 0;
-      color: #d7dbe7;
+    .composer,
+    .results,
+    .mini-panel {
+      border-radius: 28px;
+      background: var(--panel-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .composer {
+      padding: 20px;
+    }
+
+    .results {
+      padding: 20px;
+      min-height: 840px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-note {
+      margin: 6px 0 0;
+      color: var(--muted-2);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(103,93,255,0.12);
+      border: 1px solid rgba(103,93,255,0.3);
+      color: #dfe3ff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #8fb5ff;
+      box-shadow: 0 0 14px rgba(143,181,255,0.8);
+      animation: blink 1.2s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.55; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .mode-group {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .label {
+      font-size: 15px;
+      color: #e6eaf5;
+      font-weight: 700;
     }
 
     .modes {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
     }
 
     .mode-btn {
-      background: #1a2436;
-      color: #e5e7eb;
-      border: 1px solid #2b3952;
-      padding: 10px 14px;
+      border: 1px solid #30415d;
+      background: linear-gradient(180deg, #17253a 0%, #142035 100%);
+      color: #e9edfb;
+      padding: 16px 22px;
       border-radius: 999px;
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 60px;
     }
 
     .mode-btn:hover {
-      background: #22304a;
       transform: translateY(-1px);
+      background: linear-gradient(180deg, #1c2d45 0%, #18263d 100%);
     }
 
     .mode-btn.active {
-      background: linear-gradient(135deg, #5b4ff7, #6d63ff);
-      border-color: #7a73ff;
-      color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.18);
+      background: linear-gradient(135deg, var(--accent), #7a73ff);
+      border-color: #8e89ff;
+      box-shadow: 0 0 0 4px rgba(103,93,255,0.18), 0 16px 32px rgba(103,93,255,0.22);
+      color: #fff;
+      font-weight: 800;
     }
 
     .mode-btn:disabled {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: not-allowed;
       transform: none;
+    }
+
+    .quick-picks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .quick-chip {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #d8deee;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .quick-chip:hover {
+      background: rgba(103,93,255,0.12);
+      border-color: rgba(103,93,255,0.28);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .prompt-shell {
+      position: relative;
+      margin-bottom: 18px;
     }
 
     textarea {
       width: 100%;
-      min-height: 270px;
-      padding: 22px;
-      border-radius: 22px;
-      border: 1px solid #344563;
-      background: #08173d;
-      color: #ffffff;
-      font-size: 24px;
-      line-height: 1.45;
+      min-height: 370px;
       resize: vertical;
+      border: 1px solid rgba(108, 129, 176, 0.45);
+      border-radius: 28px;
+      background: linear-gradient(180deg, #08153a 0%, #081230 100%);
+      color: #fff;
+      padding: 24px 24px 70px;
+      font-size: clamp(24px, 2vw, 34px);
+      line-height: 1.34;
       outline: none;
-      margin-bottom: 18px;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
     textarea:focus {
-      border-color: #6a78ff;
-      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.18);
+      border-color: #7d87ff;
+      box-shadow: 0 0 0 4px rgba(103,93,255,0.16);
     }
 
     textarea:disabled {
-      opacity: 0.82;
+      opacity: 0.8;
       cursor: wait;
     }
 
-    .action-row {
+    .prompt-meta {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      color: var(--muted-2);
+      font-size: 13px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .char-count {
+      color: #dfe4f5;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(103,93,255,0.12);
+      border: 1px solid rgba(103,93,255,0.22);
+    }
+
+    .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
       align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
     }
 
-    .primary-btn,
-    .secondary-btn {
+    .btn {
       border: none;
-      border-radius: 18px;
-      padding: 16px 28px;
-      font-size: 20px;
+      border-radius: 22px;
+      padding: 18px 28px;
+      font-size: 22px;
       cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
+      transition: 0.18s ease;
+      min-height: 72px;
     }
 
-    .primary-btn:hover,
-    .secondary-btn:hover {
-      transform: translateY(-1px);
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #675dff 0%, #8278ff 100%);
+      color: #fff;
+      font-weight: 800;
+      min-width: 270px;
+      box-shadow: 0 16px 32px rgba(103,93,255,0.26);
     }
 
-    .primary-btn {
-      background: linear-gradient(135deg, #5b4ff7, #6d63ff);
-      color: #ffffff;
-      font-weight: 700;
-      box-shadow: 0 10px 24px rgba(91, 79, 247, 0.26);
+    .btn-secondary {
+      background: linear-gradient(180deg, #1b2a45 0%, #18253d 100%);
+      color: #fff;
+      border: 1px solid #324362;
+      min-width: 180px;
     }
 
-    .primary-btn:disabled,
-    .secondary-btn:disabled {
+    .btn:disabled {
       opacity: 0.65;
       cursor: not-allowed;
       transform: none;
     }
 
-    .secondary-btn {
-      background: #1e2b42;
-      color: #ffffff;
-      border: 1px solid #2d3d59;
-    }
-
-    .status {
-      color: #bfc7d8;
-      font-size: 15px;
-      min-height: 20px;
-      margin-left: 4px;
-    }
-
-    .status.loading {
-      color: #d9ddff;
-    }
-
-    .result-wrap {
-      margin-top: 26px;
-    }
-
-    #result {
-      margin-top: 10px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      min-height: 180px;
-      line-height: 1.6;
-      color: #eef2ff;
-    }
-
-    #result.loading {
-      padding: 20px;
-      background: #0b1220;
-      border: 1px solid #243041;
-      border-radius: 18px;
-      box-shadow: 0 0 0 3px rgba(91, 79, 247, 0.08);
-    }
-
-    .loading-shell {
+    .mode-status {
+      color: #d8deee;
+      font-size: 18px;
+      font-weight: 600;
+      min-height: 28px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: #dbe1ff;
-      min-height: 100px;
     }
 
-    .loading-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: #6a78ff;
-      animation: pulse 1.1s infinite ease-in-out;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.8); opacity: 0.55; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(0.8); opacity: 0.55; }
-    }
-
-    .result-card {
-      margin-bottom: 18px;
-      padding: 22px 24px;
-      border-radius: 22px;
-      background: rgba(10, 21, 56, 0.94);
-      border: 1px solid rgba(61, 81, 130, 0.45);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-    }
-
-    .result-header {
+    .result-toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .result-sub {
+      margin: 6px 0 0;
+      color: var(--muted-2);
+      font-size: 14px;
+    }
+
+    #result {
+      flex: 1;
+      min-height: 300px;
+      color: #eef2ff;
+    }
+
+    .empty-state {
+      height: 100%;
+      min-height: 300px;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.02);
+      text-align: center;
+    }
+
+    .empty-state-inner {
+      max-width: 480px;
+    }
+
+    .empty-icon {
+      font-size: 46px;
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .empty-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .loading-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 120px;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(103,93,255,0.08);
+      border: 1px solid rgba(103,93,255,0.18);
+      color: #edf0ff;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .loading-ring {
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,0.18);
+      border-top-color: #8ea0ff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result-card {
+      margin-bottom: 16px;
+      padding: 20px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(11,20,46,0.95), rgba(10,18,40,0.94));
+      border: 1px solid rgba(84, 105, 157, 0.4);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+    }
+
+    .result-card:last-child { margin-bottom: 0; }
+
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .result-card-title {
+      margin: 0;
+      font-size: 23px;
+      color: #9cacff;
+      line-height: 1.25;
       font-weight: 800;
-      color: #98a6ff;
-      letter-spacing: 0.01em;
-      font-size: 22px;
     }
 
     .copy-btn {
-      font-size: 13px;
-      padding: 8px 14px;
-      background: #1f2c43;
-      border: 1px solid #33425c;
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
       cursor: pointer;
-      color: #ffffff;
+      font-size: 13px;
       flex-shrink: 0;
     }
 
     .copy-btn:hover {
-      background: #283753;
-    }
-
-    .copy-btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
+      background: rgba(103,93,255,0.12);
+      border-color: rgba(103,93,255,0.22);
     }
 
     .result-card-body {
-      line-height: 1.34;
-      color: #f3f6ff;
       white-space: normal;
-      font-size: 22px;
-    }
-
-    .usage-help {
-      margin-top: 20px;
-      padding: 20px 22px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #d7dbe7;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-    }
-
-    .usage-help-title {
+      color: #eef2ff;
+      line-height: 1.5;
       font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #ffffff;
     }
 
-    .usage-help-body p {
-      margin: 0 0 12px 0;
-      line-height: 1.65;
-      color: #c7cedd;
-      font-size: 15px;
-    }
-
-    .usage-help-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .footer-note {
+    .stack {
       margin-top: 18px;
-      color: #9ca3af;
-      font-size: 13px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-panel {
+      padding: 18px;
+    }
+
+    .mini-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .mini-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .usage-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .usage-list strong { color: #fff; }
+
+    .mini-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-badge {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: #d6dcef;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1220px) {
+      .studio {
+        grid-template-columns: 1fr;
+      }
+
+      .results {
+        min-height: auto;
+      }
     }
 
     @media (max-width: 900px) {
+      .hero {
+        padding: 24px 20px 20px;
+      }
+
+      .logo-wrap {
+        min-height: 220px;
+      }
+
       .hero-logo {
-        width: 280px;
+        width: min(560px, 88vw);
       }
 
       textarea {
-        min-height: 220px;
-        font-size: 21px;
+        min-height: 280px;
+        font-size: 22px;
       }
 
-      .primary-btn,
-      .secondary-btn {
-        font-size: 18px;
-      }
-
-      .result-card-title,
-      .result-card-body {
-        font-size: 20px;
+      .btn {
+        font-size: 19px;
+        min-height: 64px;
       }
     }
 
     @media (max-width: 640px) {
       body {
-        padding: 18px 12px 24px;
+        padding: 14px 10px 22px;
       }
 
-      .hero {
-        padding: 16px 16px 14px;
-        border-radius: 20px;
+      .hero,
+      .studio,
+      .composer,
+      .results,
+      .mini-panel {
+        border-radius: 22px;
       }
 
       .hero-logo {
-        width: 220px;
-        max-width: 84%;
+        width: 92%;
       }
 
-      .subtext {
-        font-size: 15px;
+      .headline {
+        font-size: 26px;
       }
 
-      .panel {
-        padding: 18px;
-        border-radius: 20px;
+      .section-title,
+      .result-title {
+        font-size: 22px;
       }
 
-      .modes {
-        gap: 8px;
+      .mode-btn {
+        width: 100%;
+        justify-content: center;
       }
 
-      .action-row {
+      .actions {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-        font-size: 18px;
-      }
-
-      textarea {
-        min-height: 180px;
-        font-size: 18px;
-        padding: 16px;
-        border-radius: 18px;
-      }
-
-      .result-card {
-        padding: 18px;
-        border-radius: 18px;
-      }
-
-      .result-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
+      .btn,
       .copy-btn {
         width: 100%;
       }
 
-      .result-card-title,
-      .result-card-body {
-        font-size: 18px;
+      .result-head {
+        flex-direction: column;
       }
 
-      .usage-help {
-        padding: 18px;
-        border-radius: 18px;
+      textarea {
+        padding: 18px 18px 78px;
+        font-size: 19px;
+        min-height: 220px;
       }
 
-      .usage-help-title {
-        font-size: 16px;
-      }
-
-      .usage-help-body p {
-        font-size: 14px;
+      .prompt-meta {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
       }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="hero">
-      <div class="hero-badge">Creative Engine</div>
-
-      <div class="logo-wrap">
-        <img src="logo.png" alt="Visyonix Logo" class="hero-logo" />
+    <section class="hero glass">
+      <div class="hero-inner">
+        <div class="hero-badge">Creative Engine</div>
+        <div class="logo-wrap">
+          <img src="logo.png" alt="Visyonix logo" class="hero-logo" />
+        </div>
+        <div class="director-tag">⚡ Director Mode · obvious, fast, addictive</div>
+        <h1 class="headline">Build premium creative direction in seconds, then move straight into production.</h1>
+        <p class="subtext">Turn simple ideas into high-value concepts, usable prompts, visual structure, scene direction, and shot-ready output without feeling buried in clutter.</p>
       </div>
+    </section>
 
-      <div class="subtext">
-        Turn simple ideas into premium creative concepts, structured prompts, and cinematic direction.
-      </div>
+    <section class="studio glass">
+      <div>
+        <div class="composer">
+          <div class="top-bar">
+            <div>
+              <h2 class="section-title">Director Console</h2>
+              <p class="section-note">Choose a mode, drop in your idea, and get structured output you can actually use.</p>
+            </div>
+            <div class="live-pill"><span class="dot"></span><span id="statusText">Mode: Cinematic Ad</span></div>
+          </div>
 
-      <div class="hero-caption">
-        Built for creators who want speed, clarity, and strong output.
-      </div>
-    </div>
+          <div class="mode-group">
+            <div class="label">Choose a mode</div>
+            <div class="modes">
+              <button class="mode-btn active" data-mode="cinematic-ad" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
+              <button class="mode-btn" data-mode="music-video" onclick="setMode('music-video', this)">🎵 Music Video</button>
+              <button class="mode-btn" data-mode="film-trailer" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
+              <button class="mode-btn" data-mode="gospel-visual" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
+              <button class="mode-btn" data-mode="viral-short" onclick="setMode('viral-short', this)">📱 Viral Short</button>
+            </div>
+          </div>
 
-    <div class="panel">
-      <div class="section-label">Choose a mode</div>
-      <div class="modes">
-        <button class="mode-btn active" data-mode="cinematic-ad" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
-        <button class="mode-btn" data-mode="music-video" onclick="setMode('music-video', this)">🎵 Music Video</button>
-        <button class="mode-btn" data-mode="film-trailer" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
-        <button class="mode-btn" data-mode="gospel-visual" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
-        <button class="mode-btn" data-mode="viral-short" onclick="setMode('viral-short', this)">📱 Viral Short</button>
-      </div>
+          <div class="mode-group">
+            <div class="label">Quick start ideas</div>
+            <div class="quick-picks" id="quickPicks"></div>
+          </div>
 
-      <div class="section-label">Enter your idea</div>
-      <textarea id="prompt" placeholder="Example: luxury car commercial at night in the rain"></textarea>
+          <div class="mode-group">
+            <div class="label">Enter your idea</div>
+            <div class="prompt-shell">
+              <textarea id="prompt" placeholder="Example: luxury car commercial at night in the rain"></textarea>
+              <div class="prompt-meta">
+                <div class="hint">Be specific about mood, subject, setting, or message.</div>
+                <div class="char-count"><span id="charCount">0</span> characters</div>
+              </div>
+            </div>
+          </div>
 
-      <div class="action-row">
-        <button id="generateBtn" class="primary-btn" onclick="generate()">Generate</button>
-        <button id="clearBtn" class="secondary-btn" onclick="clearPrompt()">Clear</button>
-        <button id="copyResultBtn" class="secondary-btn" onclick="copyResult()">Copy Result</button>
-        <div id="status" class="status">Mode: Cinematic Ad</div>
-      </div>
+          <div class="actions">
+            <button id="generateBtn" class="btn btn-primary" onclick="generate()">Generate Director Output</button>
+            <button id="clearBtn" class="btn btn-secondary" onclick="clearPrompt()">Clear</button>
+            <button id="copyResultBtn" class="btn btn-secondary" onclick="copyResult()">Copy Result</button>
+          </div>
+        </div>
 
-      <div class="result-wrap">
-        <div class="section-label">Result</div>
-        <div id="result">Your result will appear here.</div>
-      </div>
+        <div class="stack">
+          <div class="mini-panel">
+            <h3 class="mini-title">How to use this output</h3>
+            <ul class="usage-list">
+              <li><strong>For AI video tools:</strong> copy the main prompt section into Kling, Runway, Veo, Pika, or similar tools.</li>
+              <li><strong>For editing:</strong> use the scene breakdown, camera notes, rhythm, and lighting sections as your shot map.</li>
+              <li><strong>For images:</strong> copy the visual prompt sections and refine with the style and mood notes.</li>
+              <li><strong>Best workflow:</strong> generate → copy the section you need → build → come back and refine.</li>
+            </ul>
+          </div>
 
-      <div class="usage-help">
-        <div class="usage-help-title">How to use this output</div>
-        <div class="usage-help-body">
-          <p><strong>For AI video tools:</strong> Copy the <strong>CORE PROMPT</strong>, <strong>MASTER VIDEO PROMPT</strong>, <strong>MASTER TRAILER PROMPT</strong>, <strong>MASTER VISUAL PROMPT</strong>, or <strong>MASTER SHORT PROMPT</strong> into tools like Runway, Kling, Pika, Veo, or similar generators.</p>
-
-          <p><strong>For filming or editing:</strong> Use the <strong>SCENE BREAKDOWN</strong>, <strong>CAMERA NOTES</strong>, <strong>LIGHTING NOTES</strong>, and <strong>STYLE KEYWORDS</strong> as your shot plan and creative direction.</p>
-
-          <p><strong>For image generation:</strong> Copy the visual prompt sections into image tools and use the style, lighting, and mood notes to refine your results.</p>
-
-          <p><strong>Best workflow:</strong> Generate → copy the prompt section you need → paste it into your creative tool → refine if needed.</p>
+          <div class="mini-panel">
+            <h3 class="mini-title">What makes this feel addictive</h3>
+            <p class="mini-text">Big input, clear modes, strong primary action, instant copy buttons, and output cards that feel rewarding the moment they appear.</p>
+            <div class="mini-badges">
+              <div class="mini-badge">Fast clarity</div>
+              <div class="mini-badge">One-screen flow</div>
+              <div class="mini-badge">Copy-ready cards</div>
+              <div class="mini-badge">Premium feel</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="footer-note">
-        Built for creators who want premium output, not generic AI filler.
+      <div class="results">
+        <div class="result-toolbar">
+          <div>
+            <h2 class="result-title">Director Output</h2>
+            <p class="result-sub">Structured results appear here in clean cards you can copy one by one.</p>
+          </div>
+        </div>
+
+        <div id="result">
+          <div class="empty-state">
+            <div class="empty-state-inner">
+              <div class="empty-icon">🎞</div>
+              <h3 class="empty-title">Your result will appear here</h3>
+              <p class="empty-text">Generate a concept to reveal prompt sections, creative direction, scene breakdowns, and production-ready notes.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 
   <script>
-    let selectedMode = "cinematic-ad";
+    let selectedMode = 'cinematic-ad';
     let loadingInterval = null;
 
     const modeLabels = {
-      "cinematic-ad": "Cinematic Ad",
-      "music-video": "Music Video",
-      "film-trailer": "Film Trailer",
-      "gospel-visual": "Gospel Visual",
-      "viral-short": "Viral Short"
+      'cinematic-ad': 'Cinematic Ad',
+      'music-video': 'Music Video',
+      'film-trailer': 'Film Trailer',
+      'gospel-visual': 'Gospel Visual',
+      'viral-short': 'Viral Short'
+    };
+
+    const placeholders = {
+      'cinematic-ad': 'Example: luxury car commercial at night in the rain',
+      'music-video': 'Example: emotional rooftop performance with neon city lights and a choir reveal',
+      'film-trailer': 'Example: fallen king returns to a ruined city to face the betrayal that destroyed his bloodline',
+      'gospel-visual': 'Example: chains breaking in radiant light as a crowd rises from despair into freedom and praise',
+      'viral-short': 'Example: one impossible transformation shot that makes people instantly rewatch'
+    };
+
+    const quickIdeas = {
+      'cinematic-ad': [
+        'luxury watch reveal in a storm',
+        'electric car launch in neon rain',
+        'high-end fragrance in slow motion'
+      ],
+      'music-video': [
+        'gospel soul video in city streets',
+        'romantic beach reunion performance',
+        'choir-led victory anthem with dancers'
+      ],
+      'film-trailer': [
+        'sci-fi rebellion under a red moon',
+        'western revenge in a dying town',
+        'biblical war of kingdoms and prophecy'
+      ],
+      'gospel-visual': [
+        'deliverance from fear into worship',
+        'a dry valley turning alive with light',
+        'a child confronting darkness with faith'
+      ],
+      'viral-short': [
+        'before-and-after power reveal',
+        'one room transforms into another world',
+        'freeze-time fashion entrance shot'
+      ]
     };
 
     const loadingMessages = [
-      "Generating premium output...",
-      "Building your concept...",
-      "Sharpening creative direction...",
-      "Structuring a usable result...",
-      "Polishing the final output..."
+      'Building your director output...',
+      'Shaping the concept...',
+      'Structuring the scene flow...',
+      'Sharpening the prompts...',
+      'Polishing your final cards...'
     ];
+
+    function updateQuickPicks() {
+      const box = document.getElementById('quickPicks');
+      box.innerHTML = '';
+
+      quickIdeas[selectedMode].forEach((idea) => {
+        const chip = document.createElement('button');
+        chip.className = 'quick-chip';
+        chip.type = 'button';
+        chip.textContent = idea;
+        chip.onclick = () => {
+          document.getElementById('prompt').value = idea;
+          updateCharCount();
+          document.getElementById('prompt').focus();
+        };
+        box.appendChild(chip);
+      });
+    }
+
+    function updatePlaceholder() {
+      document.getElementById('prompt').placeholder = placeholders[selectedMode];
+    }
+
+    function updateStatus(text) {
+      document.getElementById('statusText').textContent = text;
+    }
+
+    function updateCharCount() {
+      document.getElementById('charCount').textContent = document.getElementById('prompt').value.length;
+    }
 
     function setMode(mode, button) {
       selectedMode = mode;
-
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.classList.remove("active");
-      });
-
-      button.classList.add("active");
-      setStatus("Mode: " + modeLabels[mode]);
-    }
-
-    function setStatus(text, isLoading = false) {
-      const status = document.getElementById("status");
-      status.textContent = text;
-      status.classList.toggle("loading", isLoading);
+      document.querySelectorAll('.mode-btn').forEach((btn) => btn.classList.remove('active'));
+      button.classList.add('active');
+      updateStatus('Mode: ' + modeLabels[mode]);
+      updateQuickPicks();
+      updatePlaceholder();
     }
 
     function prettifyResult(text) {
-      return (text || "No response generated.")
-        .replace(/CONCEPT TITLE:/g, "🔥 CONCEPT TITLE:")
-        .replace(/CORE PROMPT:/g, "🎯 CORE PROMPT:")
-        .replace(/SCENE BREAKDOWN:/g, "🎬 SCENE BREAKDOWN:")
-        .replace(/Scene 1:/g, "Scene 1:")
-        .replace(/Scene 2:/g, "Scene 2:")
-        .replace(/Scene 3:/g, "Scene 3:")
-        .replace(/CAMERA NOTES:/g, "📸 CAMERA NOTES:")
-        .replace(/LIGHTING NOTES:/g, "💡 LIGHTING NOTES:")
-        .replace(/STYLE KEYWORDS:/g, "🎨 STYLE KEYWORDS:")
-        .replace(/OPTIONAL VOICEOVER:/g, "🎙 OPTIONAL VOICEOVER:")
-        .replace(/VIDEO TITLE:/g, "🎵 VIDEO TITLE:")
-        .replace(/VISUAL CONCEPT:/g, "🌌 VISUAL CONCEPT:")
-        .replace(/MASTER VIDEO PROMPT:/g, "🎯 MASTER VIDEO PROMPT:")
-        .replace(/PERFORMANCE NOTES:/g, "🎤 PERFORMANCE NOTES:")
-        .replace(/LIGHTING \+ COLOR:/g, "💡 LIGHTING + COLOR:")
-        .replace(/EDITING RHYTHM:/g, "✂️ EDITING RHYTHM:")
-        .replace(/TRAILER TITLE:/g, "🎞 TRAILER TITLE:")
-        .replace(/TRAILER HOOK:/g, "⚡ TRAILER HOOK:")
-        .replace(/MASTER TRAILER PROMPT:/g, "🎯 MASTER TRAILER PROMPT:")
-        .replace(/TRAILER BEATS:/g, "🎬 TRAILER BEATS:")
-        .replace(/Beat 1:/g, "Beat 1:")
-        .replace(/Beat 2:/g, "Beat 2:")
-        .replace(/Beat 3:/g, "Beat 3:")
-        .replace(/LIGHTING \+ ATMOSPHERE:/g, "💡 LIGHTING + ATMOSPHERE:")
-        .replace(/OPTIONAL TAGLINE:/g, "🏷 OPTIONAL TAGLINE:")
-        .replace(/VISION TITLE:/g, "✝️ VISION TITLE:")
-        .replace(/SPIRITUAL CONCEPT:/g, "🙏 SPIRITUAL CONCEPT:")
-        .replace(/MASTER VISUAL PROMPT:/g, "🎯 MASTER VISUAL PROMPT:")
-        .replace(/SYMBOLIC ELEMENTS:/g, "✨ SYMBOLIC ELEMENTS:")
-        .replace(/LIGHTING \+ MOOD:/g, "💡 LIGHTING + MOOD:")
-        .replace(/SHORT TITLE:/g, "📱 SHORT TITLE:")
-        .replace(/VIRAL ANGLE:/g, "🚀 VIRAL ANGLE:")
-        .replace(/MASTER SHORT PROMPT:/g, "🎯 MASTER SHORT PROMPT:")
-        .replace(/HOOK SHOT:/g, "🎣 HOOK SHOT:")
-        .replace(/MIDDLE BEAT:/g, "⚡ MIDDLE BEAT:")
-        .replace(/ENDING BEAT:/g, "🏁 ENDING BEAT:")
-        .replace(/ON-SCREEN TEXT IDEA:/g, "📝 ON-SCREEN TEXT IDEA:");
+      return (text || 'No response generated.')
+        .replace(/CONCEPT TITLE:/g, '🔥 CONCEPT TITLE:')
+        .replace(/CORE PROMPT:/g, '🎯 CORE PROMPT:')
+        .replace(/SCENE BREAKDOWN:/g, '🎬 SCENE BREAKDOWN:')
+        .replace(/CAMERA NOTES:/g, '📸 CAMERA NOTES:')
+        .replace(/LIGHTING NOTES:/g, '💡 LIGHTING NOTES:')
+        .replace(/STYLE KEYWORDS:/g, '🎨 STYLE KEYWORDS:')
+        .replace(/OPTIONAL VOICEOVER:/g, '🎙 OPTIONAL VOICEOVER:')
+        .replace(/VIDEO TITLE:/g, '🎵 VIDEO TITLE:')
+        .replace(/VISUAL CONCEPT:/g, '🌌 VISUAL CONCEPT:')
+        .replace(/MASTER VIDEO PROMPT:/g, '🎯 MASTER VIDEO PROMPT:')
+        .replace(/PERFORMANCE NOTES:/g, '🎤 PERFORMANCE NOTES:')
+        .replace(/LIGHTING \+ COLOR:/g, '💡 LIGHTING + COLOR:')
+        .replace(/EDITING RHYTHM:/g, '✂️ EDITING RHYTHM:')
+        .replace(/TRAILER TITLE:/g, '🎞 TRAILER TITLE:')
+        .replace(/TRAILER HOOK:/g, '⚡ TRAILER HOOK:')
+        .replace(/MASTER TRAILER PROMPT:/g, '🎯 MASTER TRAILER PROMPT:')
+        .replace(/TRAILER BEATS:/g, '🎬 TRAILER BEATS:')
+        .replace(/OPTIONAL TAGLINE:/g, '🏷 OPTIONAL TAGLINE:')
+        .replace(/VISION TITLE:/g, '✝️ VISION TITLE:')
+        .replace(/SPIRITUAL CONCEPT:/g, '🙏 SPIRITUAL CONCEPT:')
+        .replace(/MASTER VISUAL PROMPT:/g, '🎯 MASTER VISUAL PROMPT:')
+        .replace(/SYMBOLIC ELEMENTS:/g, '✨ SYMBOLIC ELEMENTS:')
+        .replace(/LIGHTING \+ MOOD:/g, '💡 LIGHTING + MOOD:')
+        .replace(/SHORT TITLE:/g, '📱 SHORT TITLE:')
+        .replace(/VIRAL ANGLE:/g, '🚀 VIRAL ANGLE:')
+        .replace(/MASTER SHORT PROMPT:/g, '🎯 MASTER SHORT PROMPT:')
+        .replace(/HOOK SHOT:/g, '🎣 HOOK SHOT:')
+        .replace(/MIDDLE BEAT:/g, '⚡ MIDDLE BEAT:')
+        .replace(/ENDING BEAT:/g, '🏁 ENDING BEAT:')
+        .replace(/ON-SCREEN TEXT IDEA:/g, '📝 ON-SCREEN TEXT IDEA:');
     }
 
     function escapeHtml(str) {
       return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
     }
 
-    function copySection(text, btn) {
-      navigator.clipboard.writeText(text);
+    async function copySection(text, btn) {
+      await navigator.clipboard.writeText(text);
       const oldText = btn.textContent;
-      btn.textContent = "Copied!";
+      btn.textContent = 'Copied!';
       btn.disabled = true;
       setTimeout(() => {
         btn.textContent = oldText;
         btn.disabled = false;
-      }, 1000);
+      }, 900);
     }
 
     function formatToHTML(text) {
       return text
-        .split("\n\n")
+        .split('\n\n')
         .map((section) => {
           const cleaned = section.trim();
-          if (!cleaned) return "";
+          if (!cleaned) return '';
 
-          const parts = cleaned.split("\n");
+          const parts = cleaned.split('\n');
           const title = parts[0];
-          const bodyText = parts.slice(1).join("\n").trim();
+          const bodyText = parts.slice(1).join('\n').trim();
           const safeTitle = escapeHtml(title);
-          const safeBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
-          const bodyForCopy = JSON.stringify(bodyText);
+          const safeBody = escapeHtml(bodyText).replace(/\n/g, '<br>');
+          const bodyForCopy = JSON.stringify(bodyText || title);
 
           return `
             <div class="result-card">
-              <div class="result-header">
-                <div class="result-card-title">${safeTitle}</div>
+              <div class="result-head">
+                <h3 class="result-card-title">${safeTitle}</h3>
                 <button class="copy-btn" onclick='copySection(${bodyForCopy}, this)'>Copy</button>
               </div>
               <div class="result-card-body">${safeBody}</div>
             </div>
           `;
         })
-        .join("");
+        .join('');
+    }
+
+    function renderEmptyState() {
+      document.getElementById('result').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-inner">
+            <div class="empty-icon">🎞</div>
+            <h3 class="empty-title">Your result will appear here</h3>
+            <p class="empty-text">Generate a concept to reveal prompt sections, creative direction, scene breakdowns, and production-ready notes.</p>
+          </div>
+        </div>
+      `;
     }
 
     function clearPrompt() {
-      document.getElementById("prompt").value = "";
-      document.getElementById("prompt").focus();
-      document.getElementById("result").innerHTML = "Your result will appear here.";
-      setStatus("Mode: " + modeLabels[selectedMode]);
+      document.getElementById('prompt').value = '';
+      updateCharCount();
+      renderEmptyState();
+      updateStatus('Mode: ' + modeLabels[selectedMode]);
+      document.getElementById('prompt').focus();
     }
 
     function trackGenerateClick() {
-      if (typeof gtag === "function") {
-        gtag("event", "generate_click", {
-          mode: selectedMode
-        });
+      if (typeof gtag === 'function') {
+        gtag('event', 'generate_click', { mode: selectedMode });
       }
     }
 
     function setLoadingUI() {
-      const resultBox = document.getElementById("result");
-      const generateBtn = document.getElementById("generateBtn");
-      const copyResultBtn = document.getElementById("copyResultBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const promptBox = document.getElementById("prompt");
+      const resultBox = document.getElementById('result');
+      const generateBtn = document.getElementById('generateBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const copyResultBtn = document.getElementById('copyResultBtn');
+      const promptBox = document.getElementById('prompt');
 
-      resultBox.classList.add("loading");
       resultBox.innerHTML = `
-        <div class="loading-shell">
-          <div class="loading-dot"></div>
-          <div id="loadingMessage">Generating premium output...</div>
+        <div class="loading-box">
+          <div class="loading-ring"></div>
+          <div id="loadingMessage">Building your director output...</div>
         </div>
       `;
 
       generateBtn.disabled = true;
-      generateBtn.textContent = "Generating...";
-      copyResultBtn.disabled = true;
       clearBtn.disabled = true;
+      copyResultBtn.disabled = true;
       promptBox.disabled = true;
-
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.disabled = true;
-      });
+      generateBtn.textContent = 'Generating...';
+      document.querySelectorAll('.mode-btn').forEach((btn) => btn.disabled = true);
 
       let i = 0;
-      setStatus(loadingMessages[i], true);
-
+      updateStatus(loadingMessages[i]);
       clearInterval(loadingInterval);
       loadingInterval = setInterval(() => {
         i = (i + 1) % loadingMessages.length;
-        const msg = document.getElementById("loadingMessage");
+        const msg = document.getElementById('loadingMessage');
         if (msg) msg.textContent = loadingMessages[i];
-        setStatus(loadingMessages[i], true);
-      }, 1200);
+        updateStatus(loadingMessages[i]);
+      }, 1100);
     }
 
     function clearLoadingUI() {
-      const resultBox = document.getElementById("result");
-      const generateBtn = document.getElementById("generateBtn");
-      const copyResultBtn = document.getElementById("copyResultBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const promptBox = document.getElementById("prompt");
-
       clearInterval(loadingInterval);
-      resultBox.classList.remove("loading");
-      generateBtn.disabled = false;
-      generateBtn.textContent = "Generate";
-      copyResultBtn.disabled = false;
-      clearBtn.disabled = false;
-      promptBox.disabled = false;
-
-      document.querySelectorAll(".mode-btn").forEach((btn) => {
-        btn.disabled = false;
-      });
-
-      setStatus("Mode: " + modeLabels[selectedMode]);
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('clearBtn').disabled = false;
+      document.getElementById('copyResultBtn').disabled = false;
+      document.getElementById('prompt').disabled = false;
+      document.getElementById('generateBtn').textContent = 'Generate Director Output';
+      document.querySelectorAll('.mode-btn').forEach((btn) => btn.disabled = false);
+      updateStatus('Mode: ' + modeLabels[selectedMode]);
     }
 
     async function generate() {
-      const prompt = document.getElementById("prompt").value.trim();
-      const resultBox = document.getElementById("result");
+      const prompt = document.getElementById('prompt').value.trim();
+      const resultBox = document.getElementById('result');
 
       if (!prompt) {
-        resultBox.textContent = "Please enter an idea first.";
+        resultBox.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-inner">
+              <div class="empty-icon">✍️</div>
+              <h3 class="empty-title">Enter an idea first</h3>
+              <p class="empty-text">Give Director Mode something to build from, then generate your structured creative output.</p>
+            </div>
+          </div>
+        `;
         return;
       }
 
@@ -774,46 +1086,61 @@
       setLoadingUI();
 
       try {
-        const response = await fetch("/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            prompt,
-            mode: selectedMode
-          })
+        const response = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, mode: selectedMode })
         });
 
         const data = await response.json();
 
         if (!data.result) {
-          resultBox.innerHTML = "No response";
+          resultBox.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-inner">
+                <div class="empty-icon">⚠️</div>
+                <h3 class="empty-title">No response</h3>
+                <p class="empty-text">The generator returned an empty result. Try adjusting the idea and run it again.</p>
+              </div>
+            </div>
+          `;
           return;
         }
 
         const formatted = prettifyResult(data.result);
         resultBox.innerHTML = formatToHTML(formatted);
       } catch (error) {
-        resultBox.innerHTML = "Something went wrong while generating.";
+        resultBox.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-inner">
+              <div class="empty-icon">❌</div>
+              <h3 class="empty-title">Something went wrong</h3>
+              <p class="empty-text">The request failed while generating. Please try again.</p>
+            </div>
+          </div>
+        `;
       } finally {
         clearLoadingUI();
       }
     }
 
     async function copyResult() {
-      const text = document.getElementById("result").innerText;
+      const text = document.getElementById('result').innerText.trim();
+      if (!text) return;
 
       try {
         await navigator.clipboard.writeText(text);
-        setStatus("Copied result to clipboard");
-        setTimeout(() => {
-          setStatus("Mode: " + modeLabels[selectedMode]);
-        }, 1500);
+        updateStatus('Copied result to clipboard');
+        setTimeout(() => updateStatus('Mode: ' + modeLabels[selectedMode]), 1400);
       } catch (error) {
-        setStatus("Copy failed");
+        updateStatus('Copy failed');
       }
     }
+
+    document.getElementById('prompt').addEventListener('input', updateCharCount);
+    updateQuickPicks();
+    updatePlaceholder();
+    updateCharCount();
   </script>
 </body>
 </html>
