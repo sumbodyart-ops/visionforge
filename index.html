@@ -23,18 +23,12 @@
       --panel: rgba(255,255,255,0.05);
       --panel-2: rgba(10,18,40,0.86);
       --line: rgba(255,255,255,0.1);
-      --line-strong: rgba(122, 115, 255, 0.32);
       --text: #ffffff;
       --muted: #cfd6e8;
       --muted-2: #97a2bd;
       --accent: #675dff;
-      --accent-2: #64b6ff;
-      --accent-3: #c07dff;
-      --success: #9fe5bf;
       --shadow: 0 24px 60px rgba(0,0,0,0.34);
       --radius-xl: 34px;
-      --radius-lg: 26px;
-      --radius-md: 18px;
     }
 
     html { scroll-behavior: smooth; }
@@ -61,7 +55,7 @@
       background:
         linear-gradient(90deg, rgba(255,255,255,0.02), rgba(103,93,255,0.06), rgba(255,255,255,0.02)),
         var(--panel);
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255,255,255,0.1);
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
     }
@@ -71,6 +65,7 @@
       border-radius: var(--radius-xl);
       padding: 10px 28px 10px;
       overflow: hidden;
+      margin-bottom: 22px;
     }
 
     .hero::before {
@@ -176,7 +171,6 @@
     }
 
     .studio {
-      margin-top: 22px;
       border-radius: var(--radius-xl);
       padding: 20px;
       display: grid;
@@ -188,18 +182,19 @@
     .results,
     .mini-panel {
       border-radius: 28px;
-      background: var(--panel-2);
+      background: rgba(10,18,40,0.86);
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
     }
 
-    .composer {
+    .composer,
+    .results,
+    .mini-panel {
       padding: 20px;
     }
 
     .results {
-      padding: 20px;
-      min-height: 840px;
+      min-height: 640px;
       display: flex;
       flex-direction: column;
     }
@@ -333,30 +328,39 @@
 
     .prompt-shell {
       position: relative;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
-    textarea class="prompt-box" {
+    .prompt-box {
       width: 100%;
-      min-height: 370px;
+      min-height: 180px;
       resize: vertical;
-      border: 1px solid rgba(108, 129, 176, 0.45);
-      border-radius: 28px;
-      background: linear-gradient(180deg, #08153a 0%, #081230 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10,16,40,0.75);
+      padding: 20px 20px 68px;
+      font-size: 16px;
+      line-height: 1.6;
       color: #fff;
-      padding: 24px 24px 70px;
-      font-size: clamp(24px, 2vw, 34px);
-      line-height: 1.34;
       outline: none;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.02),
+        0 10px 30px rgba(0,0,0,0.28);
+      transition: all 0.25s ease;
     }
 
-    textarea:focus {
-      border-color: #7d87ff;
-      box-shadow: 0 0 0 4px rgba(103,93,255,0.16);
+    .prompt-box::placeholder {
+      color: rgba(255,255,255,0.35);
     }
 
-    textarea:disabled {
+    .prompt-box:focus {
+      border: 1px solid rgba(120,140,255,0.6);
+      box-shadow:
+        0 0 0 2px rgba(120,140,255,0.15),
+        0 10px 40px rgba(120,140,255,0.15);
+    }
+
+    .prompt-box:disabled {
       opacity: 0.8;
       cursor: wait;
     }
@@ -371,6 +375,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      pointer-events: none;
     }
 
     .hint {
@@ -389,33 +394,6 @@
       border-radius: 999px;
       background: rgba(103,93,255,0.12);
       border: 1px solid rgba(103,93,255,0.22);
-    }
-
-    .actions {
-      display: flex;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: center;
-    }
-
-    .prompt-box {
-      width: 100%;
-      min-height: 180px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(10,16,40,0.65);
-      padding: 18px 20px;
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--text);
-      outline: none;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-      transition: border 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .prompt-box:focus {
-      border: 1px solid rgba(120,140,255,0.6);
-      box-shadow: 0 0 0 2px rgba(120,140,255,0.15);
     }
 
     .actions {
@@ -444,6 +422,7 @@
       font-weight: 800;
       min-width: 270px;
       box-shadow: 0 16px 32px rgba(103,93,255,0.26);
+      flex: 1.2;
     }
 
     .btn-secondary {
@@ -451,21 +430,18 @@
       color: #fff;
       border: 1px solid #324362;
       min-width: 180px;
+      opacity: 0.78;
+      flex: 0.7;
+    }
+
+    .btn-secondary:hover {
+      opacity: 0.95;
     }
 
     .btn:disabled {
       opacity: 0.65;
       cursor: not-allowed;
       transform: none;
-    }
-
-    .mode-status {
-      color: #d8deee;
-      font-size: 18px;
-      font-weight: 600;
-      min-height: 28px;
-      display: flex;
-      align-items: center;
     }
 
     .result-toolbar {
@@ -493,13 +469,13 @@
 
     #result {
       flex: 1;
-      min-height: 300px;
+      min-height: 220px;
       color: #eef2ff;
     }
 
     .empty-state {
       height: 100%;
-      min-height: 300px;
+      min-height: 220px;
       display: grid;
       place-items: center;
       padding: 20px;
@@ -613,10 +589,6 @@
       gap: 18px;
     }
 
-    .mini-panel {
-      padding: 18px;
-    }
-
     .mini-title {
       margin: 0 0 8px;
       font-size: 18px;
@@ -678,12 +650,12 @@
       }
 
       .hero-logo {
-        width: min(560px, 88vw);
+        max-height: 120px;
       }
 
-      textarea {
-        min-height: 280px;
-        font-size: 22px;
+      .prompt-box {
+        min-height: 150px;
+        font-size: 15px;
       }
 
       .btn {
@@ -706,7 +678,7 @@
       }
 
       .hero-logo {
-        width: 92%;
+        max-height: 100px;
       }
 
       .headline {
@@ -731,16 +703,17 @@
       .btn,
       .copy-btn {
         width: 100%;
+        flex: unset;
       }
 
       .result-head {
         flex-direction: column;
       }
 
-      textarea {
-        padding: 18px 18px 78px;
-        font-size: 19px;
-        min-height: 220px;
+      .prompt-box {
+        padding: 16px 16px 74px;
+        font-size: 15px;
+        min-height: 140px;
       }
 
       .prompt-meta {
@@ -795,7 +768,14 @@
           <div class="mode-group">
             <div class="label">Enter your idea</div>
             <div class="prompt-shell">
-              <textarea id="prompt" placeholder="Example: luxury car commercial at night in the rain"></textarea>
+              <textarea
+                id="prompt"
+                class="prompt-box"
+                placeholder="Describe your idea...
+
+Example:
+Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal."
+              ></textarea>
               <div class="prompt-meta">
                 <div class="hint">Be specific about mood, subject, setting, or message.</div>
                 <div class="char-count"><span id="charCount">0</span> characters</div>
@@ -808,27 +788,27 @@
             <button id="clearBtn" class="btn btn-secondary" onclick="clearPrompt()">Clear</button>
             <button id="copyResultBtn" class="btn btn-secondary" onclick="copyResult()">Copy Result</button>
           </div>
-        </div>
 
-        <div class="stack">
-          <div class="mini-panel">
-            <h3 class="mini-title">How to use this output</h3>
-            <ul class="usage-list">
-              <li><strong>For AI video tools:</strong> copy the main prompt section into Kling, Runway, Veo, Pika, or similar tools.</li>
-              <li><strong>For editing:</strong> use the scene breakdown, camera notes, rhythm, and lighting sections as your shot map.</li>
-              <li><strong>For images:</strong> copy the visual prompt sections and refine with the style and mood notes.</li>
-              <li><strong>Best workflow:</strong> generate → copy the section you need → build → come back and refine.</li>
-            </ul>
-          </div>
+          <div class="stack">
+            <div class="mini-panel">
+              <h3 class="mini-title">How to use this output</h3>
+              <ul class="usage-list">
+                <li><strong>For AI video tools:</strong> copy the main prompt section into Kling, Runway, Veo, Pika, or similar tools.</li>
+                <li><strong>For editing:</strong> use the scene breakdown, camera notes, rhythm, and lighting sections as your shot map.</li>
+                <li><strong>For images:</strong> copy the visual prompt sections and refine with the style and mood notes.</li>
+                <li><strong>Best workflow:</strong> generate → copy the section you need → build → come back and refine.</li>
+              </ul>
+            </div>
 
-          <div class="mini-panel">
-            <h3 class="mini-title">What makes this work</h3>
-            <p class="mini-text">Big input, clear modes, strong primary action, instant copy buttons, and output cards that are ready to use the moment they appear.</p>
-            <div class="mini-badges">
-              <div class="mini-badge">Fast clarity</div>
-              <div class="mini-badge">One-screen flow</div>
-              <div class="mini-badge">Copy-ready cards</div>
-              <div class="mini-badge">Premium feel</div>
+            <div class="mini-panel">
+              <h3 class="mini-title">What makes this work</h3>
+              <p class="mini-text">Big input, clear modes, strong primary action, instant copy buttons, and output cards that are ready to use the moment they appear.</p>
+              <div class="mini-badges">
+                <div class="mini-badge">Fast clarity</div>
+                <div class="mini-badge">One-screen flow</div>
+                <div class="mini-badge">Copy-ready cards</div>
+                <div class="mini-badge">Premium feel</div>
+              </div>
             </div>
           </div>
         </div>
@@ -868,11 +848,26 @@
     };
 
     const placeholders = {
-      'cinematic-ad': 'Example: luxury car commercial at night in the rain',
-      'music-video': 'Example: emotional rooftop performance with neon city lights and a choir reveal',
-      'film-trailer': 'Example: fallen king returns to a ruined city to face the betrayal that destroyed his bloodline',
-      'gospel-visual': 'Example: chains breaking in radiant light as a crowd rises from despair into freedom and praise',
-      'viral-short': 'Example: one impossible transformation shot that makes people instantly rewatch'
+      'cinematic-ad': 'Describe your idea...
+
+Example:
+Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal.',
+      'music-video': 'Describe your idea...
+
+Example:
+Emotional rooftop performance with neon city lights, rain reflections, choir reveal, and cinematic pacing.',
+      'film-trailer': 'Describe your idea...
+
+Example:
+A fallen king returns to a ruined city to face the betrayal that destroyed his bloodline.',
+      'gospel-visual': 'Describe your idea...
+
+Example:
+Chains breaking in radiant light as a crowd rises from despair into freedom and praise.',
+      'viral-short': 'Describe your idea...
+
+Example:
+One impossible transformation shot that makes people instantly rewatch.'
     };
 
     const quickIdeas = {
@@ -1004,16 +999,21 @@
 
     function formatToHTML(text) {
       return text
-        .split('\n\n')
+        .split('
+
+')
         .map((section) => {
           const cleaned = section.trim();
           if (!cleaned) return '';
 
-          const parts = cleaned.split('\n');
+          const parts = cleaned.split('
+');
           const title = parts[0];
-          const bodyText = parts.slice(1).join('\n').trim();
+          const bodyText = parts.slice(1).join('
+').trim();
           const safeTitle = escapeHtml(title);
-          const safeBody = escapeHtml(bodyText).replace(/\n/g, '<br>');
+          const safeBody = escapeHtml(bodyText).replace(/
+/g, '<br>');
           const bodyForCopy = JSON.stringify(bodyText || title);
 
           return `
