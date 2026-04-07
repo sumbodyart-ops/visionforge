@@ -24,15 +24,24 @@ app.get("/", (req, res) => {
 
 app.post("/generate", async (req, res) => {
   try {
-    const prompt = req.body.idea;
-    const mode = req.body.mode || "cinematic-ad";
+    const prompt = req.body.prompt;
+
+    const modeMap = {
+      "cinematic ad": "cinematic-ad",
+      "music video": "music-video",
+      "film trailer": "film-trailer",
+      "viral short": "viral-short",
+      "gospel visual": "gospel-visual",
+    };
+
+    const mode = modeMap[req.body.mode] || "cinematic-ad";
 
     console.log("Received prompt:", prompt);
     console.log("Selected mode:", mode);
 
     if (!prompt || !String(prompt).trim()) {
       return res.status(400).json({
-        result: "Please enter an idea before generating.",
+        result: "Please enter a concept before generating.",
       });
     }
 
@@ -76,6 +85,7 @@ IMPORTANT:
 - Make the CORE PROMPT ready to use
 - Keep the writing sharp, not bloated
 `,
+
       "music-video": `
 You are an elite music video director, visual treatment writer, and performance concept designer.
 
@@ -126,6 +136,7 @@ IMPORTANT:
 - Avoid generic filler language
 - Make the output bold, stylish, and usable
 `,
+
       "film-trailer": `
 You are an elite film trailer director and cinematic concept strategist.
 
@@ -165,6 +176,7 @@ IMPORTANT:
 - Avoid bland language
 - Make it vivid and usable
 `,
+
       "gospel-visual": `
 You are an elite gospel visual director and faith-based creative strategist.
 
@@ -207,6 +219,7 @@ IMPORTANT:
 - Make it emotionally honest and usable
 - Let the visuals carry reverence, hope, and conviction
 `,
+
       "viral-short": `
 You are an elite short-form content strategist and viral video concept creator.
 
@@ -243,7 +256,7 @@ IMPORTANT:
 - Keep it sharp and platform-friendly
 - Avoid slow, bloated description
 - Make it feel catchy, modern, and usable
-`
+`,
     };
 
     const systemPrompt = prompts[mode] || prompts["cinematic-ad"];
@@ -267,6 +280,8 @@ User idea: ${prompt}`,
   }
 });
 
-app.listen(3001, () => {
-  console.log("🔥 Server running on http://localhost:3001");
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`🔥 Server running on http://localhost:${PORT}`);
 });
