@@ -16,7 +16,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // <- this is the fix
+app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
@@ -24,11 +24,17 @@ app.get("/", (req, res) => {
 
 app.post("/generate", async (req, res) => {
   try {
-    const prompt = req.body.prompt;
+    const prompt = req.body.idea;
     const mode = req.body.mode || "cinematic-ad";
 
     console.log("Received prompt:", prompt);
     console.log("Selected mode:", mode);
+
+    if (!prompt || !String(prompt).trim()) {
+      return res.status(400).json({
+        result: "Please enter an idea before generating.",
+      });
+    }
 
     const prompts = {
       "cinematic-ad": `
@@ -244,7 +250,9 @@ IMPORTANT:
 
     const response = await client.responses.create({
       model: "gpt-4.1-mini",
-      input: systemPrompt + "\nUser idea: " + prompt,
+      input: `${systemPrompt}
+
+User idea: ${prompt}`,
     });
 
     res.json({
