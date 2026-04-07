@@ -3,1163 +3,837 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visyonix — Director Mode</title>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3WVYET0V7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-M3WVYET0V7');
-  </script>
-
+  <title>Visyonix</title>
   <style>
-    * { box-sizing: border-box; }
-
     :root {
-      --bg-0: #04060b;
-      --bg-1: #08101f;
-      --bg-2: #0c1630;
-      --panel: rgba(255,255,255,0.05);
-      --text: #ffffff;
-      --muted: #cfd6e8;
-      --muted-2: #97a2bd;
-      --accent: #675dff;
-      --shadow: 0 24px 60px rgba(0,0,0,0.34);
-      --radius-xl: 34px;
+      --bg: #050505;
+      --bg-soft: #0c0c0f;
+      --panel: rgba(255,255,255,0.055);
+      --panel-2: rgba(255,255,255,0.035);
+      --line: rgba(255,255,255,0.12);
+      --text: #f4f4f7;
+      --muted: #a8a8b3;
+      --accent: #ffffff;
+      --shadow: 0 20px 60px rgba(0,0,0,0.45);
+      --radius: 26px;
+      --radius-sm: 18px;
+      --max: 1450px;
     }
 
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.09), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,0.06), transparent 22%),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.05), transparent 28%),
+        linear-gradient(180deg, #000000 0%, #060608 45%, #09090c 100%);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      min-height: 100%;
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 50% 0%, rgba(103, 93, 255, 0.18), transparent 24%),
-        radial-gradient(circle at 80% 20%, rgba(100, 182, 255, 0.08), transparent 18%),
-        linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 45%, #091224 100%);
-      min-height: 100vh;
-      padding: 22px 18px 34px;
+      overflow-x: hidden;
     }
 
-    .wrap {
-      width: 100%;
-      max-width: 1720px;
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask-image: radial-gradient(circle at center, black 38%, transparent 100%);
+    }
+
+    .shell {
+      width: min(var(--max), calc(100% - 34px));
       margin: 0 auto;
+      padding: 26px 0 60px;
+      position: relative;
+      z-index: 2;
     }
 
-    .glass {
-      background:
-        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(103,93,255,0.06), rgba(255,255,255,0.02)),
-        var(--panel);
-      border: 1px solid rgba(255,255,255,0.1);
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+      border-radius: 22px;
+      backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 78px;
+      height: 78px;
+      border-radius: 24px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0.05) 35%, rgba(255,255,255,0.02) 70%);
+      border: 1px solid rgba(255,255,255,0.14);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.45);
+    }
+
+    .brand-mark img {
+      width: 88%;
+      height: 88%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.45));
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+    }
+
+    .brand-copy p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
     }
 
     .hero {
-      position: relative;
-      border-radius: var(--radius-xl);
-      padding: 10px 28px 10px;
-      overflow: hidden;
-      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
     }
 
-    .hero::before {
-      content: "";
+    .hero-card,
+    .video-card,
+    .panel,
+    .results-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card {
+      padding: clamp(28px, 4vw, 48px);
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,0.14), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,0.065), rgba(255,255,255,0.02));
+    }
+
+    .hero-fade {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(103,93,255,0.16), transparent 34%);
+      background: linear-gradient(115deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.42) 38%, rgba(0,0,0,0.15) 100%);
       pointer-events: none;
     }
 
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 6px;
-      padding-top: 0;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: 999px;
-      border: 1px solid rgba(160, 153, 255, 0.35);
-      background: rgba(103,93,255,0.15);
-      color: #dbe0ff;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .logo-wrap {
+    .hero-logo-wrap {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      margin-top: 8px;
-      padding-top: 8px;
+      pointer-events: none;
     }
 
     .hero-logo {
-      width: auto;
-      max-width: 100%;
-      max-height: 140px;
-      height: auto;
-      display: block;
-      filter:
-        drop-shadow(0 0 12px rgba(100,182,255,0.45))
-        drop-shadow(0 0 28px rgba(192,125,255,0.22));
-      animation: logoFloat 4.2s ease-in-out infinite;
-      transform-origin: center;
+      width: min(56%, 430px);
+      opacity: 0.22;
+      filter: drop-shadow(0 20px 50px rgba(0,0,0,0.75));
+      transform: translateY(26px) scale(0.96);
+      animation: glideIn 1.7s cubic-bezier(.18,.89,.32,1.02) forwards;
     }
 
-    @keyframes logoFloat {
-      0%, 100% {
-        transform: translateY(0) scale(1);
-        filter:
-          drop-shadow(0 0 12px rgba(100,182,255,0.45))
-          drop-shadow(0 0 28px rgba(192,125,255,0.22));
-      }
-      50% {
-        transform: translateY(-6px) scale(1.025);
-        filter:
-          drop-shadow(0 0 18px rgba(100,182,255,0.62))
-          drop-shadow(0 0 38px rgba(192,125,255,0.34));
-      }
+    @keyframes glideIn {
+      0% { opacity: 0; transform: translateY(120px) scale(0.85); }
+      100% { opacity: 0.22; transform: translateY(16px) scale(1); }
     }
 
-    .headline {
-      text-align: center;
-      font-size: clamp(24px, 2.6vw, 40px);
-      line-height: 1.15;
-      font-weight: 800;
-      max-width: 1100px;
-      margin: 6px 0 4px;
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
     }
 
-    .subtext {
-      margin: 2px 0 0;
-      max-width: 1000px;
-      text-align: center;
-      color: var(--muted);
-      font-size: clamp(14px, 1.2vw, 18px);
-      line-height: 1.5;
-    }
-
-    .director-tag {
+    .kicker {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 18px;
+      padding: 10px 14px;
       border-radius: 999px;
-      color: #f5f7ff;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      font-size: 14px;
-      font-weight: 700;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f7f7fb;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
     }
 
-    .studio {
-      border-radius: var(--radius-xl);
+    .hero-copy h2 {
+      margin: 0 0 16px;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      color: #d0d0d8;
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      line-height: 1.65;
+      max-width: 60ch;
+    }
+
+    .video-card {
+      min-height: 430px;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.11), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+    }
+
+    .card-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .video-stage {
+      flex: 1;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+        radial-gradient(circle at center, rgba(255,255,255,0.07), rgba(0,0,0,0.55));
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 18px;
+      place-items: center;
+      overflow: hidden;
+      min-height: 290px;
     }
 
-    .composer,
-    .results,
-    .mini-panel {
-      border-radius: 28px;
-      background: rgba(10,18,40,0.86);
+    .video-stage video,
+    .video-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-placeholder {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      max-width: 30ch;
+      line-height: 1.6;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-      padding: 20px;
+      border-radius: 20px;
+      padding: 16px 14px;
     }
 
-    .results {
-      min-height: 640px;
+    .stat strong {
+      display: block;
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3 {
+      margin: 6px 0 0;
+      font-size: 1.45rem;
+      letter-spacing: -0.03em;
+    }
+
+    .panel-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      border: 1px solid rgba(255,255,255,0.11);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      color: var(--text);
+      border-radius: 18px;
+      padding: 15px 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .mode-btn:hover,
+    .mode-btn.active {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.24);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.045));
+    }
+
+    .mode-btn strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .mode-btn span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 240px;
+      resize: vertical;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: 20px 18px;
+      background: rgba(0,0,0,0.33);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      line-height: 1.6;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    textarea::placeholder {
+      color: #8f8f9a;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-main {
+      background: linear-gradient(180deg, #ffffff, #dddddd);
+      color: #050505;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 13px 18px;
+    }
+
+    .results-card {
+      padding: 22px;
+      min-height: 620px;
       display: flex;
       flex-direction: column;
     }
 
-    .top-bar {
+    .results-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .results-top h3 {
+      margin: 6px 0 0;
+      font-size: 1.45rem;
+      letter-spacing: -0.03em;
+    }
+
+    .results-scroll {
+      display: grid;
+      gap: 14px;
+      flex: 1;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .result-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .result-card .mini-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    .section-title {
+    .result-card h4 {
       margin: 0;
-      font-size: 28px;
-      font-weight: 800;
+      font-size: 1rem;
       letter-spacing: -0.02em;
     }
 
-    .section-note {
-      margin: 6px 0 0;
-      color: var(--muted-2);
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
+    .copy-mini {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 999px;
-      background: rgba(103,93,255,0.12);
-      border: 1px solid rgba(103,93,255,0.3);
-      color: #dfe3ff;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #8fb5ff;
-      box-shadow: 0 0 14px rgba(143,181,255,0.8);
-      animation: blink 1.2s infinite ease-in-out;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.55; transform: scale(0.85); }
-      50% { opacity: 1; transform: scale(1.15); }
-    }
-
-    .mode-group {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .label {
-      font-size: 15px;
-      color: #e6eaf5;
-      font-weight: 700;
-    }
-
-    .modes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .mode-btn {
-      border: 1px solid #30415d;
-      background: linear-gradient(180deg, #17253a 0%, #142035 100%);
-      color: #e9edfb;
-      padding: 16px 22px;
-      border-radius: 999px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 60px;
-    }
-
-    .mode-btn:hover {
-      transform: translateY(-1px);
-      background: linear-gradient(180deg, #1c2d45 0%, #18263d 100%);
-    }
-
-    .mode-btn.active {
-      background: linear-gradient(135deg, var(--accent), #7a73ff);
-      border-color: #8e89ff;
-      box-shadow: 0 0 0 4px rgba(103,93,255,0.18), 0 16px 32px rgba(103,93,255,0.22);
-      color: #fff;
-      font-weight: 800;
-    }
-
-    .mode-btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .quick-picks {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .quick-chip {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      color: #d8deee;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.18s ease;
-    }
-
-    .quick-chip:hover {
-      background: rgba(103,93,255,0.12);
-      border-color: rgba(103,93,255,0.28);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .prompt-shell {
-      position: relative;
-      margin-bottom: 14px;
-    }
-
-    .prompt-box {
-      width: 100%;
-      min-height: 180px;
-      resize: vertical;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(10,16,40,0.75);
-      padding: 20px 20px 68px;
-      font-size: 16px;
-      line-height: 1.6;
-      color: #fff;
-      outline: none;
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.02),
-        0 10px 30px rgba(0,0,0,0.28);
-      transition: all 0.25s ease;
-    }
-
-    .prompt-box::placeholder {
-      color: rgba(255,255,255,0.35);
-    }
-
-    .prompt-box:focus {
-      border: 1px solid rgba(120,140,255,0.6);
-      box-shadow:
-        0 0 0 2px rgba(120,140,255,0.15),
-        0 10px 40px rgba(120,140,255,0.15);
-    }
-
-    .prompt-box:disabled {
-      opacity: 0.8;
-      cursor: wait;
-    }
-
-    .prompt-meta {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      pointer-events: none;
-    }
-
-    .hint {
-      color: var(--muted-2);
-      font-size: 13px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
       padding: 8px 12px;
-      border-radius: 999px;
+      font-size: 0.85rem;
     }
 
-    .char-count {
-      color: #dfe4f5;
-      font-size: 13px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(103,93,255,0.12);
-      border: 1px solid rgba(103,93,255,0.22);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 22px;
-      padding: 18px 28px;
-      font-size: 22px;
-      cursor: pointer;
-      transition: 0.18s ease;
-      min-height: 72px;
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #675dff 0%, #8278ff 100%);
-      color: #fff;
-      font-weight: 800;
-      min-width: 270px;
-      box-shadow: 0 16px 32px rgba(103,93,255,0.26);
-      flex: 1.2;
-    }
-
-    .btn-secondary {
-      background: linear-gradient(180deg, #1b2a45 0%, #18253d 100%);
-      color: #fff;
-      border: 1px solid #324362;
-      min-width: 180px;
-      opacity: 0.78;
-      flex: 0.7;
-    }
-
-    .btn-secondary:hover {
-      opacity: 0.95;
-    }
-
-    .btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .result-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .result-title {
+    .result-card pre {
       margin: 0;
-      font-size: 28px;
-      font-weight: 800;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #d7d7de;
+      font-family: inherit;
+      line-height: 1.65;
+      font-size: 0.96rem;
     }
 
-    .result-sub {
-      margin: 6px 0 0;
-      color: var(--muted-2);
-      font-size: 14px;
-    }
-
-    #result {
-      flex: 1;
-      min-height: 220px;
-      color: #eef2ff;
-    }
-
-    .empty-state {
-      height: 100%;
-      min-height: 220px;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      border: 1px dashed rgba(255,255,255,0.1);
-      border-radius: 24px;
-      background: rgba(255,255,255,0.02);
-      text-align: center;
-    }
-
-    .empty-state-inner {
-      max-width: 480px;
-    }
-
-    .empty-icon {
-      font-size: 46px;
-      margin-bottom: 12px;
-    }
-
-    .empty-title {
-      margin: 0 0 8px;
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .empty-text {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 16px;
-    }
-
-    .loading-box {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-height: 120px;
-      padding: 22px;
-      border-radius: 22px;
-      background: rgba(103,93,255,0.08);
-      border: 1px solid rgba(103,93,255,0.18);
-      color: #edf0ff;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .loading-ring {
-      width: 18px;
-      height: 18px;
-      border: 3px solid rgba(255,255,255,0.18);
-      border-top-color: #8ea0ff;
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .result-card {
-      margin-bottom: 16px;
-      padding: 20px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(11,20,46,0.95), rgba(10,18,40,0.94));
-      border: 1px solid rgba(84, 105, 157, 0.4);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.18);
-    }
-
-    .result-card:last-child { margin-bottom: 0; }
-
-    .result-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .result-card-title {
-      margin: 0;
-      font-size: 23px;
-      color: #9cacff;
-      line-height: 1.25;
-      font-weight: 800;
-    }
-
-    .copy-btn {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      border-radius: 12px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font-size: 13px;
-      flex-shrink: 0;
-    }
-
-    .copy-btn:hover {
-      background: rgba(103,93,255,0.12);
-      border-color: rgba(103,93,255,0.22);
-    }
-
-    .result-card-body {
-      white-space: normal;
-      color: #eef2ff;
-      line-height: 1.5;
-      font-size: 18px;
-    }
-
-    .stack {
+    .footer-note {
       margin-top: 18px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .mini-title {
-      margin: 0 0 8px;
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .mini-text {
-      margin: 0;
+      padding: 16px 18px;
+      border-radius: 18px;
       color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .usage-list {
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .usage-list strong { color: #fff; }
-
-    .mini-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .mini-badge {
-      padding: 8px 10px;
-      border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #d6dcef;
-      font-size: 12px;
-      font-weight: 700;
+      background: rgba(255,255,255,0.03);
+      line-height: 1.6;
     }
 
-    @media (max-width: 1220px) {
-      .studio {
+    @media (max-width: 1180px) {
+      .hero,
+      .workspace {
         grid-template-columns: 1fr;
       }
 
-      .results {
-        min-height: auto;
+      .results-card {
+        min-height: 420px;
       }
     }
 
-    @media (max-width: 900px) {
-      .hero {
-        padding: 12px 20px 12px;
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 20px, var(--max));
+        padding-top: 14px;
       }
 
-      .logo-wrap {
-        margin-top: 0;
-        padding-top: 0;
-      }
-
-      .hero-logo {
-        max-height: 120px;
-      }
-
-      .prompt-box {
-        min-height: 150px;
-        font-size: 15px;
-      }
-
-      .btn {
-        font-size: 19px;
-        min-height: 64px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 14px 10px 22px;
-      }
-
-      .hero,
-      .studio,
-      .composer,
-      .results,
-      .mini-panel {
-        border-radius: 22px;
-      }
-
-      .hero-logo {
-        max-height: 100px;
-      }
-
-      .headline {
-        font-size: 26px;
-      }
-
-      .section-title,
-      .result-title {
-        font-size: 22px;
-      }
-
-      .mode-btn {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .actions {
+      .topbar {
         flex-direction: column;
         align-items: stretch;
       }
 
-      .btn,
-      .copy-btn {
-        width: 100%;
-        flex: unset;
+      .brand {
+        align-items: flex-start;
       }
 
-      .result-head {
+      .brand-mark {
+        width: 64px;
+        height: 64px;
+      }
+
+      .mode-grid,
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .video-card {
+        min-height: auto;
+      }
+
+      .hero-logo {
+        width: min(68%, 320px);
+      }
+
+      .toolbar {
         flex-direction: column;
-      }
-
-      .prompt-box {
-        padding: 16px 16px 74px;
-        font-size: 15px;
-        min-height: 140px;
-      }
-
-      .prompt-meta {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
+        align-items: stretch;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero glass">
-      <div class="hero-inner">
-        <div class="hero-badge">Creative Engine</div>
-        <div class="logo-wrap">
-          <img src="logo.png" alt="Visyonix logo" class="hero-logo" />
+  <div class="bg-noise"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="logo.png" alt="Visyonix logo" />
         </div>
-        <div class="director-tag">⚡ Director Mode · obvious, fast, focused</div>
-        <h1 class="headline">Build premium creative direction in seconds, then move straight into production.</h1>
-        <p class="subtext">Turn simple ideas into high-value concepts, usable prompts, visual structure, scene direction, and shot-ready output without feeling buried in clutter.</p>
+        <div class="brand-copy">
+          <div class="eyebrow">Creative Engine</div>
+          <h1>Visyonix</h1>
+          <p>Premium cinematic prompt design for ads, music videos, trailers, and viral visuals.</p>
+        </div>
       </div>
+      <div class="top-actions">
+        <div class="ghost-pill">Premium UI</div>
+        <div class="ghost-pill">Video-ready</div>
+        <div class="ghost-pill">Deploy-ready</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-logo-wrap">
+          <img class="hero-logo" src="logo.png" alt="" aria-hidden="true" />
+        </div>
+        <div class="hero-fade"></div>
+        <div class="hero-copy">
+          <div class="kicker">Director Mode • Premium Experience</div>
+          <h2>From idea to cinematic direction in one elegant workspace.</h2>
+          <p>
+            Build high-end concept prompts with a stronger premium feel, room for branded video,
+            cleaner hierarchy, better motion, and a polished layout that feels like a real product.
+          </p>
+        </div>
+      </div>
+
+      <aside class="video-card">
+        <div>
+          <div class="card-label">Brand video</div>
+          <h3 style="margin:8px 0 0;font-size:1.5rem;letter-spacing:-0.03em;">Visyonix spotlight</h3>
+        </div>
+        <div class="video-stage" id="videoStage">
+          <div class="video-placeholder">
+            Drop in your Visyonix promo video here later. This panel is designed to showcase the brand without hurting the premium feel.
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat">
+            <strong>4 Modes</strong>
+            <span>Ad, Video, Trailer, Viral</span>
+          </div>
+          <div class="stat">
+            <strong>1 Flow</strong>
+            <span>Idea to output fast</span>
+          </div>
+          <div class="stat">
+            <strong>Pro Feel</strong>
+            <span>Luxury visual direction</span>
+          </div>
+        </div>
+      </aside>
     </section>
 
-    <section class="studio glass">
-      <div>
-        <div class="composer">
-          <div class="top-bar">
-            <div>
-              <h2 class="section-title">Director Console</h2>
-              <p class="section-note">Choose a mode, drop in your idea, and get structured output you can actually use.</p>
-            </div>
-            <div class="live-pill"><span class="dot"></span><span id="statusText">Mode: Cinematic Ad</span></div>
-          </div>
-
-          <div class="mode-group">
-            <div class="label">Choose a mode</div>
-            <div class="modes">
-              <button class="mode-btn active" data-mode="cinematic-ad" onclick="setMode('cinematic-ad', this)">🎬 Cinematic Ad</button>
-              <button class="mode-btn" data-mode="music-video" onclick="setMode('music-video', this)">🎵 Music Video</button>
-              <button class="mode-btn" data-mode="film-trailer" onclick="setMode('film-trailer', this)">🎞 Film Trailer</button>
-              <button class="mode-btn" data-mode="gospel-visual" onclick="setMode('gospel-visual', this)">✝️ Gospel Visual</button>
-              <button class="mode-btn" data-mode="viral-short" onclick="setMode('viral-short', this)">📱 Viral Short</button>
-            </div>
-          </div>
-
-          <div class="mode-group">
-            <div class="label">Quick start ideas</div>
-            <div class="quick-picks" id="quickPicks"></div>
-          </div>
-
-          <div class="mode-group">
-            <div class="label">Enter your idea</div>
-            <div class="prompt-shell">
-              <textarea
-                id="prompt"
-                class="prompt-box"
-                placeholder="Describe your idea...
-
-Example:
-Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal."
-              ></textarea>
-              <div class="prompt-meta">
-                <div class="hint">Be specific about mood, subject, setting, or message.</div>
-                <div class="char-count"><span id="charCount">0</span> characters</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button id="generateBtn" class="btn btn-primary" onclick="generate()">Generate Director Output</button>
-            <button id="clearBtn" class="btn btn-secondary" onclick="clearPrompt()">Clear</button>
-            <button id="copyResultBtn" class="btn btn-secondary" onclick="copyResult()">Copy Result</button>
-          </div>
-
-          <div class="stack">
-            <div class="mini-panel">
-              <h3 class="mini-title">How to use this output</h3>
-              <ul class="usage-list">
-                <li><strong>For AI video tools:</strong> copy the main prompt section into Kling, Runway, Veo, Pika, or similar tools.</li>
-                <li><strong>For editing:</strong> use the scene breakdown, camera notes, rhythm, and lighting sections as your shot map.</li>
-                <li><strong>For images:</strong> copy the visual prompt sections and refine with the style and mood notes.</li>
-                <li><strong>Best workflow:</strong> generate → copy the section you need → build → come back and refine.</li>
-              </ul>
-            </div>
-
-            <div class="mini-panel">
-              <h3 class="mini-title">What makes this work</h3>
-              <p class="mini-text">Big input, clear modes, strong primary action, instant copy buttons, and output cards that are ready to use the moment they appear.</p>
-              <div class="mini-badges">
-                <div class="mini-badge">Fast clarity</div>
-                <div class="mini-badge">One-screen flow</div>
-                <div class="mini-badge">Copy-ready cards</div>
-                <div class="mini-badge">Premium feel</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="results">
-        <div class="result-toolbar">
+    <section class="workspace">
+      <section class="panel">
+        <div class="panel-head">
           <div>
-            <h2 class="result-title">Director Output</h2>
-            <p class="result-sub">Structured results appear here in clean cards you can copy one by one.</p>
+            <div class="card-label">Input</div>
+            <h3>Creative direction</h3>
+            <p>Choose a mode, describe the concept, then generate structured premium output.</p>
           </div>
         </div>
 
-        <div id="result">
-          <div class="empty-state">
-            <div class="empty-state-inner">
-              <div class="empty-icon">🎞</div>
-              <h3 class="empty-title">Your result will appear here</h3>
-              <p class="empty-text">Generate a concept to reveal prompt sections, creative direction, scene breakdowns, and production-ready notes.</p>
-            </div>
+        <div class="mode-grid" id="modeGrid">
+          <button class="mode-btn active" data-mode="cinematic ad">
+            <strong>Cinematic Ad</strong>
+            <span>Luxury visual campaign concepts</span>
+          </button>
+          <button class="mode-btn" data-mode="music video">
+            <strong>Music Video</strong>
+            <span>Scene-building and rhythm-aware ideas</span>
+          </button>
+          <button class="mode-btn" data-mode="film trailer">
+            <strong>Film Trailer</strong>
+            <span>Big tension, pacing, dramatic reveals</span>
+          </button>
+          <button class="mode-btn" data-mode="viral short">
+            <strong>Viral Short</strong>
+            <span>Fast hooks with strong visual identity</span>
+          </button>
+        </div>
+
+        <textarea id="ideaInput" placeholder="Describe your concept here... example: A luxury gospeltronica launch film where light emerges from darkness, futuristic city reflections, premium black-and-silver styling, and emotionally rising motion."></textarea>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button class="btn-main" id="generateBtn">Generate</button>
+            <button class="btn-secondary" id="clearBtn">Clear</button>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-secondary" id="copyAllBtn">Copy All</button>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section class="results-card">
+        <div class="results-top">
+          <div>
+            <div class="card-label">Output</div>
+            <h3>Structured results</h3>
+          </div>
+        </div>
+
+        <div class="results-scroll" id="resultsArea">
+          <div class="result-card">
+            <div class="mini-head">
+              <h4>Concept Title</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Waiting for generation...</pre>
+          </div>
+          <div class="result-card">
+            <div class="mini-head">
+              <h4>Core Prompt</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Your premium Visyonix output will appear here.</pre>
+          </div>
+          <div class="result-card">
+            <div class="mini-head">
+              <h4>Scene Direction</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Scenes, mood, camera motion, and structure.</pre>
+          </div>
+          <div class="result-card">
+            <div class="mini-head">
+              <h4>Style Notes</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Lighting, texture, sound, and finish notes.</pre>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          Tip: this layout is built to feel premium first. Keep the motion subtle, the blacks rich, and the copy clean.
+        </div>
+      </section>
     </section>
-  </div>
+  </main>
 
   <script>
-    let selectedMode = 'cinematic-ad';
-    let loadingInterval = null;
+    let currentMode = 'cinematic ad';
 
-    const modeLabels = {
-      'cinematic-ad': 'Cinematic Ad',
-      'music-video': 'Music Video',
-      'film-trailer': 'Film Trailer',
-      'gospel-visual': 'Gospel Visual',
-      'viral-short': 'Viral Short'
-    };
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMode = btn.dataset.mode;
+      });
+    });
 
-    const placeholders = {
-      'cinematic-ad': `Describe your idea...
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      document.getElementById('ideaInput').value = '';
+    });
 
-Example:
-Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal.`,
-      'music-video': `Describe your idea...
+    document.getElementById('copyAllBtn').addEventListener('click', async () => {
+      const blocks = [...document.querySelectorAll('#resultsArea .result-card pre')]
+        .map(pre => pre.textContent.trim())
+        .join('\n\n');
+      try {
+        await navigator.clipboard.writeText(blocks);
+        document.getElementById('copyAllBtn').textContent = 'Copied';
+        setTimeout(() => document.getElementById('copyAllBtn').textContent = 'Copy All', 1400);
+      } catch {
+        alert('Copy failed.');
+      }
+    });
 
-Example:
-Emotional rooftop performance with neon city lights, rain reflections, choir reveal, and cinematic pacing.`,
-      'film-trailer': `Describe your idea...
+    async function copyCard(button) {
+      const text = button.closest('.result-card').querySelector('pre').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = button.textContent;
+        button.textContent = 'Copied';
+        setTimeout(() => button.textContent = original, 1400);
+      } catch {
+        alert('Copy failed.');
+      }
+    }
 
-Example:
-A fallen king returns to a ruined city to face the betrayal that destroyed his bloodline.`,
-      'gospel-visual': `Describe your idea...
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const input = document.getElementById('ideaInput').value.trim();
+      const btn = document.getElementById('generateBtn');
+      if (!input) {
+        alert('Please enter a concept first.');
+        return;
+      }
 
-Example:
-Chains breaking in radiant light as a crowd rises from despair into freedom and praise.`,
-      'viral-short': `Describe your idea...
+      btn.textContent = 'Generating...';
+      btn.disabled = true;
 
-Example:
-One impossible transformation shot that makes people instantly rewatch.`
-    };
+      try {
+        const res = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: currentMode, prompt: input })
+        });
 
-    const quickIdeas = {
-      'cinematic-ad': [
-        'luxury watch reveal in a storm',
-        'electric car launch in neon rain',
-        'high-end fragrance in slow motion'
-      ],
-      'music-video': [
-        'gospel soul video in city streets',
-        'romantic beach reunion performance',
-        'choir-led victory anthem with dancers'
-      ],
-      'film-trailer': [
-        'sci-fi rebellion under a red moon',
-        'western revenge in a dying town',
-        'biblical war of kingdoms and prophecy'
-      ],
-      'gospel-visual': [
-        'deliverance from fear into worship',
-        'a dry valley turning alive with light',
-        'a child confronting darkness with faith'
-      ],
-      'viral-short': [
-        'before-and-after power reveal',
-        'one room transforms into another world',
-        'freeze-time fashion entrance shot'
-      ]
-    };
+        const data = await res.json();
+        const output = typeof data.result === 'string' ? data.result : 'No response returned.';
+        renderResult(output);
+      } catch (err) {
+        renderResult('Visyonix could not generate output right now. Check your server, API key, and deployment logs.');
+      } finally {
+        btn.textContent = 'Generate';
+        btn.disabled = false;
+      }
+    });
 
-    const loadingMessages = [
-      'Building your director output...',
-      'Shaping the concept...',
-      'Structuring the scene flow...',
-      'Sharpening the prompts...',
-      'Polishing your final cards...'
-    ];
+    function renderResult(text) {
+      const sections = splitSections(text);
+      const titles = ['Concept Title', 'Core Prompt', 'Scene Direction', 'Style Notes'];
+      const area = document.getElementById('resultsArea');
+      area.innerHTML = '';
 
-    function updateQuickPicks() {
-      const box = document.getElementById('quickPicks');
-      box.innerHTML = '';
-
-      quickIdeas[selectedMode].forEach((idea) => {
-        const chip = document.createElement('button');
-        chip.className = 'quick-chip';
-        chip.type = 'button';
-        chip.textContent = idea;
-        chip.onclick = () => {
-          document.getElementById('prompt').value = idea;
-          updateCharCount();
-          document.getElementById('prompt').focus();
-        };
-        box.appendChild(chip);
+      titles.forEach((title, i) => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="mini-head">
+            <h4>${title}</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(sections[i] || 'No content returned for this section.')}</pre>
+        `;
+        area.appendChild(card);
       });
     }
 
-    function updatePlaceholder() {
-      document.getElementById('prompt').placeholder = placeholders[selectedMode];
-    }
+    function splitSections(text) {
+      const chunks = text
+        .split(/\n\s*\n+/)
+        .map(s => s.trim())
+        .filter(Boolean);
 
-    function updateStatus(text) {
-      document.getElementById('statusText').textContent = text;
-    }
+      if (chunks.length >= 4) return chunks.slice(0, 4);
 
-    function updateCharCount() {
-      document.getElementById('charCount').textContent = document.getElementById('prompt').value.length;
-    }
-
-    function setMode(mode, button) {
-      selectedMode = mode;
-      document.querySelectorAll('.mode-btn').forEach((btn) => btn.classList.remove('active'));
-      button.classList.add('active');
-      updateStatus('Mode: ' + modeLabels[mode]);
-      updateQuickPicks();
-      updatePlaceholder();
-    }
-
-    function prettifyResult(text) {
-      return (text || 'No response generated.')
-        .replace(/CONCEPT TITLE:/g, '🔥 CONCEPT TITLE:')
-        .replace(/CORE PROMPT:/g, '🎯 CORE PROMPT:')
-        .replace(/SCENE BREAKDOWN:/g, '🎬 SCENE BREAKDOWN:')
-        .replace(/CAMERA NOTES:/g, '📸 CAMERA NOTES:')
-        .replace(/LIGHTING NOTES:/g, '💡 LIGHTING NOTES:')
-        .replace(/STYLE KEYWORDS:/g, '🎨 STYLE KEYWORDS:')
-        .replace(/OPTIONAL VOICEOVER:/g, '🎙 OPTIONAL VOICEOVER:')
-        .replace(/VIDEO TITLE:/g, '🎵 VIDEO TITLE:')
-        .replace(/VISUAL CONCEPT:/g, '🌌 VISUAL CONCEPT:')
-        .replace(/MASTER VIDEO PROMPT:/g, '🎯 MASTER VIDEO PROMPT:')
-        .replace(/PERFORMANCE NOTES:/g, '🎤 PERFORMANCE NOTES:')
-        .replace(/LIGHTING \\+ COLOR:/g, '💡 LIGHTING + COLOR:')
-        .replace(/EDITING RHYTHM:/g, '✂️ EDITING RHYTHM:')
-        .replace(/TRAILER TITLE:/g, '🎞 TRAILER TITLE:')
-        .replace(/TRAILER HOOK:/g, '⚡ TRAILER HOOK:')
-        .replace(/MASTER TRAILER PROMPT:/g, '🎯 MASTER TRAILER PROMPT:')
-        .replace(/TRAILER BEATS:/g, '🎬 TRAILER BEATS:')
-        .replace(/OPTIONAL TAGLINE:/g, '🏷 OPTIONAL TAGLINE:')
-        .replace(/VISION TITLE:/g, '✝️ VISION TITLE:')
-        .replace(/SPIRITUAL CONCEPT:/g, '🙏 SPIRITUAL CONCEPT:')
-        .replace(/MASTER VISUAL PROMPT:/g, '🎯 MASTER VISUAL PROMPT:')
-        .replace(/SYMBOLIC ELEMENTS:/g, '✨ SYMBOLIC ELEMENTS:')
-        .replace(/LIGHTING \\+ MOOD:/g, '💡 LIGHTING + MOOD:')
-        .replace(/SHORT TITLE:/g, '📱 SHORT TITLE:')
-        .replace(/VIRAL ANGLE:/g, '🚀 VIRAL ANGLE:')
-        .replace(/MASTER SHORT PROMPT:/g, '🎯 MASTER SHORT PROMPT:')
-        .replace(/HOOK SHOT:/g, '🎣 HOOK SHOT:')
-        .replace(/MIDDLE BEAT:/g, '⚡ MIDDLE BEAT:')
-        .replace(/ENDING BEAT:/g, '🏁 ENDING BEAT:')
-        .replace(/ON-SCREEN TEXT IDEA:/g, '📝 ON-SCREEN TEXT IDEA:');
+      const approx = [];
+      const length = text.length;
+      const quarter = Math.ceil(length / 4);
+      for (let i = 0; i < 4; i++) {
+        approx.push(text.slice(i * quarter, (i + 1) * quarter).trim());
+      }
+      return approx;
     }
 
     function escapeHtml(str) {
-      return String(str)
+      return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
     }
-
-    async function copySection(text, btn) {
-      await navigator.clipboard.writeText(text);
-      const oldText = btn.textContent;
-      btn.textContent = 'Copied!';
-      btn.disabled = true;
-      setTimeout(() => {
-        btn.textContent = oldText;
-        btn.disabled = false;
-      }, 900);
-    }
-
-    function formatToHTML(text) {
-      return text
-        .split('\n\n')
-        .map((section) => {
-          const cleaned = section.trim();
-          if (!cleaned) return '';
-
-          const parts = cleaned.split('\n');
-          const title = parts[0];
-          const bodyText = parts.slice(1).join('\n').trim();
-          const safeTitle = escapeHtml(title);
-          const safeBody = escapeHtml(bodyText).replace(/\n/g, '<br>');
-          const bodyForCopy = JSON.stringify(bodyText || title);
-
-          return `
-            <div class="result-card">
-              <div class="result-head">
-                <h3 class="result-card-title">${safeTitle}</h3>
-                <button class="copy-btn" onclick='copySection(${bodyForCopy}, this)'>Copy</button>
-              </div>
-              <div class="result-card-body">${safeBody}</div>
-            </div>
-          `;
-        })
-        .join('');
-    }
-
-    function renderEmptyState() {
-      document.getElementById('result').innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-inner">
-            <div class="empty-icon">🎞</div>
-            <h3 class="empty-title">Your result will appear here</h3>
-            <p class="empty-text">Generate a concept to reveal prompt sections, creative direction, scene breakdowns, and production-ready notes.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    function clearPrompt() {
-      document.getElementById('prompt').value = '';
-      updateCharCount();
-      renderEmptyState();
-      updateStatus('Mode: ' + modeLabels[selectedMode]);
-      document.getElementById('prompt').focus();
-    }
-
-    function setLoadingUI() {
-      const resultBox = document.getElementById('result');
-      const generateBtn = document.getElementById('generateBtn');
-      const clearBtn = document.getElementById('clearBtn');
-      const copyResultBtn = document.getElementById('copyResultBtn');
-      const promptBox = document.getElementById('prompt');
-
-      resultBox.innerHTML = `
-        <div class="loading-box">
-          <div class="loading-ring"></div>
-          <div id="loadingMessage">Building your director output...</div>
-        </div>
-      `;
-
-      generateBtn.disabled = true;
-      clearBtn.disabled = true;
-      copyResultBtn.disabled = true;
-      promptBox.disabled = true;
-      generateBtn.textContent = 'Generating...';
-      document.querySelectorAll('.mode-btn').forEach((btn) => btn.disabled = true);
-
-      let i = 0;
-      updateStatus(loadingMessages[i]);
-      clearInterval(loadingInterval);
-      loadingInterval = setInterval(() => {
-        i = (i + 1) % loadingMessages.length;
-        const msg = document.getElementById('loadingMessage');
-        if (msg) msg.textContent = loadingMessages[i];
-        updateStatus(loadingMessages[i]);
-      }, 1100);
-    }
-
-    function clearLoadingUI() {
-      clearInterval(loadingInterval);
-      document.getElementById('generateBtn').disabled = false;
-      document.getElementById('clearBtn').disabled = false;
-      document.getElementById('copyResultBtn').disabled = false;
-      document.getElementById('prompt').disabled = false;
-      document.getElementById('generateBtn').textContent = 'Generate Director Output';
-      document.querySelectorAll('.mode-btn').forEach((btn) => btn.disabled = false);
-      updateStatus('Mode: ' + modeLabels[selectedMode]);
-    }
-
-    async function generate() {
-      const prompt = document.getElementById('prompt').value.trim();
-      const resultBox = document.getElementById('result');
-
-      if (!prompt) {
-        resultBox.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-inner">
-              <div class="empty-icon">✍️</div>
-              <h3 class="empty-title">Enter an idea first</h3>
-              <p class="empty-text">Give Director Mode something to build from, then generate your structured creative output.</p>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      setLoadingUI();
-
-      try {
-        const response = await fetch('/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            idea: prompt,
-            mode: selectedMode
-          })
-        });
-
-        const data = await response.json();
-
-        if (!data.result) {
-          resultBox.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-state-inner">
-                <div class="empty-icon">⚠️</div>
-                <h3 class="empty-title">No response</h3>
-                <p class="empty-text">The generator returned an empty result. Try adjusting the idea and run it again.</p>
-              </div>
-            </div>
-          `;
-          return;
-        }
-
-        const formatted = prettifyResult(data.result);
-        resultBox.innerHTML = formatToHTML(formatted);
-
-      } catch (error) {
-        console.error(error);
-        resultBox.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-inner">
-              <div class="empty-icon">❌</div>
-              <h3 class="empty-title">Something went wrong</h3>
-              <p class="empty-text">The request failed while generating. Please try again.</p>
-            </div>
-          </div>
-        `;
-      } finally {
-        clearLoadingUI();
-      }
-    }
-
-    async function copyResult() {
-      const text = document.getElementById('result').innerText.trim();
-      if (!text) return;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        updateStatus('Copied result to clipboard');
-        setTimeout(() => updateStatus('Mode: ' + modeLabels[selectedMode]), 1400);
-      } catch (error) {
-        updateStatus('Copy failed');
-      }
-    }
-
-    document.getElementById('prompt').addEventListener('input', updateCharCount);
-    updateQuickPicks();
-    updatePlaceholder();
-    updateCharCount();
   </script>
 </body>
 </html>
