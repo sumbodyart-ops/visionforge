@@ -21,8 +21,6 @@
       --bg-1: #08101f;
       --bg-2: #0c1630;
       --panel: rgba(255,255,255,0.05);
-      --panel-2: rgba(10,18,40,0.86);
-      --line: rgba(255,255,255,0.1);
       --text: #ffffff;
       --muted: #cfd6e8;
       --muted-2: #97a2bd;
@@ -185,11 +183,6 @@
       background: rgba(10,18,40,0.86);
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-
-    .composer,
-    .results,
-    .mini-panel {
       padding: 20px;
     }
 
@@ -848,26 +841,26 @@ Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dr
     };
 
     const placeholders = {
-      'cinematic-ad': 'Describe your idea...
+      'cinematic-ad': `Describe your idea...
 
 Example:
-Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal.',
-      'music-video': 'Describe your idea...
+Luxury car commercial at night in neon rain, cinematic lighting, slow motion, dramatic reveal.`,
+      'music-video': `Describe your idea...
 
 Example:
-Emotional rooftop performance with neon city lights, rain reflections, choir reveal, and cinematic pacing.',
-      'film-trailer': 'Describe your idea...
+Emotional rooftop performance with neon city lights, rain reflections, choir reveal, and cinematic pacing.`,
+      'film-trailer': `Describe your idea...
 
 Example:
-A fallen king returns to a ruined city to face the betrayal that destroyed his bloodline.',
-      'gospel-visual': 'Describe your idea...
+A fallen king returns to a ruined city to face the betrayal that destroyed his bloodline.`,
+      'gospel-visual': `Describe your idea...
 
 Example:
-Chains breaking in radiant light as a crowd rises from despair into freedom and praise.',
-      'viral-short': 'Describe your idea...
+Chains breaking in radiant light as a crowd rises from despair into freedom and praise.`,
+      'viral-short': `Describe your idea...
 
 Example:
-One impossible transformation shot that makes people instantly rewatch.'
+One impossible transformation shot that makes people instantly rewatch.`
     };
 
     const quickIdeas = {
@@ -958,7 +951,7 @@ One impossible transformation shot that makes people instantly rewatch.'
         .replace(/VISUAL CONCEPT:/g, '🌌 VISUAL CONCEPT:')
         .replace(/MASTER VIDEO PROMPT:/g, '🎯 MASTER VIDEO PROMPT:')
         .replace(/PERFORMANCE NOTES:/g, '🎤 PERFORMANCE NOTES:')
-        .replace(/LIGHTING \+ COLOR:/g, '💡 LIGHTING + COLOR:')
+        .replace(/LIGHTING \\+ COLOR:/g, '💡 LIGHTING + COLOR:')
         .replace(/EDITING RHYTHM:/g, '✂️ EDITING RHYTHM:')
         .replace(/TRAILER TITLE:/g, '🎞 TRAILER TITLE:')
         .replace(/TRAILER HOOK:/g, '⚡ TRAILER HOOK:')
@@ -969,7 +962,7 @@ One impossible transformation shot that makes people instantly rewatch.'
         .replace(/SPIRITUAL CONCEPT:/g, '🙏 SPIRITUAL CONCEPT:')
         .replace(/MASTER VISUAL PROMPT:/g, '🎯 MASTER VISUAL PROMPT:')
         .replace(/SYMBOLIC ELEMENTS:/g, '✨ SYMBOLIC ELEMENTS:')
-        .replace(/LIGHTING \+ MOOD:/g, '💡 LIGHTING + MOOD:')
+        .replace(/LIGHTING \\+ MOOD:/g, '💡 LIGHTING + MOOD:')
         .replace(/SHORT TITLE:/g, '📱 SHORT TITLE:')
         .replace(/VIRAL ANGLE:/g, '🚀 VIRAL ANGLE:')
         .replace(/MASTER SHORT PROMPT:/g, '🎯 MASTER SHORT PROMPT:')
@@ -999,21 +992,16 @@ One impossible transformation shot that makes people instantly rewatch.'
 
     function formatToHTML(text) {
       return text
-        .split('
-
-')
+        .split('\n\n')
         .map((section) => {
           const cleaned = section.trim();
           if (!cleaned) return '';
 
-          const parts = cleaned.split('
-');
+          const parts = cleaned.split('\n');
           const title = parts[0];
-          const bodyText = parts.slice(1).join('
-').trim();
+          const bodyText = parts.slice(1).join('\n').trim();
           const safeTitle = escapeHtml(title);
-          const safeBody = escapeHtml(bodyText).replace(/
-/g, '<br>');
+          const safeBody = escapeHtml(bodyText).replace(/\n/g, '<br>');
           const bodyForCopy = JSON.stringify(bodyText || title);
 
           return `
@@ -1047,12 +1035,6 @@ One impossible transformation shot that makes people instantly rewatch.'
       renderEmptyState();
       updateStatus('Mode: ' + modeLabels[selectedMode]);
       document.getElementById('prompt').focus();
-    }
-
-    function trackGenerateClick() {
-      if (typeof gtag === 'function') {
-        gtag('event', 'generate_click', { mode: selectedMode });
-      }
     }
 
     function setLoadingUI() {
@@ -1115,14 +1097,16 @@ One impossible transformation shot that makes people instantly rewatch.'
         return;
       }
 
-      trackGenerateClick();
       setLoadingUI();
 
       try {
         const response = await fetch('/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, mode: selectedMode })
+          body: JSON.stringify({
+            idea: prompt,
+            mode: selectedMode
+          })
         });
 
         const data = await response.json();
@@ -1142,7 +1126,9 @@ One impossible transformation shot that makes people instantly rewatch.'
 
         const formatted = prettifyResult(data.result);
         resultBox.innerHTML = formatToHTML(formatted);
+
       } catch (error) {
+        console.error(error);
         resultBox.innerHTML = `
           <div class="empty-state">
             <div class="empty-state-inner">
