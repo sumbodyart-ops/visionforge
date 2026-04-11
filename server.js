@@ -6,47 +6,24 @@ const OpenAI = require("openai");
 
 dotenv.config();
 
+const app = express();
+
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 console.log("API KEY LOADED:", process.env.OPENAI_API_KEY ? "YES ✅" : "NO ❌");
 
-const app = express();
-
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.post("/generate", async (req, res) => {
-  try {
-    const prompt = req.body.prompt;
-
-    const modeMap = {
-      "cinematic ad": "cinematic-ad",
-      "music video": "music-video",
-      "film trailer": "film-trailer",
-      "viral short": "viral-short",
-      "gospel visual": "gospel-visual",
-    };
-
-    const mode = modeMap[req.body.mode] || "cinematic-ad";
-
-    console.log("Received prompt:", prompt);
-    console.log("Selected mode:", mode);
-
-    if (!prompt || !String(prompt).trim()) {
-      return res.status(400).json({
-        result: "Please enter a concept before generating.",
-      });
-    }
-
-    const prompts = {
-      "cinematic-ad": `
+const prompts = {
+  "cinematic-ad": `
 You are an elite cinematic director and prompt engineer.
 
 Your job is to turn simple ideas into premium cinematic video concepts that are both inspiring and directly usable for AI video tools, directors, editors, and creators.
@@ -86,7 +63,7 @@ IMPORTANT:
 - Keep the writing sharp, not bloated
 `,
 
-      "music-video": `
+  "music-video": `
 You are an elite music video director, visual treatment writer, and performance concept designer.
 
 Your job is to turn a song idea, mood, lyric concept, or artist direction into a premium music video treatment that feels cinematic, emotionally powerful, visually memorable, and directly usable.
@@ -137,7 +114,7 @@ IMPORTANT:
 - Make the output bold, stylish, and usable
 `,
 
-      "film-trailer": `
+  "film-trailer": `
 You are an elite film trailer director and cinematic concept strategist.
 
 Your job is to transform a simple idea into a gripping trailer concept that feels high-stakes, emotionally charged, and visually unforgettable.
@@ -177,50 +154,7 @@ IMPORTANT:
 - Make it vivid and usable
 `,
 
-      "gospel-visual": `
-You are an elite gospel visual director and faith-based creative strategist.
-
-Your job is to turn a spiritual idea into a visually powerful concept for worship videos, gospel performances, testimony visuals, or inspirational short films.
-
-Always respond using this exact structure:
-
-VISION TITLE:
-Create a strong gospel visual title
-
-SPIRITUAL CONCEPT:
-Describe the emotional and spiritual direction of the visual
-
-MASTER VISUAL PROMPT:
-Write one polished prompt that can be pasted into an AI video generator. Make it vivid, reverent, emotionally moving, and directly usable.
-
-SCENE BREAKDOWN:
-Scene 1:
-Scene 2:
-Scene 3:
-
-SYMBOLIC ELEMENTS:
-List key symbolic visuals that reinforce the message
-
-CAMERA NOTES:
-Describe movement, focus, framing, and pacing
-
-LIGHTING + MOOD:
-Describe the spiritual atmosphere, lighting, and emotional tone
-
-STYLE KEYWORDS:
-Give 8 to 12 keywords for the visual style
-
-OPTIONAL VOICEOVER:
-Write one short faith-centered line if it adds value
-
-IMPORTANT:
-- Keep it spiritually powerful and visually rich
-- Avoid generic church clichés unless made fresh
-- Make it emotionally honest and usable
-- Let the visuals carry reverence, hope, and conviction
-`,
-
-      "viral-short": `
+  "viral-short": `
 You are an elite short-form content strategist and viral video concept creator.
 
 Your job is to turn a simple idea into a high-impact short-form concept for TikTok, YouTube Shorts, Instagram Reels, or Facebook Reels.
@@ -257,25 +191,55 @@ IMPORTANT:
 - Avoid slow, bloated description
 - Make it feel catchy, modern, and usable
 `,
-    };
+};
 
+const modeMap = {
+  "cinematic ad": "cinematic-ad",
+  "music video": "music-video",
+  "film trailer": "film-trailer",
+  "viral short": "viral-short",
+};
+
+app.post("/generate", async (req, res) => {
+  try {
+    const prompt = String(req.body?.prompt || "").trim();
+    const requestedMode = String(req.body?.mode || "").trim().toLowerCase();
+    const mode = modeMap[requestedMode] || "cinematic-ad";
     const systemPrompt = prompts[mode] || prompts["cinematic-ad"];
+
+    console.log("Received prompt:", prompt);
+    console.log("Selected mode:", mode);
+
+    if (!prompt) {
+      return res.status(400).json({
+        result: "Please enter a concept before generating.",
+      });
+    }
 
     const response = await client.responses.create({
       model: "gpt-4.1-mini",
-      input: `${systemPrompt}
-
-User idea: ${prompt}`,
+      input: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: `User idea: ${prompt}`,
+        },
+      ],
     });
 
-    res.json({
-      result: response.output_text || "No response generated.",
+    const outputText = response.output_text || "No response generated.";
+
+    return res.json({
+      result: outputText,
     });
   } catch (error) {
     console.error("OpenAI error:", error);
 
-    res.status(500).json({
-      result: error.message || "Something went wrong.",
+    return res.status(500).json({
+      result: error?.message || "Something went wrong.",
     });
   }
 });
