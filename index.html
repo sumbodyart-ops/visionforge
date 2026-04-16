@@ -739,7 +739,7 @@
       <div class="top-actions">
         <div class="ghost-pill">Premium UI</div>
         <div class="ghost-pill">Structured Output</div>
-        <div class="ghost-pill">Deploy Ready</div>
+        <div class="ghost-pill">Render Connected</div>
       </div>
     </header>
 
@@ -838,6 +838,7 @@
           <div class="toolbar-left">
             <button class="btn-main" id="generateBtn">Generate</button>
             <button class="btn-secondary" id="clearBtn">Clear</button>
+            <button class="btn-secondary" id="testServerBtn">Test Server</button>
           </div>
           <div class="toolbar-right">
             <button class="btn-secondary" id="copyAllBtn">Copy All</button>
@@ -911,9 +912,13 @@
   <script>
     let currentMode = "cinematic ad";
 
+    // REPLACE THIS WITH YOUR REAL RENDER BACKEND URL
+    const API_BASE = "https://YOUR-RENDER-BACKEND.onrender.com";
+
     const generateBtn = document.getElementById("generateBtn");
     const clearBtn = document.getElementById("clearBtn");
     const copyAllBtn = document.getElementById("copyAllBtn");
+    const testServerBtn = document.getElementById("testServerBtn");
     const ideaInput = document.getElementById("ideaInput");
     const resultsArea = document.getElementById("resultsArea");
     const brandVideo = document.getElementById("brandVideo");
@@ -1019,6 +1024,31 @@
       resultsArea.classList.remove("loading");
     }
 
+    async function callGenerate(payload) {
+      const res = await fetch(`${API_BASE}/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const rawText = await res.text();
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}: ${rawText}`);
+      }
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(`Invalid JSON from server: ${rawText}`);
+      }
+
+      return data;
+    }
+
     generateBtn.addEventListener("click", async () => {
       const input = ideaInput.value.trim();
 
@@ -1032,24 +1062,40 @@
       showLoadingState();
 
       try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            mode: currentMode,
-            prompt: input
-          })
+        const data = await callGenerate({
+          mode: currentMode,
+          prompt: input
         });
 
-        const data = await res.json();
-        const output = typeof data.result === "string" ? data.result : "No response returned.";
+        const output =
+          typeof data.result === "string" && data.result.trim()
+            ? data.result
+            : "No response returned.";
+
         renderResult(output);
       } catch (error) {
-        renderResult("Visyonix could not generate output right now. Check your server, API key, and deployment logs.");
+        console.error("Generate error:", error);
+        renderResult(
+          "Visyonix could not generate output right now.\n\n" +
+          "DETAILS:\n" + error.message
+        );
       } finally {
         generateBtn.textContent = "Generate";
         generateBtn.disabled = false;
         hideLoadingState();
+      }
+    });
+
+    testServerBtn.addEventListener("click", async () => {
+      try {
+        const data = await callGenerate({
+          mode: "cinematic ad",
+          prompt: "test prompt"
+        });
+
+        alert("Server connection works.\n\n" + JSON.stringify(data).slice(0, 500));
+      } catch (error) {
+        alert("Server test failed.\n\n" + error.message);
       }
     });
 
