@@ -8,17 +8,12 @@
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
-    const GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', GA_MEASUREMENT_ID, {
-      send_page_view: true,
-      page_title: document.title,
-      page_location: window.location.href,
-      page_path: window.location.pathname
-    });
+    gtag('config', 'G-XXXXXXXXXX', { send_page_view: true });
   </script>
+
   <style>
     :root {
       --bg: #030303;
@@ -927,28 +922,16 @@
     let currentMode = "cinematic ad";
     const API_BASE = "https://visionforge-z9yx.onrender.com";
 
-    function trackEvent(eventName, params = {}) {
+    function trackEvent(name, params = {}) {
       try {
         if (typeof window.gtag === "function") {
-          window.gtag("event", eventName, {
-            app_name: "Visyonix",
-            page_path: window.location.pathname,
-            ...params
-          });
+          window.gtag("event", name, params);
         }
       } catch (error) {
-        console.warn("Analytics tracking failed:", error);
+        console.warn("Analytics error:", error);
       }
     }
 
-    function getExportLabel(button) {
-      return (
-        button?.dataset?.export ||
-        button?.getAttribute("data-export") ||
-        button?.textContent?.trim() ||
-        "unknown_export"
-      );
-    }
 
     const generateBtn = document.getElementById("generateBtn");
     const clearBtn = document.getElementById("clearBtn");
@@ -961,7 +944,7 @@
     window.addEventListener("load", () => {
       trackEvent("page_load", {
         page_title: document.title,
-        page_location: window.location.href
+        page_path: window.location.pathname
       });
     });
 
@@ -975,7 +958,7 @@
     });
 
     clearBtn.addEventListener("click", () => {
-      trackEvent("clear_clicked", { mode: currentMode, had_text: Boolean(ideaInput.value.trim()) });
+      trackEvent("clear_clicked", { mode: currentMode });
       ideaInput.value = "";
       ideaInput.focus();
     });
@@ -1002,8 +985,8 @@
     async function copyCard(button) {
       const text = button.closest(".result-card, .scene-card").querySelector("pre").textContent.trim();
       try {
-        const sectionName = button.closest(".result-card, .scene-card")?.querySelector("h4")?.textContent?.trim() || "unknown_section";
         await navigator.clipboard.writeText(text);
+        const sectionName = button.closest(".result-card, .scene-card")?.querySelector("h4")?.textContent?.trim() || "unknown_section";
         trackEvent("copy_section", { mode: currentMode, section: sectionName, characters: text.length });
         const original = button.textContent;
         button.textContent = "Copied";
@@ -1122,11 +1105,11 @@
             ? data.result
             : "No response returned.";
 
-        trackEvent("generate_success", { mode: currentMode, output_length: output.length });
+        trackEvent("generate_success", { mode: currentMode, result_length: output.length });
         renderResult(output);
       } catch (error) {
-        trackEvent("generate_error", { mode: currentMode, error_message: String(error.message || "unknown_error").slice(0, 150) });
         console.error("Generate error:", error);
+        trackEvent("generate_error", { mode: currentMode, error_message: error.message });
         renderResult(
           "Visyonix could not generate output right now.\n\n" +
           "DETAILS:\n" + error.message
@@ -1424,10 +1407,16 @@
         .replace(/>/g, "&gt;");
     }
 
+
     document.addEventListener("click", event => {
       const exportButton = event.target.closest("[data-export], .export-btn, #exportBtn, #exportImageBtn, #exportPdfBtn");
       if (exportButton) {
-        trackEvent("export_clicked", { mode: currentMode, export_type: getExportLabel(exportButton) });
+        const exportType =
+          exportButton.dataset.export ||
+          exportButton.getAttribute("data-export") ||
+          exportButton.textContent.trim() ||
+          "unknown_export";
+        trackEvent("export_clicked", { mode: currentMode, export_type: exportType });
       }
     });
 
