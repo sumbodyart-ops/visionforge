@@ -4,6 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visyonix</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    const GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, {
+      send_page_view: true,
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname
+    });
+  </script>
   <style>
     :root {
       --bg: #030303;
@@ -838,7 +853,6 @@
           <div class="toolbar-left">
             <button class="btn-main" id="generateBtn">Generate</button>
             <button class="btn-secondary" id="clearBtn">Clear</button>
-            <button class="btn-secondary" id="testServerBtn">Test Server</button>
           </div>
           <div class="toolbar-right">
             <button class="btn-secondary" id="copyAllBtn">Copy All</button>
@@ -913,24 +927,55 @@
     let currentMode = "cinematic ad";
     const API_BASE = "https://visionforge-z9yx.onrender.com";
 
+    function trackEvent(eventName, params = {}) {
+      try {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", eventName, {
+            app_name: "Visyonix",
+            page_path: window.location.pathname,
+            ...params
+          });
+        }
+      } catch (error) {
+        console.warn("Analytics tracking failed:", error);
+      }
+    }
+
+    function getExportLabel(button) {
+      return (
+        button?.dataset?.export ||
+        button?.getAttribute("data-export") ||
+        button?.textContent?.trim() ||
+        "unknown_export"
+      );
+    }
+
     const generateBtn = document.getElementById("generateBtn");
     const clearBtn = document.getElementById("clearBtn");
     const copyAllBtn = document.getElementById("copyAllBtn");
-    const testServerBtn = document.getElementById("testServerBtn");
     const ideaInput = document.getElementById("ideaInput");
     const resultsArea = document.getElementById("resultsArea");
     const brandVideo = document.getElementById("brandVideo");
     const videoFallback = document.getElementById("videoFallback");
+
+    window.addEventListener("load", () => {
+      trackEvent("page_load", {
+        page_title: document.title,
+        page_location: window.location.href
+      });
+    });
 
     document.querySelectorAll(".mode-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         currentMode = btn.dataset.mode;
+        trackEvent("mode_selected", { mode: currentMode });
       });
     });
 
     clearBtn.addEventListener("click", () => {
+      trackEvent("clear_clicked", { mode: currentMode, had_text: Boolean(ideaInput.value.trim()) });
       ideaInput.value = "";
       ideaInput.focus();
     });
@@ -942,12 +987,14 @@
 
       try {
         await navigator.clipboard.writeText(blocks);
+        trackEvent("copy_all", { mode: currentMode, characters: blocks.length });
         const original = copyAllBtn.textContent;
         copyAllBtn.textContent = "Copied";
         setTimeout(() => {
           copyAllBtn.textContent = original;
         }, 1400);
       } catch {
+        trackEvent("copy_all_error", { mode: currentMode });
         alert("Copy failed.");
       }
     });
@@ -955,13 +1002,16 @@
     async function copyCard(button) {
       const text = button.closest(".result-card, .scene-card").querySelector("pre").textContent.trim();
       try {
+        const sectionName = button.closest(".result-card, .scene-card")?.querySelector("h4")?.textContent?.trim() || "unknown_section";
         await navigator.clipboard.writeText(text);
+        trackEvent("copy_section", { mode: currentMode, section: sectionName, characters: text.length });
         const original = button.textContent;
         button.textContent = "Copied";
         setTimeout(() => {
           button.textContent = original;
         }, 1400);
       } catch {
+        trackEvent("copy_section_error", { mode: currentMode });
         alert("Copy failed.");
       }
     }
@@ -1055,6 +1105,8 @@
         return;
       }
 
+      trackEvent("generate_clicked", { mode: currentMode, prompt_length: input.length });
+
       generateBtn.textContent = "Generating...";
       generateBtn.disabled = true;
       showLoadingState();
@@ -1070,8 +1122,10 @@
             ? data.result
             : "No response returned.";
 
+        trackEvent("generate_success", { mode: currentMode, output_length: output.length });
         renderResult(output);
       } catch (error) {
+        trackEvent("generate_error", { mode: currentMode, error_message: String(error.message || "unknown_error").slice(0, 150) });
         console.error("Generate error:", error);
         renderResult(
           "Visyonix could not generate output right now.\n\n" +
@@ -1083,13 +1137,6 @@
         hideLoadingState();
       }
     });
-
-    testServerBtn.addEventListener("click", async () => {
-      try {
-        const data = await callGenerate({
-          mode: "cinematic ad",
-          prompt: "test prompt"
-        });
 
         alert("Server connection works.\n\n" + JSON.stringify(data).slice(0, 500));
       } catch (error) {
@@ -1376,6 +1423,13 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
     }
+
+    document.addEventListener("click", event => {
+      const exportButton = event.target.closest("[data-export], .export-btn, #exportBtn, #exportImageBtn, #exportPdfBtn");
+      if (exportButton) {
+        trackEvent("export_clicked", { mode: currentMode, export_type: getExportLabel(exportButton) });
+      }
+    });
 
     if (brandVideo) {
       brandVideo.addEventListener("error", () => {
