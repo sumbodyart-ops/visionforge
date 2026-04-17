@@ -13,6 +13,7 @@
     gtag('js', new Date());
     gtag('config', 'G-M3WVYET0V7', { send_page_view: true });
   </script>
+
   <style>
     :root {
       --bg: #030303;
@@ -931,7 +932,6 @@
       }
     }
 
-
     const generateBtn = document.getElementById("generateBtn");
     const clearBtn = document.getElementById("clearBtn");
     const copyAllBtn = document.getElementById("copyAllBtn");
@@ -946,7 +946,6 @@
         page_path: window.location.pathname
       });
     });
-
 
     document.querySelectorAll(".mode-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1118,12 +1117,6 @@
         generateBtn.textContent = "Generate";
         generateBtn.disabled = false;
         hideLoadingState();
-      }
-    });
-
-        alert("Server connection works.\n\n" + JSON.stringify(data).slice(0, 500));
-      } catch (error) {
-        alert("Server test failed.\n\n" + error.message);
       }
     });
 
@@ -1406,7 +1399,6 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
     }
-
 
     document.addEventListener("click", event => {
       const exportButton = event.target.closest("[data-export], .export-btn, #exportBtn, #exportImageBtn, #exportPdfBtn");
