@@ -601,7 +601,8 @@
     }
 
     .result-card .mini-head,
-    .scene-card .mini-head {
+    .scene-card .mini-head,
+    .execution-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -610,7 +611,8 @@
     }
 
     .result-card h4,
-    .scene-card h4 {
+    .scene-card h4,
+    .execution-head h4 {
       margin: 0;
       font-size: 1rem;
       letter-spacing: -0.02em;
@@ -651,6 +653,78 @@
     .loading .result-card pre,
     .loading .scene-card pre {
       color: #a8a8b3;
+    }
+
+    .execution-panel {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at top right, rgba(95, 140, 255, 0.08), transparent 70%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .execution-intro {
+      color: #d7d7de;
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+
+    .execution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .execution-box {
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
+        radial-gradient(circle at top, rgba(95, 140, 255, 0.06), transparent 70%);
+    }
+
+    .execution-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    .execution-box ul,
+    .execution-box ol {
+      margin: 0;
+      padding-left: 18px;
+      color: #d7d7de;
+      line-height: 1.6;
+      font-size: 0.94rem;
+    }
+
+    .execution-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .execution-note {
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
+        radial-gradient(circle at left, rgba(154, 107, 255, 0.05), transparent 70%);
+      color: #d7d7de;
+      line-height: 1.65;
+      font-size: 0.94rem;
+    }
+
+    .execution-note strong {
+      color: var(--text);
     }
 
     @keyframes fadeUp {
@@ -707,7 +781,8 @@
       }
 
       .mode-grid,
-      .stats-row {
+      .stats-row,
+      .execution-grid {
         grid-template-columns: 1fr;
       }
 
@@ -732,7 +807,9 @@
 
       .toolbar-left button,
       .toolbar-right button,
-      .toolbar-right a {
+      .toolbar-right a,
+      .execution-actions button,
+      .execution-actions a {
         flex: 1;
       }
     }
@@ -927,6 +1004,53 @@
             </div>
             <pre>Style notes will appear here.</pre>
           </div>
+
+          <div class="execution-panel">
+            <div class="execution-head">
+              <h4>Execution Panel</h4>
+            </div>
+
+            <div class="execution-intro">
+              Visyonix gives you the creative direction. This panel shows the fastest next step so you can move from concept to usable video output with less guessing.
+            </div>
+
+            <div class="execution-grid">
+              <div class="execution-box">
+                <strong>How to use your output</strong>
+                <ol>
+                  <li>Generate your concept in Visyonix</li>
+                  <li>Review the Core Prompt and scene breakdown</li>
+                  <li>Copy the Core Prompt</li>
+                  <li>Open Revid</li>
+                  <li>Paste the prompt and build your video</li>
+                </ol>
+              </div>
+
+              <div class="execution-box">
+                <strong>Why this helps</strong>
+                <ul>
+                  <li>Reduces guesswork before rendering</li>
+                  <li>Gives cleaner prompts for generators</li>
+                  <li>Turns scenes into usable production direction</li>
+                  <li>Makes your workflow faster and more consistent</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="execution-actions">
+              <button class="btn-secondary" onclick="copyCorePrompt()">Copy Core Prompt</button>
+              <a
+                href="https://www.revid.ai/?via=fred-latin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-main revid-link-btn"
+              >Create in Revid</a>
+            </div>
+
+            <div class="execution-note">
+              <strong>Tip:</strong> Start with the Core Prompt, then use the scene cards to refine pacing, camera movement, and lighting. If the first result feels weak, tighten the prompt and emphasize motion, contrast, or mood rather than rewriting everything from scratch.
+            </div>
+          </div>
         </div>
       </section>
     </section>
@@ -1012,7 +1136,34 @@
       }
     }
 
+    async function copyCorePrompt() {
+      const corePromptCard = [...document.querySelectorAll("#resultsArea .result-card")]
+        .find(card => card.querySelector("h4")?.textContent?.trim() === "Core Prompt");
+
+      if (!corePromptCard) {
+        alert("Core prompt not found.");
+        return;
+      }
+
+      const text = corePromptCard.querySelector("pre")?.textContent?.trim() || "";
+
+      if (!text) {
+        alert("Core prompt is empty.");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        trackEvent("copy_core_prompt", { mode: currentMode, characters: text.length });
+        alert("Core Prompt copied.");
+      } catch {
+        trackEvent("copy_core_prompt_error", { mode: currentMode });
+        alert("Copy failed.");
+      }
+    }
+
     window.copyCard = copyCard;
+    window.copyCorePrompt = copyCorePrompt;
 
     function showLoadingState() {
       resultsArea.classList.add("loading");
@@ -1060,6 +1211,14 @@
             <button class="copy-mini" onclick="copyCard(this)">Copy</button>
           </div>
           <pre>Collecting style notes...</pre>
+        </div>
+        <div class="execution-panel">
+          <div class="execution-head">
+            <h4>Execution Panel</h4>
+          </div>
+          <div class="execution-intro">
+            Your guided next step panel will appear here after generation finishes.
+          </div>
         </div>
       `;
     }
@@ -1137,6 +1296,7 @@
     function renderResult(text) {
       const parsed = parseStructuredOutput(text);
       const sceneCardsHtml = buildSceneCards(parsed.scenes);
+      const executionPanelHtml = buildExecutionPanel();
 
       resultsArea.innerHTML = `
         <div class="result-card">
@@ -1181,6 +1341,59 @@
             <button class="copy-mini" onclick="copyCard(this)">Copy</button>
           </div>
           <pre>${escapeHtml(parsed.styleNotes || "No style notes returned.")}</pre>
+        </div>
+
+        ${executionPanelHtml}
+      `;
+    }
+
+    function buildExecutionPanel() {
+      return `
+        <div class="execution-panel">
+          <div class="execution-head">
+            <h4>Execution Panel</h4>
+          </div>
+
+          <div class="execution-intro">
+            Visyonix has already done the creative thinking for you. Use the Core Prompt as your main render input, then use the scenes, camera notes, and lighting notes to sharpen the final result.
+          </div>
+
+          <div class="execution-grid">
+            <div class="execution-box">
+              <strong>Best next steps</strong>
+              <ol>
+                <li>Copy the Core Prompt</li>
+                <li>Open Revid</li>
+                <li>Paste the prompt into your project</li>
+                <li>Use the scene cards to adjust pacing and shot progression</li>
+                <li>Use camera and lighting notes to strengthen the look</li>
+              </ol>
+            </div>
+
+            <div class="execution-box">
+              <strong>Benefits of this output</strong>
+              <ul>
+                <li>Cleaner prompt structure before rendering</li>
+                <li>Better scene continuity</li>
+                <li>Stronger visual intent and mood</li>
+                <li>Faster revision workflow when the first render misses</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="execution-actions">
+            <button class="btn-secondary" onclick="copyCorePrompt()">Copy Core Prompt</button>
+            <a
+              href="https://www.revid.ai/?via=fred-latin"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-main revid-link-btn"
+            >Create in Revid</a>
+          </div>
+
+          <div class="execution-note">
+            <strong>Practical direction:</strong> If the output looks too generic in your generator, do not rewrite everything first. Start by tightening the Core Prompt, then emphasize scene motion, camera movement, contrast, texture, or mood using the other sections Visyonix already generated.
+          </div>
         </div>
       `;
     }
@@ -1423,6 +1636,11 @@
           exportButton.textContent.trim() ||
           "unknown_export";
         trackEvent("export_clicked", { mode: currentMode, export_type: exportType });
+      }
+
+      const revidButton = event.target.closest(".revid-link-btn");
+      if (revidButton) {
+        trackEvent("revid_click", { mode: currentMode });
       }
     });
 
