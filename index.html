@@ -533,10 +533,6 @@
       box-shadow:
         0 0 18px rgba(95, 140, 255, 0.22),
         0 0 28px rgba(154, 107, 255, 0.08);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .btn-main:hover {
@@ -558,6 +554,13 @@
     .btn-secondary:hover {
       border-color: rgba(95, 140, 255, 0.28);
       box-shadow: 0 0 16px rgba(95, 140, 255, 0.08);
+    }
+
+    .revid-link-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
     }
 
     .results-card {
@@ -650,28 +653,6 @@
       color: #a8a8b3;
     }
 
-    .revid-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .revid-steps {
-      color: #d7d7de;
-      line-height: 1.7;
-      margin: 0;
-      white-space: pre-wrap;
-    }
-
-    .revid-link-wrap {
-      display: inline-flex;
-    }
-
-    .revid-link-wrap a {
-      text-decoration: none;
-    }
-
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -750,19 +731,9 @@
       }
 
       .toolbar-left button,
-      .toolbar-right button {
+      .toolbar-right button,
+      .toolbar-right a {
         flex: 1;
-      }
-
-      .revid-actions {
-        flex-direction: column;
-      }
-
-      .revid-link-wrap,
-      .revid-link-wrap a,
-      .revid-link-wrap .btn-main,
-      .revid-actions .btn-secondary {
-        width: 100%;
       }
     }
   </style>
@@ -888,6 +859,12 @@
           </div>
           <div class="toolbar-right">
             <button class="btn-secondary" id="copyAllBtn">Copy All</button>
+            <a
+              href="https://www.revid.ai/?via=fred-latin"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-secondary revid-link-btn"
+            >Create in Revid</a>
           </div>
         </div>
       </section>
@@ -949,27 +926,6 @@
               <button class="copy-mini" onclick="copyCard(this)">Copy</button>
             </div>
             <pre>Style notes will appear here.</pre>
-          </div>
-
-          <div class="result-card">
-            <div class="mini-head">
-              <h4>Render Your Video</h4>
-            </div>
-            <pre class="revid-steps">Visyonix directs the concept.
-Revid handles the render.
-
-1. Click Create in Revid
-2. Copy your Core Prompt
-3. Paste it into Revid and generate</pre>
-
-            <div class="revid-actions">
-              <div class="revid-link-wrap">
-                <a href="https://www.revid.ai/?via=fred-latin" target="_blank" rel="noopener noreferrer">
-                  <span class="btn-main">🎬 Create in Revid</span>
-                </a>
-              </div>
-              <button class="btn-secondary" id="copyCoreBtn" onclick="copyCorePrompt()">📋 Copy Core Prompt</button>
-            </div>
           </div>
         </div>
       </section>
@@ -1044,4 +1000,443 @@ Revid handles the render.
       try {
         await navigator.clipboard.writeText(text);
         const sectionName = button.closest(".result-card, .scene-card")?.querySelector("h4")?.textContent?.trim() || "unknown_section";
-        trackEvent("copy_section", { mode: currentMode
+        trackEvent("copy_section", { mode: currentMode, section: sectionName, characters: text.length });
+        const original = button.textContent;
+        button.textContent = "Copied";
+        setTimeout(() => {
+          button.textContent = original;
+        }, 1400);
+      } catch {
+        trackEvent("copy_section_error", { mode: currentMode });
+        alert("Copy failed.");
+      }
+    }
+
+    window.copyCard = copyCard;
+
+    function showLoadingState() {
+      resultsArea.classList.add("loading");
+      resultsArea.innerHTML = `
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Concept Title</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Generating title...</pre>
+        </div>
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Core Prompt</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Building polished master prompt...</pre>
+        </div>
+        <div class="scene-stack">
+          <div class="scene-card">
+            <div class="mini-head">
+              <h4>Scene 1</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Structuring scene-by-scene direction...</pre>
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Camera Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting camera directions...</pre>
+        </div>
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Lighting Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting lighting directions...</pre>
+        </div>
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Style Notes</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting style notes...</pre>
+        </div>
+      `;
+    }
+
+    function hideLoadingState() {
+      resultsArea.classList.remove("loading");
+    }
+
+    async function callGenerate(payload) {
+      const res = await fetch(`${API_BASE}/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const rawText = await res.text();
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}: ${rawText}`);
+      }
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(`Invalid JSON from server: ${rawText}`);
+      }
+
+      return data;
+    }
+
+    generateBtn.addEventListener("click", async () => {
+      const input = ideaInput.value.trim();
+
+      if (!input) {
+        alert("Please enter a concept first.");
+        return;
+      }
+
+      trackEvent("generate_clicked", { mode: currentMode, prompt_length: input.length });
+
+      generateBtn.textContent = "Generating...";
+      generateBtn.disabled = true;
+      showLoadingState();
+
+      try {
+        const data = await callGenerate({
+          mode: currentMode,
+          prompt: input
+        });
+
+        const output =
+          typeof data.result === "string" && data.result.trim()
+            ? data.result
+            : "No response returned.";
+
+        trackEvent("generate_success", { mode: currentMode, result_length: output.length });
+        renderResult(output);
+      } catch (error) {
+        console.error("Generate error:", error);
+        trackEvent("generate_error", { mode: currentMode, error_message: error.message });
+        renderResult(
+          "Visyonix could not generate output right now.\n\n" +
+          "DETAILS:\n" + error.message
+        );
+      } finally {
+        generateBtn.textContent = "Generate";
+        generateBtn.disabled = false;
+        hideLoadingState();
+      }
+    });
+
+    function renderResult(text) {
+      const parsed = parseStructuredOutput(text);
+      const sceneCardsHtml = buildSceneCards(parsed.scenes);
+
+      resultsArea.innerHTML = `
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Concept Title</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.title || "No concept title returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Core Prompt</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.corePrompt || "No master prompt returned.")}</pre>
+        </div>
+
+        <div class="scene-stack">
+          ${sceneCardsHtml}
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Camera Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.cameraNotes || "No camera directions returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Lighting Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.lightingNotes || "No lighting directions returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Style Notes</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.styleNotes || "No style notes returned.")}</pre>
+        </div>
+      `;
+    }
+
+    function buildSceneCards(scenes) {
+      if (!scenes.length) {
+        return `
+          <div class="scene-card">
+            <div class="mini-head">
+              <h4>Scene 1</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>No scene direction returned.</pre>
+          </div>
+        `;
+      }
+
+      return scenes.map((scene, index) => `
+        <div class="scene-card">
+          <div class="mini-head">
+            <h4>Scene ${index + 1}</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(scene)}</pre>
+        </div>
+      `).join("");
+    }
+
+    function parseStructuredOutput(text) {
+      const normalized = String(text || "").replace(/\r\n/g, "\n");
+
+      const title =
+        extractSection(normalized, [
+          "CONCEPT TITLE:",
+          "VIDEO TITLE:",
+          "TRAILER TITLE:",
+          "SHORT TITLE:",
+          "VISION TITLE:"
+        ]) || "";
+
+      const corePrompt =
+        extractSection(normalized, [
+          "CORE PROMPT:",
+          "MASTER VIDEO PROMPT:",
+          "MASTER TRAILER PROMPT:",
+          "MASTER SHORT PROMPT:",
+          "MASTER VISUAL PROMPT:"
+        ]) || "";
+
+      const sceneSource = collectSections(normalized, [
+        "SCENE BREAKDOWN:",
+        "TRAILER BEATS:",
+        "HOOK SHOT:",
+        "MIDDLE BEAT:",
+        "ENDING BEAT:",
+        "PERFORMANCE NOTES:",
+        "VIRAL ANGLE:",
+        "VISUAL CONCEPT:",
+        "SPIRITUAL CONCEPT:"
+      ]);
+
+      const cameraNotes = extractSection(normalized, ["CAMERA NOTES:"]) || "";
+      const lightingNotes =
+        extractSection(normalized, [
+          "LIGHTING NOTES:",
+          "LIGHTING + COLOR:",
+          "LIGHTING + ATMOSPHERE:",
+          "LIGHTING + MOOD:"
+        ]) || "";
+
+      const styleNotes = collectSections(normalized, [
+        "EDITING RHYTHM:",
+        "STYLE KEYWORDS:",
+        "SYMBOLIC ELEMENTS:",
+        "OPTIONAL VOICEOVER:",
+        "OPTIONAL TAGLINE:",
+        "ON-SCREEN TEXT IDEA:"
+      ]);
+
+      if (!title && !corePrompt && !sceneSource && !cameraNotes && !lightingNotes && !styleNotes) {
+        const fallback = fallbackSplit(normalized);
+        return {
+          title: fallback.title,
+          corePrompt: fallback.corePrompt,
+          scenes: splitIntoScenes(fallback.sceneDirection),
+          cameraNotes: "",
+          lightingNotes: "",
+          styleNotes: fallback.styleNotes
+        };
+      }
+
+      return {
+        title,
+        corePrompt,
+        scenes: splitIntoScenes(sceneSource),
+        cameraNotes,
+        lightingNotes,
+        styleNotes
+      };
+    }
+
+    function splitIntoScenes(sceneText) {
+      const text = String(sceneText || "").trim();
+      if (!text) return [];
+
+      const numberedMatches = [...text.matchAll(/(?:^|\n)(Scene\s*\d+:\s*[\s\S]*?)(?=(?:\nScene\s*\d+:)|$)/gi)];
+      if (numberedMatches.length) {
+        return numberedMatches.map(match => match[1].trim());
+      }
+
+      const beatMatches = [...text.matchAll(/(?:^|\n)(Beat\s*\d+:\s*[\s\S]*?)(?=(?:\nBeat\s*\d+:)|$)/gi)];
+      if (beatMatches.length) {
+        return beatMatches.map(match => match[1].trim());
+      }
+
+      const fallbackChunks = text
+        .split(/\n\s*\n+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      return fallbackChunks.length ? fallbackChunks : [text];
+    }
+
+    function collectSections(text, labels) {
+      const parts = [];
+
+      labels.forEach(label => {
+        const value = extractSection(text, [label]);
+        if (value) {
+          if (label === "HOOK SHOT:" || label === "MIDDLE BEAT:" || label === "ENDING BEAT:") {
+            parts.push(`${cleanLabel(label)}\n${value}`);
+          } else {
+            parts.push(value);
+          }
+        }
+      });
+
+      return parts.join("\n\n").trim();
+    }
+
+    function extractSection(text, possibleLabels) {
+      const allLabels = [
+        "CONCEPT TITLE:",
+        "CORE PROMPT:",
+        "SCENE BREAKDOWN:",
+        "CAMERA NOTES:",
+        "LIGHTING NOTES:",
+        "STYLE KEYWORDS:",
+        "OPTIONAL VOICEOVER:",
+        "VIDEO TITLE:",
+        "VISUAL CONCEPT:",
+        "MASTER VIDEO PROMPT:",
+        "PERFORMANCE NOTES:",
+        "LIGHTING + COLOR:",
+        "EDITING RHYTHM:",
+        "TRAILER TITLE:",
+        "TRAILER HOOK:",
+        "MASTER TRAILER PROMPT:",
+        "TRAILER BEATS:",
+        "LIGHTING + ATMOSPHERE:",
+        "OPTIONAL TAGLINE:",
+        "VISION TITLE:",
+        "SPIRITUAL CONCEPT:",
+        "MASTER VISUAL PROMPT:",
+        "SYMBOLIC ELEMENTS:",
+        "LIGHTING + MOOD:",
+        "SHORT TITLE:",
+        "VIRAL ANGLE:",
+        "MASTER SHORT PROMPT:",
+        "HOOK SHOT:",
+        "MIDDLE BEAT:",
+        "ENDING BEAT:",
+        "ON-SCREEN TEXT IDEA:"
+      ];
+
+      for (const label of possibleLabels) {
+        const start = text.indexOf(label);
+        if (start === -1) continue;
+
+        const contentStart = start + label.length;
+        let nextIndex = text.length;
+
+        allLabels.forEach(otherLabel => {
+          if (otherLabel === label) return;
+          const idx = text.indexOf(otherLabel, contentStart);
+          if (idx !== -1 && idx < nextIndex) {
+            nextIndex = idx;
+          }
+        });
+
+        return text.slice(contentStart, nextIndex).trim();
+      }
+
+      return "";
+    }
+
+    function cleanLabel(label) {
+      return label.replace(/:$/, "").trim();
+    }
+
+    function fallbackSplit(text) {
+      const chunks = text
+        .split(/\n\s*\n+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      if (chunks.length >= 4) {
+        return {
+          title: chunks[0],
+          corePrompt: chunks[1],
+          sceneDirection: chunks[2],
+          styleNotes: chunks.slice(3).join("\n\n")
+        };
+      }
+
+      const length = text.length;
+      const quarter = Math.ceil(length / 4);
+
+      return {
+        title: text.slice(0, quarter).trim(),
+        corePrompt: text.slice(quarter, quarter * 2).trim(),
+        sceneDirection: text.slice(quarter * 2, quarter * 3).trim(),
+        styleNotes: text.slice(quarter * 3).trim()
+      };
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    document.addEventListener("click", event => {
+      const exportButton = event.target.closest("[data-export], .export-btn, #exportBtn, #exportImageBtn, #exportPdfBtn");
+      if (exportButton) {
+        const exportType =
+          exportButton.dataset.export ||
+          exportButton.getAttribute("data-export") ||
+          exportButton.textContent.trim() ||
+          "unknown_export";
+        trackEvent("export_clicked", { mode: currentMode, export_type: exportType });
+      }
+    });
+
+    if (brandVideo) {
+      brandVideo.addEventListener("error", () => {
+        brandVideo.style.display = "none";
+        videoFallback.style.display = "block";
+      });
+
+      brandVideo.addEventListener("loadeddata", () => {
+        brandVideo.style.display = "block";
+        videoFallback.style.display = "none";
+      });
+    }
+  </script>
+</body>
+</html>
