@@ -80,3 +80,1809 @@
       border: 1px solid var(--line);
       background:
         linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)),
+        radial-gradient(circle at left top, rgba(95, 140, 255, 0.08), transparent 36%);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 28% 28%, rgba(255,255,255,0.24), rgba(255,255,255,0.05) 36%, rgba(255,255,255,0.02) 72%),
+        radial-gradient(circle at 78% 18%, rgba(95, 140, 255, 0.16), transparent 36%);
+      border: 1px solid rgba(255,255,255,0.14);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        0 0 24px rgba(95, 140, 255, 0.12);
+    }
+
+    .brand-mark img {
+      width: 82%;
+      height: 82%;
+      object-fit: contain;
+      filter:
+        drop-shadow(0 8px 18px rgba(95, 140, 255, 0.32))
+        drop-shadow(0 0 20px rgba(154, 107, 255, 0.12));
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 4.2vw, 4rem);
+      letter-spacing: -0.05em;
+      line-height: 0.92;
+    }
+
+    .brand-copy p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 700px;
+      line-height: 1.35;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    button,
+    a {
+      transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:hover,
+    a:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+
+    .ghost-pill,
+    .nav-pill {
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.08), transparent 70%);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 0.92rem;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      text-decoration: none;
+    }
+
+    .nav-pill.active,
+    .nav-pill:hover {
+      border-color: rgba(95, 140, 255, 0.42);
+      box-shadow: 0 0 18px rgba(95, 140, 255, 0.12);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeUp 0.45s ease-out both;
+    }
+
+    .landing-hero {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      margin-bottom: 18px;
+      min-height: 660px;
+    }
+
+    .landing-card,
+    .landing-side-card,
+    .panel,
+    .results-card,
+    .feature-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .landing-card {
+      padding: clamp(32px, 5vw, 70px);
+      min-height: 660px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(95, 140, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(154, 107, 255, 0.14), transparent 30%),
+        linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    }
+
+    .landing-orb {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      right: -160px;
+      bottom: -190px;
+      background:
+        radial-gradient(circle, rgba(95, 140, 255, 0.20), transparent 64%),
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 34%);
+      filter: blur(8px);
+      opacity: 0.95;
+      pointer-events: none;
+    }
+
+    .landing-logo-bg {
+      position: absolute;
+      width: min(72%, 760px);
+      right: -70px;
+      bottom: -30px;
+      opacity: 0.13;
+      filter:
+        drop-shadow(0 24px 55px rgba(0,0,0,0.8))
+        drop-shadow(0 0 38px rgba(95, 140, 255, 0.22));
+      pointer-events: none;
+      animation: pulseGlow 3.4s ease-in-out infinite;
+    }
+
+    .landing-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.10), transparent 75%);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f7f7fb;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      box-shadow: 0 0 18px rgba(95, 140, 255, 0.08);
+    }
+
+    .landing-copy h2 {
+      margin: 0 0 18px;
+      font-size: clamp(3.2rem, 7vw, 7.2rem);
+      line-height: 0.88;
+      letter-spacing: -0.065em;
+      max-width: 11ch;
+    }
+
+    .landing-copy p {
+      margin: 0 0 28px;
+      color: #d0d0d8;
+      font-size: clamp(1.05rem, 1.45vw, 1.22rem);
+      line-height: 1.65;
+      max-width: 64ch;
+    }
+
+    .landing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .big-cta {
+      min-height: 64px;
+      padding: 18px 34px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffffff, #dfe7ff);
+      color: #050505;
+      font-weight: 850;
+      letter-spacing: -0.025em;
+      font-size: 1.08rem;
+      box-shadow:
+        0 0 22px rgba(95, 140, 255, 0.30),
+        0 0 42px rgba(154, 107, 255, 0.14),
+        0 18px 38px rgba(0,0,0,0.42);
+    }
+
+    .landing-link,
+    .btn-secondary {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.06), transparent 72%);
+      border-radius: 999px;
+      padding: 14px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .landing-side-card {
+      padding: 22px;
+      min-height: 660px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background:
+        radial-gradient(circle at top right, rgba(95, 140, 255, 0.16), transparent 30%),
+        radial-gradient(circle at top left, rgba(154, 107, 255, 0.10), transparent 22%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+    }
+
+    .card-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .landing-video-stage {
+      flex: 1;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.08), rgba(0,0,0,0.62));
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      min-height: 390px;
+      box-shadow: inset 0 0 28px rgba(95, 140, 255, 0.08);
+    }
+
+    .landing-video-stage video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-placeholder {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      max-width: 32ch;
+      line-height: 1.6;
+    }
+
+    .landing-mini-grid,
+    .trust-row {
+      display: grid;
+      gap: 12px;
+    }
+
+    .landing-mini-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .trust-row {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .feature-card,
+    .trust-item {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.025)),
+        radial-gradient(circle at top, rgba(95, 140, 255, 0.07), transparent 70%);
+      box-shadow: none;
+    }
+
+    .feature-card strong,
+    .trust-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .feature-card span,
+    .trust-item span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.93rem;
+    }
+
+    /* CLEAN GENERATOR PAGE — NO DUPLICATED HERO SECTION */
+    .generator-intro {
+      margin-bottom: 18px;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at left, rgba(95, 140, 255, 0.08), transparent 34%);
+      box-shadow: var(--shadow);
+    }
+
+    .generator-intro h2 {
+      margin: 6px 0 8px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .generator-intro p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 900px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)),
+        radial-gradient(circle at top left, rgba(95, 140, 255, 0.08), transparent 30%);
+    }
+
+    .panel-head {
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3,
+    .results-top h3 {
+      margin: 6px 0 0;
+      font-size: 1.45rem;
+      letter-spacing: -0.03em;
+    }
+
+    .panel-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .how-to-box {
+      margin-bottom: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)),
+        radial-gradient(circle at left, rgba(95, 140, 255, 0.06), transparent 38%);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .how-to-box strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.98rem;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      border: 1px solid rgba(255,255,255,0.11);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.04), transparent 72%);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 15px 16px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .mode-btn:hover,
+    .mode-btn.active {
+      transform: translateY(-2px);
+      border-color: rgba(95, 140, 255, 0.42);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.12), transparent 72%);
+      box-shadow:
+        0 0 0 1px rgba(95, 140, 255, 0.10),
+        0 0 18px rgba(95, 140, 255, 0.10);
+    }
+
+    .mode-btn strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .mode-btn span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 250px;
+      resize: vertical;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: 20px 18px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.30)),
+        radial-gradient(circle at top left, rgba(95, 140, 255, 0.06), transparent 34%);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      line-height: 1.6;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        inset 0 0 20px rgba(95, 140, 255, 0.03);
+    }
+
+    textarea:focus {
+      border-color: rgba(95, 140, 255, 0.42);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 0 0 1px rgba(95, 140, 255, 0.08),
+        0 0 20px rgba(95, 140, 255, 0.08);
+    }
+
+    textarea::placeholder {
+      color: #8f8f9a;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-main {
+      background:
+        linear-gradient(180deg, #fefefe, #dfe7ff);
+      color: #050505;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      box-shadow:
+        0 0 18px rgba(95, 140, 255, 0.22),
+        0 0 28px rgba(154, 107, 255, 0.08);
+    }
+
+    .btn-main:hover {
+      box-shadow:
+        0 0 20px rgba(95, 140, 255, 0.28),
+        0 0 34px rgba(154, 107, 255, 0.12);
+    }
+
+    .results-card {
+      padding: 22px;
+      min-height: 650px;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)),
+        radial-gradient(circle at top right, rgba(95, 140, 255, 0.08), transparent 28%);
+    }
+
+    .results-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .results-scroll {
+      display: grid;
+      gap: 14px;
+      flex: 1;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .result-card,
+    .scene-card,
+    .execution-panel {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at top, rgba(95, 140, 255, 0.06), transparent 70%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .result-card .mini-head,
+    .scene-card .mini-head,
+    .execution-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .result-card h4,
+    .scene-card h4,
+    .execution-head h4 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .scene-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .copy-mini {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)),
+        radial-gradient(circle at center, rgba(95, 140, 255, 0.06), transparent 70%);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+
+    .copy-mini:hover {
+      border-color: rgba(95, 140, 255, 0.26);
+      box-shadow: 0 0 14px rgba(95, 140, 255, 0.08);
+    }
+
+    .result-card pre,
+    .scene-card pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #d7d7de;
+      font-family: inherit;
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+
+    .loading .result-card pre,
+    .loading .scene-card pre {
+      color: #a8a8b3;
+    }
+
+    .execution-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .execution-intro,
+    .execution-note {
+      color: #d7d7de;
+      line-height: 1.65;
+      font-size: 0.96rem;
+    }
+
+    .execution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .execution-box {
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
+        radial-gradient(circle at top, rgba(95, 140, 255, 0.06), transparent 70%);
+    }
+
+    .execution-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    .execution-box ul,
+    .execution-box ol {
+      margin: 0;
+      padding-left: 18px;
+      color: #d7d7de;
+      line-height: 1.6;
+      font-size: 0.94rem;
+    }
+
+    .execution-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .execution-note {
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
+        radial-gradient(circle at left, rgba(154, 107, 255, 0.05), transparent 70%);
+    }
+
+    .execution-note strong {
+      color: var(--text);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.11;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.18;
+        transform: scale(1.025);
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .landing-hero,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .landing-card,
+      .landing-side-card {
+        min-height: auto;
+      }
+
+      .results-card {
+        min-height: 460px;
+      }
+
+      .trust-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 20px, var(--max));
+        padding-top: 14px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .brand-mark {
+        width: 80px;
+        height: 80px;
+      }
+
+      .landing-copy h2 {
+        font-size: clamp(2.7rem, 14vw, 5rem);
+      }
+
+      .mode-grid,
+      .execution-grid,
+      .landing-mini-grid,
+      .trust-row {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-left,
+      .toolbar-right {
+        width: 100%;
+      }
+
+      .toolbar-left button,
+      .toolbar-right button,
+      .toolbar-right a,
+      .execution-actions button,
+      .execution-actions a,
+      .landing-actions button,
+      .landing-actions a {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-noise"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="logo.png" alt="Visyonix logo" />
+        </div>
+
+        <div class="brand-copy">
+          <div class="eyebrow">Creative Engine</div>
+          <h1>Visyonix</h1>
+          <p>Premium cinematic prompt design for ads, music videos, trailers, and viral visuals.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="nav-pill active" id="homeNavBtn">Home</button>
+        <button class="nav-pill" id="generatorNavBtn">Generator</button>
+        <div class="ghost-pill">Render Connected</div>
+      </div>
+    </header>
+
+    <!-- PAGE 1: LANDING PAGE -->
+    <section class="page active" id="landingPage">
+      <section class="landing-hero">
+        <div class="landing-card">
+          <div class="landing-orb"></div>
+          <img class="landing-logo-bg" src="logo.png" alt="" aria-hidden="true" />
+
+          <div class="landing-copy">
+            <div class="kicker">Direct Your Story Like A Pro</div>
+
+            <h2>Create cinematic prompts free.</h2>
+
+            <p>
+              Visyonix helps creators turn raw ideas into premium visual direction for ads,
+              music videos, film trailers, and viral short-form content. Build stronger scenes,
+              cleaner camera direction, better lighting notes, and generator-ready prompts before
+              you render.
+            </p>
+
+            <div class="landing-actions">
+              <button class="big-cta" id="startFreeBtn">Generate for Free</button>
+
+              <a
+                href="https://www.revid.ai/?via=fred-latin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="landing-link revid-link-btn"
+              >Create in Revid</a>
+            </div>
+          </div>
+        </div>
+
+        <aside class="landing-side-card">
+          <div>
+            <div class="card-label">Brand video</div>
+            <h3 style="margin:8px 0 0;font-size:1.5rem;letter-spacing:-0.03em;">
+              Visyonix spotlight
+            </h3>
+          </div>
+
+          <div class="landing-video-stage">
+            <video id="landingBrandVideo" autoplay muted loop playsinline>
+              <source src="visyonix.mp4" type="video/mp4" />
+            </video>
+
+            <div class="video-placeholder" id="landingVideoFallback" style="display:none;">
+              Drop your <strong>visyonix.mp4</strong> file into the same folder if you want
+              this panel to show your brand video.
+            </div>
+          </div>
+
+          <div class="landing-mini-grid">
+            <div class="feature-card">
+              <strong>Ad Concepts</strong>
+              <span>Luxury brand-ready video prompt direction.</span>
+            </div>
+
+            <div class="feature-card">
+              <strong>Music Videos</strong>
+              <span>Scene flow, performance notes, and visual rhythm.</span>
+            </div>
+
+            <div class="feature-card">
+              <strong>Trailers</strong>
+              <span>Escalating dramatic beats with cinematic tension.</span>
+            </div>
+
+            <div class="feature-card">
+              <strong>Viral Shorts</strong>
+              <span>Fast hooks, payoff moments, and sharp visual ideas.</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="trust-row">
+        <div class="trust-item">
+          <strong>Structured Output</strong>
+          <span>Concept title, core prompt, scenes, camera notes, lighting notes, and style notes.</span>
+        </div>
+
+        <div class="trust-item">
+          <strong>Cleaner Workflow</strong>
+          <span>Copy full prompts or individual sections without digging through messy text.</span>
+        </div>
+
+        <div class="trust-item">
+          <strong>Generator Ready</strong>
+          <span>Designed to help AI video tools understand visual direction faster.</span>
+        </div>
+
+        <div class="trust-item">
+          <strong>Creator Friendly</strong>
+          <span>Built for social videos, ads, music visuals, trailers, and content experiments.</span>
+        </div>
+      </section>
+    </section>
+
+    <!-- PAGE 2: GENERATOR PAGE ONLY -->
+    <section class="page" id="generatorPage">
+      <section class="generator-intro">
+        <div class="card-label">Generator Workspace</div>
+        <h2>Build your cinematic direction.</h2>
+        <p>
+          Choose a mode, enter your idea, generate the prompt, then copy the sections you need.
+          This page is intentionally clean so the user gets straight to the tool.
+        </p>
+      </section>
+
+      <section class="workspace">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="card-label">Input</div>
+              <h3>Creative direction</h3>
+              <p>Choose a mode, describe the concept, then generate structured premium output.</p>
+            </div>
+          </div>
+
+          <div class="how-to-box">
+            <strong>How to use Visyonix</strong>
+            1. Choose a mode. 2. Type your concept in the box. 3. Click Generate.
+            4. Copy the full core prompt or copy individual scenes, camera directions,
+            and lighting directions as needed.
+          </div>
+
+          <div class="mode-grid" id="modeGrid">
+            <button class="mode-btn active" data-mode="cinematic ad">
+              <strong>Cinematic Ad</strong>
+              <span>Luxury visual campaign concepts</span>
+            </button>
+
+            <button class="mode-btn" data-mode="music video">
+              <strong>Music Video</strong>
+              <span>Scene-building and rhythm-aware ideas</span>
+            </button>
+
+            <button class="mode-btn" data-mode="film trailer">
+              <strong>Film Trailer</strong>
+              <span>Big tension, pacing, dramatic reveals</span>
+            </button>
+
+            <button class="mode-btn" data-mode="viral short">
+              <strong>Viral Short</strong>
+              <span>Fast hooks with strong visual identity</span>
+            </button>
+          </div>
+
+          <textarea
+            id="ideaInput"
+            placeholder="Describe your concept here... example: A luxury gospeltronica launch film where light emerges from darkness, futuristic city reflections, premium black-and-silver styling, and emotionally rising motion."
+          ></textarea>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <button class="btn-main" id="generateBtn">Generate</button>
+              <button class="btn-secondary" id="clearBtn">Clear</button>
+            </div>
+
+            <div class="toolbar-right">
+              <button class="btn-secondary" id="copyAllBtn">Copy All</button>
+
+              <a
+                href="https://www.revid.ai/?via=fred-latin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-secondary revid-link-btn"
+              >Create in Revid</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="results-card">
+          <div class="results-top">
+            <div>
+              <div class="card-label">Output</div>
+              <h3>Structured results</h3>
+            </div>
+          </div>
+
+          <div class="results-scroll" id="resultsArea">
+            <div class="result-card">
+              <div class="mini-head">
+                <h4>Concept Title</h4>
+                <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+              </div>
+              <pre>Waiting for generation...</pre>
+            </div>
+
+            <div class="result-card">
+              <div class="mini-head">
+                <h4>Core Prompt</h4>
+                <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+              </div>
+              <pre>Your premium Visyonix output will appear here.</pre>
+            </div>
+
+            <div class="scene-stack">
+              <div class="scene-card">
+                <div class="mini-head">
+                  <h4>Scene 1</h4>
+                  <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+                </div>
+                <pre>Individual scenes will appear here with their own copy buttons.</pre>
+              </div>
+            </div>
+
+            <div class="result-card">
+              <div class="mini-head">
+                <h4>Camera Directions</h4>
+                <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+              </div>
+              <pre>Camera directions will appear here.</pre>
+            </div>
+
+            <div class="result-card">
+              <div class="mini-head">
+                <h4>Lighting Directions</h4>
+                <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+              </div>
+              <pre>Lighting directions will appear here.</pre>
+            </div>
+
+            <div class="result-card">
+              <div class="mini-head">
+                <h4>Style Notes</h4>
+                <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+              </div>
+              <pre>Style notes will appear here.</pre>
+            </div>
+
+            <div class="execution-panel">
+              <div class="execution-head">
+                <h4>Execution Panel</h4>
+              </div>
+
+              <div class="execution-intro">
+                Visyonix gives you the creative direction. This panel shows the fastest next step
+                so you can move from concept to usable video output with less guessing.
+              </div>
+
+              <div class="execution-grid">
+                <div class="execution-box">
+                  <strong>How to use your output</strong>
+                  <ol>
+                    <li>Generate your concept in Visyonix</li>
+                    <li>Review the Core Prompt and scene breakdown</li>
+                    <li>Copy the Core Prompt</li>
+                    <li>Open Revid</li>
+                    <li>Paste the prompt and build your video</li>
+                  </ol>
+                </div>
+
+                <div class="execution-box">
+                  <strong>Why this helps</strong>
+                  <ul>
+                    <li>Reduces guesswork before rendering</li>
+                    <li>Gives cleaner prompts for generators</li>
+                    <li>Turns scenes into usable production direction</li>
+                    <li>Makes your workflow faster and more consistent</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="execution-actions">
+                <button class="btn-secondary" onclick="copyCorePrompt()">Copy Core Prompt</button>
+
+                <a
+                  href="https://www.revid.ai/?via=fred-latin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-main revid-link-btn"
+                >Create in Revid</a>
+              </div>
+
+              <div class="execution-note">
+                <strong>Tip:</strong> Start with the Core Prompt, then use the scene cards to refine
+                pacing, camera movement, and lighting. If the first result feels weak, tighten the
+                prompt and emphasize motion, contrast, or mood rather than rewriting everything
+                from scratch.
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    let currentMode = "cinematic ad";
+    const API_BASE = "https://visionforge-z9yx.onrender.com";
+
+    function trackEvent(name, params = {}) {
+      try {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", name, params);
+        }
+      } catch (error) {
+        console.warn("Analytics error:", error);
+      }
+    }
+
+    const landingPage = document.getElementById("landingPage");
+    const generatorPage = document.getElementById("generatorPage");
+    const homeNavBtn = document.getElementById("homeNavBtn");
+    const generatorNavBtn = document.getElementById("generatorNavBtn");
+    const startFreeBtn = document.getElementById("startFreeBtn");
+
+    const generateBtn = document.getElementById("generateBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyAllBtn = document.getElementById("copyAllBtn");
+    const ideaInput = document.getElementById("ideaInput");
+    const resultsArea = document.getElementById("resultsArea");
+
+    const landingBrandVideo = document.getElementById("landingBrandVideo");
+    const landingVideoFallback = document.getElementById("landingVideoFallback");
+
+    function showPage(pageName) {
+      const isHome = pageName === "home";
+
+      landingPage.classList.toggle("active", isHome);
+      generatorPage.classList.toggle("active", !isHome);
+
+      homeNavBtn.classList.toggle("active", isHome);
+      generatorNavBtn.classList.toggle("active", !isHome);
+
+      trackEvent("page_switch", { page_name: pageName });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+      if (!isHome) {
+        setTimeout(() => {
+          ideaInput.focus();
+        }, 350);
+      }
+    }
+
+    homeNavBtn.addEventListener("click", () => {
+      showPage("home");
+    });
+
+    generatorNavBtn.addEventListener("click", () => {
+      showPage("generator");
+    });
+
+    startFreeBtn.addEventListener("click", () => {
+      trackEvent("generate_for_free_clicked", {
+        source: "landing_page"
+      });
+
+      showPage("generator");
+    });
+
+    window.addEventListener("load", () => {
+      trackEvent("page_load", {
+        page_title: document.title,
+        page_path: window.location.pathname
+      });
+    });
+
+    document.querySelectorAll(".mode-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentMode = btn.dataset.mode;
+        trackEvent("mode_selected", { mode: currentMode });
+      });
+    });
+
+    clearBtn.addEventListener("click", () => {
+      trackEvent("clear_clicked", { mode: currentMode });
+      ideaInput.value = "";
+      ideaInput.focus();
+    });
+
+    copyAllBtn.addEventListener("click", async () => {
+      const blocks = [...document.querySelectorAll("#resultsArea pre")]
+        .map(pre => pre.textContent.trim())
+        .join("\n\n");
+
+      try {
+        await navigator.clipboard.writeText(blocks);
+        trackEvent("copy_all", { mode: currentMode, characters: blocks.length });
+
+        const original = copyAllBtn.textContent;
+        copyAllBtn.textContent = "Copied";
+
+        setTimeout(() => {
+          copyAllBtn.textContent = original;
+        }, 1400);
+      } catch {
+        trackEvent("copy_all_error", { mode: currentMode });
+        alert("Copy failed.");
+      }
+    });
+
+    async function copyCard(button) {
+      const card = button.closest(".result-card, .scene-card");
+      const text = card.querySelector("pre").textContent.trim();
+
+      try {
+        await navigator.clipboard.writeText(text);
+
+        const sectionName =
+          card.querySelector("h4")?.textContent?.trim() || "unknown_section";
+
+        trackEvent("copy_section", {
+          mode: currentMode,
+          section: sectionName,
+          characters: text.length
+        });
+
+        const original = button.textContent;
+        button.textContent = "Copied";
+
+        setTimeout(() => {
+          button.textContent = original;
+        }, 1400);
+      } catch {
+        trackEvent("copy_section_error", { mode: currentMode });
+        alert("Copy failed.");
+      }
+    }
+
+    async function copyCorePrompt() {
+      const corePromptCard = [...document.querySelectorAll("#resultsArea .result-card")]
+        .find(card => card.querySelector("h4")?.textContent?.trim() === "Core Prompt");
+
+      if (!corePromptCard) {
+        alert("Core prompt not found.");
+        return;
+      }
+
+      const text = corePromptCard.querySelector("pre")?.textContent?.trim() || "";
+
+      if (!text) {
+        alert("Core prompt is empty.");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+
+        trackEvent("copy_core_prompt", {
+          mode: currentMode,
+          characters: text.length
+        });
+
+        alert("Core Prompt copied.");
+      } catch {
+        trackEvent("copy_core_prompt_error", { mode: currentMode });
+        alert("Copy failed.");
+      }
+    }
+
+    window.copyCard = copyCard;
+    window.copyCorePrompt = copyCorePrompt;
+
+    function showLoadingState() {
+      resultsArea.classList.add("loading");
+
+      resultsArea.innerHTML = `
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Concept Title</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Generating title...</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Core Prompt</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Building polished master prompt...</pre>
+        </div>
+
+        <div class="scene-stack">
+          <div class="scene-card">
+            <div class="mini-head">
+              <h4>Scene 1</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>Structuring scene-by-scene direction...</pre>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Camera Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting camera directions...</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Lighting Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting lighting directions...</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Style Notes</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>Collecting style notes...</pre>
+        </div>
+
+        <div class="execution-panel">
+          <div class="execution-head">
+            <h4>Execution Panel</h4>
+          </div>
+
+          <div class="execution-intro">
+            Your guided next step panel will appear here after generation finishes.
+          </div>
+        </div>
+      `;
+    }
+
+    function hideLoadingState() {
+      resultsArea.classList.remove("loading");
+    }
+
+    async function callGenerate(payload) {
+      const res = await fetch(`${API_BASE}/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const rawText = await res.text();
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}: ${rawText}`);
+      }
+
+      let data;
+
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(`Invalid JSON from server: ${rawText}`);
+      }
+
+      return data;
+    }
+
+    generateBtn.addEventListener("click", async () => {
+      const input = ideaInput.value.trim();
+
+      if (!input) {
+        alert("Please enter a concept first.");
+        return;
+      }
+
+      trackEvent("generate_clicked", {
+        mode: currentMode,
+        prompt_length: input.length
+      });
+
+      generateBtn.textContent = "Generating...";
+      generateBtn.disabled = true;
+      showLoadingState();
+
+      try {
+        const data = await callGenerate({
+          mode: currentMode,
+          prompt: input
+        });
+
+        const output =
+          typeof data.result === "string" && data.result.trim()
+            ? data.result
+            : "No response returned.";
+
+        trackEvent("generate_success", {
+          mode: currentMode,
+          result_length: output.length
+        });
+
+        renderResult(output);
+      } catch (error) {
+        console.error("Generate error:", error);
+
+        trackEvent("generate_error", {
+          mode: currentMode,
+          error_message: error.message
+        });
+
+        renderResult(
+          "Visyonix could not generate output right now.\n\n" +
+          "DETAILS:\n" + error.message
+        );
+      } finally {
+        generateBtn.textContent = "Generate";
+        generateBtn.disabled = false;
+        hideLoadingState();
+      }
+    });
+
+    function renderResult(text) {
+      const parsed = parseStructuredOutput(text);
+      const sceneCardsHtml = buildSceneCards(parsed.scenes);
+      const executionPanelHtml = buildExecutionPanel();
+
+      resultsArea.innerHTML = `
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Concept Title</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.title || "No concept title returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Core Prompt</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.corePrompt || "No master prompt returned.")}</pre>
+        </div>
+
+        <div class="scene-stack">
+          ${sceneCardsHtml}
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Camera Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.cameraNotes || "No camera directions returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Lighting Directions</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.lightingNotes || "No lighting directions returned.")}</pre>
+        </div>
+
+        <div class="result-card">
+          <div class="mini-head">
+            <h4>Style Notes</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(parsed.styleNotes || "No style notes returned.")}</pre>
+        </div>
+
+        ${executionPanelHtml}
+      `;
+    }
+
+    function buildExecutionPanel() {
+      return `
+        <div class="execution-panel">
+          <div class="execution-head">
+            <h4>Execution Panel</h4>
+          </div>
+
+          <div class="execution-intro">
+            Visyonix has already done the creative thinking for you. Use the Core Prompt as your main render input, then use the scenes, camera notes, and lighting notes to sharpen the final result.
+          </div>
+
+          <div class="execution-grid">
+            <div class="execution-box">
+              <strong>Best next steps</strong>
+              <ol>
+                <li>Copy the Core Prompt</li>
+                <li>Open Revid</li>
+                <li>Paste the prompt into your project</li>
+                <li>Use the scene cards to adjust pacing and shot progression</li>
+                <li>Use camera and lighting notes to strengthen the look</li>
+              </ol>
+            </div>
+
+            <div class="execution-box">
+              <strong>Benefits of this output</strong>
+              <ul>
+                <li>Cleaner prompt structure before rendering</li>
+                <li>Better scene continuity</li>
+                <li>Stronger visual intent and mood</li>
+                <li>Faster revision workflow when the first render misses</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="execution-actions">
+            <button class="btn-secondary" onclick="copyCorePrompt()">Copy Core Prompt</button>
+
+            <a
+              href="https://www.revid.ai/?via=fred-latin"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-main revid-link-btn"
+            >Create in Revid</a>
+          </div>
+
+          <div class="execution-note">
+            <strong>Practical direction:</strong> If the output looks too generic in your generator, do not rewrite everything first. Start by tightening the Core Prompt, then emphasize scene motion, camera movement, contrast, texture, or mood using the other sections Visyonix already generated.
+          </div>
+        </div>
+      `;
+    }
+
+    function buildSceneCards(scenes) {
+      if (!scenes.length) {
+        return `
+          <div class="scene-card">
+            <div class="mini-head">
+              <h4>Scene 1</h4>
+              <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+            </div>
+            <pre>No scene direction returned.</pre>
+          </div>
+        `;
+      }
+
+      return scenes.map((scene, index) => `
+        <div class="scene-card">
+          <div class="mini-head">
+            <h4>Scene ${index + 1}</h4>
+            <button class="copy-mini" onclick="copyCard(this)">Copy</button>
+          </div>
+          <pre>${escapeHtml(scene)}</pre>
+        </div>
+      `).join("");
+    }
+
+    function parseStructuredOutput(text) {
+      const normalized = String(text || "").replace(/\r\n/g, "\n");
+
+      const title =
+        extractSection(normalized, [
+          "CONCEPT TITLE:",
+          "VIDEO TITLE:",
+          "TRAILER TITLE:",
+          "SHORT TITLE:",
+          "VISION TITLE:"
+        ]) || "";
+
+      const corePrompt =
+        extractSection(normalized, [
+          "CORE PROMPT:",
+          "MASTER VIDEO PROMPT:",
+          "MASTER TRAILER PROMPT:",
+          "MASTER SHORT PROMPT:",
+          "MASTER VISUAL PROMPT:"
+        ]) || "";
+
+      const sceneSource = collectSections(normalized, [
+        "SCENE BREAKDOWN:",
+        "TRAILER BEATS:",
+        "HOOK SHOT:",
+        "MIDDLE BEAT:",
+        "ENDING BEAT:",
+        "PERFORMANCE NOTES:",
+        "VIRAL ANGLE:",
+        "VISUAL CONCEPT:",
+        "SPIRITUAL CONCEPT:"
+      ]);
+
+      const cameraNotes = extractSection(normalized, ["CAMERA NOTES:"]) || "";
+
+      const lightingNotes =
+        extractSection(normalized, [
+          "LIGHTING NOTES:",
+          "LIGHTING + COLOR:",
+          "LIGHTING + ATMOSPHERE:",
+          "LIGHTING + MOOD:"
+        ]) || "";
+
+      const styleNotes = collectSections(normalized, [
+        "EDITING RHYTHM:",
+        "STYLE KEYWORDS:",
+        "SYMBOLIC ELEMENTS:",
+        "OPTIONAL VOICEOVER:",
+        "OPTIONAL TAGLINE:",
+        "ON-SCREEN TEXT IDEA:"
+      ]);
+
+      if (!title && !corePrompt && !sceneSource && !cameraNotes && !lightingNotes && !styleNotes) {
+        const fallback = fallbackSplit(normalized);
+
+        return {
+          title: fallback.title,
+          corePrompt: fallback.corePrompt,
+          scenes: splitIntoScenes(fallback.sceneDirection),
+          cameraNotes: "",
+          lightingNotes: "",
+          styleNotes: fallback.styleNotes
+        };
+      }
+
+      return {
+        title,
+        corePrompt,
+        scenes: splitIntoScenes(sceneSource),
+        cameraNotes,
+        lightingNotes,
+        styleNotes
+      };
+    }
+
+    function splitIntoScenes(sceneText) {
+      const text = String(sceneText || "").trim();
+
+      if (!text) return [];
+
+      const numberedMatches = [...text.matchAll(/(?:^|\n)(Scene\s*\d+:\s*[\s\S]*?)(?=(?:\nScene\s*\d+:)|$)/gi)];
+
+      if (numberedMatches.length) {
+        return numberedMatches.map(match => match[1].trim());
+      }
+
+      const beatMatches = [...text.matchAll(/(?:^|\n)(Beat\s*\d+:\s*[\s\S]*?)(?=(?:\nBeat\s*\d+:)|$)/gi)];
+
+      if (beatMatches.length) {
+        return beatMatches.map(match => match[1].trim());
+      }
+
+      const fallbackChunks = text
+        .split(/\n\s*\n+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      return fallbackChunks.length ? fallbackChunks : [text];
+    }
+
+    function collectSections(text, labels) {
+      const parts = [];
+
+      labels.forEach(label => {
+        const value = extractSection(text, [label]);
+
+        if (value) {
+          if (label === "HOOK SHOT:" || label === "MIDDLE BEAT:" || label === "ENDING BEAT:") {
+            parts.push(`${cleanLabel(label)}\n${value}`);
+          } else {
+            parts.push(value);
+          }
+        }
+      });
+
+      return parts.join("\n\n").trim();
+    }
+
+    function extractSection(text, possibleLabels) {
+      const allLabels = [
+        "CONCEPT TITLE:",
+        "CORE PROMPT:",
+        "SCENE BREAKDOWN:",
+        "CAMERA NOTES:",
+        "LIGHTING NOTES:",
+        "STYLE KEYWORDS:",
+        "OPTIONAL VOICEOVER:",
+        "VIDEO TITLE:",
+        "VISUAL CONCEPT:",
+        "MASTER VIDEO PROMPT:",
+        "PERFORMANCE NOTES:",
+        "LIGHTING + COLOR:",
+        "EDITING RHYTHM:",
+        "TRAILER TITLE:",
+        "TRAILER HOOK:",
+        "MASTER TRAILER PROMPT:",
+        "TRAILER BEATS:",
+        "LIGHTING + ATMOSPHERE:",
+        "OPTIONAL TAGLINE:",
+        "VISION TITLE:",
+        "SPIRITUAL CONCEPT:",
+        "MASTER VISUAL PROMPT:",
+        "SYMBOLIC ELEMENTS:",
+        "LIGHTING + MOOD:",
+        "SHORT TITLE:",
+        "VIRAL ANGLE:",
+        "MASTER SHORT PROMPT:",
+        "HOOK SHOT:",
+        "MIDDLE BEAT:",
+        "ENDING BEAT:",
+        "ON-SCREEN TEXT IDEA:"
+      ];
+
+      for (const label of possibleLabels) {
+        const start = text.indexOf(label);
+
+        if (start === -1) continue;
+
+        const contentStart = start + label.length;
+        let nextIndex = text.length;
+
+        allLabels.forEach(otherLabel => {
+          if (otherLabel === label) return;
+
+          const idx = text.indexOf(otherLabel, contentStart);
+
+          if (idx !== -1 && idx < nextIndex) {
+            nextIndex = idx;
+          }
+        });
+
+        return text.slice(contentStart, nextIndex).trim();
+      }
+
+      return "";
+    }
+
+    function cleanLabel(label) {
+      return label.replace(/:$/, "").trim();
+    }
+
+    function fallbackSplit(text) {
+      const chunks = text
+        .split(/\n\s*\n+/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      if (chunks.length >= 4) {
+        return {
+          title: chunks[0],
+          corePrompt: chunks[1],
+          sceneDirection: chunks[2],
+          styleNotes: chunks.slice(3).join("\n\n")
+        };
+      }
+
+      const length = text.length;
+      const quarter = Math.ceil(length / 4);
+
+      return {
+        title: text.slice(0, quarter).trim(),
+        corePrompt: text.slice(quarter, quarter * 2).trim(),
+        sceneDirection: text.slice(quarter * 2, quarter * 3).trim(),
+        styleNotes: text.slice(quarter * 3).trim()
+      };
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    document.addEventListener("click", event => {
+      const exportButton = event.target.closest("[data-export], .export-btn, #exportBtn, #exportImageBtn, #exportPdfBtn");
+
+      if (exportButton) {
+        const exportType =
+          exportButton.dataset.export ||
+          exportButton.getAttribute("data-export") ||
+          exportButton.textContent.trim() ||
+          "unknown_export";
+
+        trackEvent("export_clicked", {
+          mode: currentMode,
+          export_type: exportType
+        });
+      }
+
+      const revidButton = event.target.closest(".revid-link-btn");
+
+      if (revidButton) {
+        trackEvent("revid_click", {
+          mode: currentMode
+        });
+      }
+    });
+
+    function setupVideoFallback(videoElement, fallbackElement) {
+      if (!videoElement || !fallbackElement) return;
+
+      videoElement.addEventListener("error", () => {
+        videoElement.style.display = "none";
+        fallbackElement.style.display = "block";
+      });
+
+      videoElement.addEventListener("loadeddata", () => {
+        videoElement.style.display = "block";
+        fallbackElement.style.display = "none";
+      });
+    }
+
+    setupVideoFallback(landingBrandVideo, landingVideoFallback);
+  </script>
+</body>
+</html>
