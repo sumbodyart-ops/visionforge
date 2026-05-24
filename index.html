@@ -362,6 +362,7 @@
 
     .landing-video-stage {
       flex: 1;
+      position: relative;
       border-radius: 24px;
       border: 1px solid rgba(255,255,255,0.12);
       background:
@@ -935,24 +936,23 @@
             </video>
 
             <button id="soundBtn" style="
-              position:absolute;
-              bottom:20px;
-              right:20px;
-              z-index:20;
-              padding:12px 18px;
-              border:none;
-              border-radius:999px;
-              background:rgba(15,15,25,0.75);
-              color:white;
-              font-size:0.95rem;
-              font-weight:600;
-              cursor:pointer;
-              backdrop-filter:blur(10px);
-              border:1px solid rgba(255,255,255,0.15);
-              box-shadow:0 0 18px rgba(95,140,255,0.25);
-            ">
-              🔊 Experience the Trailer
-            </button>
+    position:absolute;
+    bottom:18px;
+    right:18px;
+    z-index:20;
+    padding:12px 18px;
+    border-radius:999px;
+    background:rgba(10,10,18,0.78);
+    color:white;
+    font-size:0.92rem;
+    font-weight:700;
+    cursor:pointer;
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 0 22px rgba(95,140,255,0.35);
+  ">
+    🔊 Experience the Trailer
+  </button>
 
             <div class="video-placeholder" id="landingVideoFallback" style="display:none;">
               Drop your <strong>visyonix.mp4</strong> file into the same folder if you want
@@ -1225,6 +1225,7 @@
 
     const landingBrandVideo = document.getElementById("landingBrandVideo");
     const landingVideoFallback = document.getElementById("landingVideoFallback");
+    const soundBtn = document.getElementById("soundBtn");
 
     function showPage(pageName) {
       const isHome = pageName === "home";
@@ -1236,6 +1237,28 @@
       generatorNavBtn.classList.toggle("active", !isHome);
 
       trackEvent("page_switch", { page_name: pageName });
+
+      if (landingBrandVideo) {
+        if (isHome) {
+          landingBrandVideo.muted = true;
+          landingBrandVideo.play().catch(() => {});
+
+          if (soundBtn) {
+            soundBtn.style.display = "block";
+            soundBtn.style.opacity = "1";
+            soundBtn.textContent = "🔊 Experience the Trailer";
+          }
+        } else {
+          landingBrandVideo.muted = true;
+          landingBrandVideo.pause();
+
+          if (soundBtn) {
+            soundBtn.style.display = "block";
+            soundBtn.style.opacity = "1";
+            soundBtn.textContent = "🔊 Experience the Trailer";
+          }
+        }
+      }
 
       window.scrollTo({
         top: 0,
@@ -1902,22 +1925,27 @@
       });
     }
 
-    const soundBtn = document.getElementById("soundBtn");
-
     if (soundBtn && landingBrandVideo) {
       soundBtn.addEventListener("click", () => {
-        landingBrandVideo.muted = false;
-        landingBrandVideo.volume = 1;
-        landingBrandVideo.play();
+        const soundIsOff = landingBrandVideo.muted;
 
-        soundBtn.textContent = "🔊 Audio Enabled";
+        if (soundIsOff) {
+          landingBrandVideo.muted = false;
+          landingBrandVideo.volume = 1;
+          landingBrandVideo.play().catch(() => {});
+          soundBtn.textContent = "🔇 Mute Trailer";
 
-        setTimeout(() => {
-          soundBtn.style.opacity = "0";
-          setTimeout(() => {
-            soundBtn.style.display = "none";
-          }, 400);
-        }, 1200);
+          trackEvent("hero_video_sound_on", {
+            page_name: "home"
+          });
+        } else {
+          landingBrandVideo.muted = true;
+          soundBtn.textContent = "🔊 Experience the Trailer";
+
+          trackEvent("hero_video_sound_off", {
+            page_name: "home"
+          });
+        }
       });
     }
 
