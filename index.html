@@ -918,6 +918,13 @@
                 rel="noopener noreferrer"
                 class="landing-link revid-link-btn"
               >Create in Revid</a>
+
+              <a
+                href="https://seeddance.video/i/VISYONIXAI"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="landing-link seedance-link-btn"
+              >Create in Seedance</a>
             </div>
           </div>
         </div>
@@ -1077,6 +1084,13 @@
                 rel="noopener noreferrer"
                 class="btn-secondary revid-link-btn"
               >Create in Revid</a>
+
+              <a
+                href="https://seeddance.video/i/VISYONIXAI"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-secondary seedance-link-btn"
+              >Create in Seedance</a>
             </div>
           </div>
         </section>
@@ -1182,6 +1196,13 @@
                   rel="noopener noreferrer"
                   class="btn-main revid-link-btn"
                 >Create in Revid</a>
+
+                <a
+                  href="https://seeddance.video/i/VISYONIXAI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-main seedance-link-btn"
+                >Create in Seedance</a>
               </div>
 
               <div class="execution-note">
@@ -1639,6 +1660,13 @@
               rel="noopener noreferrer"
               class="btn-main revid-link-btn"
             >Create in Revid</a>
+
+            <a
+              href="https://seeddance.video/i/VISYONIXAI"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-main seedance-link-btn"
+            >Create in Seedance</a>
           </div>
 
           <div class="execution-note">
@@ -1906,6 +1934,14 @@
 
       if (revidButton) {
         trackEvent("revid_click", {
+          mode: currentMode
+        });
+      }
+
+      const seedanceButton = event.target.closest(".seedance-link-btn");
+
+      if (seedanceButton) {
+        trackEvent("seedance_click", {
           mode: currentMode
         });
       }
